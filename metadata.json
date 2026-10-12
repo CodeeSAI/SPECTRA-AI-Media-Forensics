@@ -1,0 +1,7 @@
+{
+  "name": "SPECTRA - AI Media Forensics",
+  "description": "Scientific media authenticity assessment and AI detection workstation with forensic pipeline, SHA-256 verification, and investigation reports.",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

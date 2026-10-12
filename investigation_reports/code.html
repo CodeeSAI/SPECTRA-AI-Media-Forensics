@@ -1,641 +1,682 @@
 <!DOCTYPE html>
-
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta content="web_dashboard" name="shell-type"/>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Manrope:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
-<style>
-    @layer base {
-      html, body { margin: 0; padding: 0; }
-      body { overscroll-behavior: none; }
-    }
-    ::-webkit-scrollbar { display: none; }
-  </style>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Evidence Ledger &amp; Investigation Reports — SPECTRA Workstation</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
       theme: {
         extend: {
           colors: {
-            "cobalt": "#3B82F6",
-            "cobalt-light": "#60A5FA",
-            "cobalt-bg": "rgba(59, 130, 246, 0.12)",
+            "obsidian": "#070A0F",
+            "surface-1": "#0C101A",
+            "surface-2": "#111624",
+            "surface-3": "#181F33",
+            "border-line": "#1D2538",
+            "border-glow": "#2E3B57",
+            "cobalt": "#2457FF",
+            "electric-violet": "#8B5CF6",
+            "magenta": "#D946EF",
+            "cyan-glow": "#38BDF8",
+            "emerald-status": "#10B981",
+            "amber-status": "#F59E0B",
+            "rose-status": "#F43F5E",
+            "molten-amber": "#F5A33B",
+            "warm-orange": "#F07832",
+            "signal-red": "#F0523B",
+            "text-primary": "#F8FAFC",
+            "text-secondary": "#94A3B8",
+            "text-tertiary": "#64748B"
           },
           fontFamily: {
-            sans: ["Inter", "sans-serif"],
-            display: ["Manrope", "sans-serif"],
+            sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+            heading: ["Manrope", "sans-serif"],
+            display: ["Space Grotesk", "sans-serif"],
             mono: ["JetBrains Mono", "monospace"]
           }
         }
       }
     };
   </script>
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; background-color: #070A0F; color: #F8FAFC; }
+      body { overscroll-behavior: none; }
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #070A0F; }
+    ::-webkit-scrollbar-thumb { background: #1D2538; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #2E3B57; }
+    .glass-panel {
+      background: linear-gradient(135deg, rgba(17, 22, 36, 0.75) 0%, rgba(12, 16, 26, 0.85) 100%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(29, 37, 56, 0.85);
+    }
+    .glass-card-glow:hover {
+      border-color: rgba(139, 92, 246, 0.4);
+      box-shadow: 0 0 24px -6px rgba(139, 92, 246, 0.15);
+    }
+  </style>
 </head>
-<body class="bg-[#11161D] font-sans text-[#F3F5F8] antialiased selection:bg-blue-600 selection:text-white min-h-screen">
-<!-- Persistent Sidebar (228px, #0D1117) -->
-<aside class="fixed left-0 top-0 h-full w-[228px] bg-[#0D1117] border-r border-[#2A313C] z-50 flex flex-col justify-between select-none">
-<div class="flex flex-col">
-<!-- SPECTRA Logo Header -->
-<div class="h-14 px-4 flex items-center gap-3 border-b border-[#2A313C]">
-<img alt="SPECTRA Logo" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XvrSfEm4eUtpOr_7XYW4JLhd4vd2Q8U9uUZDyhpjOmrng5nPMuQRW3Sy1Tt-lRfnLuCL6Cc_aZMo6f9IiRSlCOgJn6EtwjfXiB0Fp9e3A2GHCFGhQ65NkqF-0EeQxGEOGi6_a2TZ39Yx6BW0ciUUXYs-r7ukpVRe3IpslGamu3CAleEPc6abUxjPC68Xv0TvmYypt5JyJOpVTJuZRt6YUiE3C1p1B6iPqPvkWxVTwf0VXTvZG_oXfimYMQ"/>
-<div class="flex flex-col min-w-0">
-<span class="font-display text-[13px] font-semibold tracking-wider text-[#F3F5F8] uppercase leading-none">SPECTRA</span>
-<span class="font-mono text-[9px] tracking-widest text-[#788493] uppercase mt-1 leading-none">AI MEDIA FORENSICS</span>
-</div>
-</div>
-<!-- Navigation Links -->
-<nav class="flex flex-col pt-3 px-2 gap-1">
-<a class="group flex items-center h-10 px-3 rounded text-[#A3ACB8] hover:text-[#F3F5F8] hover:bg-[#171D25] transition-all text-sm" href="/overview/">
-<span class="material-symbols-outlined text-[18px] mr-3 text-[#788493] group-hover:text-[#F3F5F8] transition-colors">dashboard</span>
-<span>Overview</span>
-</a>
-<a class="group flex items-center h-10 px-3 rounded text-[#A3ACB8] hover:text-[#F3F5F8] hover:bg-[#171D25] transition-all text-sm" href="/analyze/">
-<span class="material-symbols-outlined text-[18px] mr-3 text-[#788493] group-hover:text-[#F3F5F8] transition-colors">analytics</span>
-<span>Analyze Media</span>
-</a>
-<!-- Active: Investigation Reports -->
-<a aria-current="page" class="group flex items-center h-10 px-3 rounded transition-all bg-[#3B82F6]/15 text-[#60A5FA] border-l-[3px] border-[#3B82F6] font-medium text-sm" href="/reports/">
-<span class="material-symbols-outlined text-[18px] mr-3 text-[#3B82F6]">verified</span>
-<span>Investigation Reports</span>
-</a>
-</nav>
-</div>
-<!-- Pinned Bottom Links & Status -->
-<div class="flex flex-col px-2 pb-4 gap-3 border-t border-[#2A313C] pt-3">
-<a class="group flex items-center h-10 px-3 rounded text-[#A3ACB8] hover:text-[#F3F5F8] hover:bg-[#171D25] transition-all text-sm" href="#">
-<span class="material-symbols-outlined text-[18px] mr-3 text-[#788493] group-hover:text-[#F3F5F8] transition-colors">settings</span>
-<span>Settings</span>
-</a>
-<div class="flex items-center px-3 py-1 gap-2">
-<span class="w-2 h-2 rounded-full bg-[#bef532] shrink-0"></span>
-<span class="font-mono text-[11px] tracking-wider text-[#788493] uppercase font-medium">LOCAL PROCESSING</span>
-</div>
-</div>
-</aside>
-<!-- Workspace Container (Offset Sidebar) -->
-<div class="pl-[228px] min-h-screen bg-[#11161D]">
-<!-- Top Bar (56px, #11161D) -->
-<header class="fixed top-0 left-[228px] right-0 h-14 bg-[#11161D] border-b border-[#2A313C] z-40 flex items-center justify-between px-6 select-none">
-<div class="flex items-center gap-3">
-<h2 class="font-display text-[15px] font-semibold text-[#F3F5F8] tracking-tight">Investigation Reports</h2>
-</div>
-<div class="flex items-center gap-3">
-<div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#171D25] border border-[#2A313C]">
-<span class="w-2 h-2 rounded-full bg-[#bef532] shrink-0"></span>
-<span class="font-mono text-[11px] text-[#A3ACB8] uppercase tracking-wider font-medium">Local Analysis</span>
-</div>
-</div>
-</header>
-<!-- Main Content Area -->
-<main class="relative pt-14 p-6 lg:p-8 min-h-screen">
-<div class="max-w-[1200px] mx-auto flex flex-col">
-<!-- Page Header Block -->
-<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-1">
-<div class="flex flex-col space-y-1">
-<h1 class="text-[28px] font-semibold text-[#F3F5F8] tracking-tight font-display">Investigation Reports</h1>
-<p class="text-[14px] text-[#A3ACB8]">
-              Review previous media assessments, verified cryptographic traces, and access full forensic reports.
+<body class="bg-obsidian font-sans text-text-primary antialiased selection:bg-electric-violet selection:text-white min-h-screen flex">
+
+  <!-- Mobile Sidebar Backdrop Overlay -->
+  <div id="mobile-sidebar-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden hidden"></div>
+
+  <!-- Shell: Precision Sidebar (232px) -->
+  <aside id="main-sidebar" class="fixed left-0 top-0 h-full w-[232px] bg-surface-1 border-r border-border-line z-50 flex flex-col justify-between select-none -translate-x-full lg:translate-x-0 transition-transform duration-300">
+    <div class="flex flex-col">
+      <!-- Brand Header with Chromatic Refraction Prism -->
+      <div class="h-16 px-5 flex items-center justify-between border-b border-border-line bg-gradient-to-r from-surface-1 to-[#0F1422]">
+        <div class="flex items-center gap-3.5">
+          <div class="relative w-8 h-8 rounded-lg bg-[#141A29] border border-border-glow flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(36,87,255,0.25)]">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 32 32">
+              <line stroke="#FFFFFF" stroke-linecap="round" stroke-width="2" x1="3" x2="13" y1="16" y2="16"></line>
+              <polygon fill="none" points="16,5 28,25 6,25" stroke="#94A3B8" stroke-width="1.75"></polygon>
+              <line stroke="#38BDF8" stroke-linecap="round" stroke-width="1.75" x1="21" x2="30" y1="16" y2="11"></line>
+              <line stroke="#8B5CF6" stroke-linecap="round" stroke-width="1.75" x1="22" x2="30" y1="18" y2="18"></line>
+              <line stroke="#D946EF" stroke-linecap="round" stroke-width="1.75" x1="22" x2="30" y1="20" y2="25"></line>
+            </svg>
+          </div>
+          <div class="flex flex-col min-w-0">
+            <div class="flex items-center gap-1.5">
+              <span class="font-display font-bold text-[15px] tracking-wider text-text-primary leading-none uppercase">SPECTRA</span>
+              <span class="text-[9px] font-mono px-1 py-0.5 rounded bg-electric-violet/15 text-electric-violet border border-electric-violet/30 leading-none">v2.4</span>
+            </div>
+            <span class="font-mono text-[9px] tracking-widest text-text-tertiary uppercase mt-1 leading-none">DIGITAL FORENSICS</span>
+          </div>
+        </div>
+        <button id="mobile-sidebar-close" type="button" class="lg:hidden p-1 text-text-tertiary hover:text-white" aria-label="Close menu">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <!-- Navigation — Primary Destinations -->
+      <nav class="flex flex-col pt-4 px-3 gap-1.5">
+        <a class="group flex items-center h-10 px-3.5 rounded-lg text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface-2 border-l-[3px] border-transparent transition-all" href="/analyze/">
+          <span class="material-symbols-outlined text-[19px] mr-3 text-text-tertiary group-hover:text-cyan-glow transition-colors">fingerprint</span>
+          <span class="tracking-wide">Analyze</span>
+        </a>
+        <a aria-current="page" class="group flex items-center h-10 px-3.5 rounded-lg text-sm font-semibold bg-gradient-to-r from-cobalt/20 via-electric-violet/20 to-transparent text-white border-l-[3px] border-electric-violet shadow-[0_0_14px_rgba(139,92,246,0.25)] transition-all" href="/reports/">
+          <span class="material-symbols-outlined text-[19px] mr-3 text-cyan-glow">receipt_long</span>
+          <span class="tracking-wide">Investigation Records</span>
+        </a>
+      </nav>
+
+      <!-- System Specifications Box -->
+      <div class="mx-3 mt-6 p-3 rounded-lg bg-surface-2/70 border border-border-line text-xs font-mono">
+        <div class="flex items-center justify-between text-text-tertiary mb-1.5 text-[10px] uppercase tracking-wider">
+          <span>PIPELINE ENGINE</span>
+          <span class="text-emerald-status flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-status"></span>ACTIVE
+          </span>
+        </div>
+        <div class="text-[11px] text-text-secondary truncate">PyTorch ViT · SHA-256 Digest</div>
+        <div class="text-[10px] text-text-tertiary mt-1">Session Ingest Hashing</div>
+      </div>
+    </div>
+
+    <!-- Pinned Telemetry Status -->
+    <div class="flex flex-col px-3 pb-4 gap-2 border-t border-border-line pt-3 bg-surface-1/90">
+      <div class="flex items-center justify-between px-2 py-1">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-status shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+          <span class="font-mono text-[10px] tracking-wider text-text-secondary uppercase">ZERO-CLOUD LEAK</span>
+        </div>
+        <span class="font-mono text-[10px] text-text-tertiary">ISO-29110</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main View Container -->
+  <div class="pl-0 lg:pl-[232px] min-h-screen bg-obsidian flex flex-col flex-1 w-full min-w-0">
+    
+    <!-- Top System Bar -->
+    <header class="fixed top-0 left-0 lg:left-[232px] right-0 h-14 sm:h-16 bg-surface-1/80 backdrop-blur-md border-b border-border-line z-40 flex items-center justify-between px-4 sm:px-6 lg:px-8 select-none">
+      <div class="flex items-center gap-3 font-mono text-xs text-text-secondary min-w-0">
+        <!-- Mobile Toggle Button -->
+        <button id="mobile-sidebar-toggle" type="button" class="lg:hidden p-1.5 rounded-lg text-text-secondary hover:text-white bg-surface-2 border border-border-line transition-colors flex items-center justify-center shrink-0 mr-1" aria-label="Toggle Navigation">
+          <span class="material-symbols-outlined text-[20px]">menu</span>
+        </button>
+        <span class="font-semibold text-white tracking-wide truncate">EVIDENCE LEDGER &amp; INVESTIGATION RECORDS</span>
+      </div>
+      <div class="flex items-center gap-3 sm:gap-4 shrink-0">
+        <!-- Live System Clock -->
+        <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-2 border border-border-line font-mono text-[11px] text-text-secondary">
+          <span class="material-symbols-outlined text-[14px] text-electric-violet">schedule</span>
+          <span id="utc-clock">UTC 00:00:00</span>
+        </div>
+        <!-- Gateway Badge -->
+        <div class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-border-glow bg-surface-2/60 text-xs font-mono">
+          <span class="w-2 h-2 rounded-full bg-emerald-status"></span>
+          <span class="text-text-secondary">LEDGER SYNCED</span>
+        </div>
+        <a class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-lg bg-gradient-to-r from-cobalt via-electric-violet to-magenta hover:opacity-95 text-white text-xs font-semibold shadow-[0_0_16px_rgba(139,92,246,0.3)] transition-all" href="/analyze/">
+          <span class="material-symbols-outlined text-[16px]">add_photo_alternate</span>
+          <span class="hidden sm:inline">INGEST EXHIBIT</span>
+          <span class="sm:hidden">INGEST</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Content Workspace -->
+    <main class="relative pt-20 w-full min-h-screen p-4 sm:p-6 lg:p-8 space-y-7 min-w-0">
+      
+      <!-- Page Header Area -->
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div class="flex flex-col space-y-1.5">
+          <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded bg-magenta/15 border border-magenta/30 text-magenta font-mono text-[10px] uppercase tracking-widest w-fit">
+            <span class="material-symbols-outlined text-[13px]">policy</span>
+            <span>EVIDENCE INVENTORY &amp; AUDIT TRAIL</span>
+          </div>
+          <h1 class="font-heading text-3xl font-extrabold text-white tracking-tight">
+            Evidence Ledger &amp; Investigation Reports
+          </h1>
+          <p class="text-sm text-text-secondary max-w-2xl font-normal">
+            Authoritative session ledger of assessed media exhibits, SHA-256 integrity digests, and classifier predictions.
+          </p>
+        </div>
+        
+        <div class="flex items-center gap-3 self-start sm:self-end">
+          <div class="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-surface-2 border border-border-line text-xs font-mono">
+            <span class="w-2 h-2 rounded-full bg-emerald-status"></span>
+            <span id="reports-count-label" class="font-bold text-white">0 Records</span>
+            <span class="text-text-tertiary">·</span>
+            <span id="reports-source-badge" class="text-cyan-glow uppercase text-[10px]">ACTIVE LEDGER</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANALYTICS CARDS (Fortexa-Inspired Metrics) -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        
+        <!-- Total Reports Card -->
+        <div class="p-5 rounded-xl glass-panel glass-card-glow relative overflow-hidden transition-all group">
+          <div class="flex items-center justify-between text-text-secondary">
+            <span class="text-xs uppercase font-mono tracking-wider">TOTAL LEDGER RECORDS</span>
+            <div class="w-8 h-8 rounded-lg bg-surface-2 border border-border-line flex items-center justify-center text-text-secondary group-hover:text-cyan-glow transition-colors">
+              <span class="material-symbols-outlined text-[18px]">folder_special</span>
+            </div>
+          </div>
+          <div class="mt-4 flex items-baseline justify-between">
+            <span class="font-display text-3xl lg:text-4xl font-bold text-white tracking-tight" id="stat-total-reports">0</span>
+            <span class="text-[11px] font-mono text-text-tertiary">Indexed Exhibits</span>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-line/70 flex items-center gap-1">
+            <span class="h-1 flex-1 rounded-full bg-cobalt/40"></span>
+            <span class="h-1 flex-1 rounded-full bg-cobalt/60"></span>
+            <span class="h-1 flex-1 rounded-full bg-cobalt/80"></span>
+            <span class="h-1 flex-1 rounded-full bg-cobalt"></span>
+          </div>
+        </div>
+
+        <!-- AI Detected Card (Signature Molten Amber to Signal Red Accent) -->
+        <div class="p-5 rounded-xl glass-panel glass-card-glow relative overflow-hidden transition-all group">
+          <div class="flex items-center justify-between text-text-secondary">
+            <span class="text-xs uppercase font-mono tracking-wider">SYNTHETIC / AI DETECTED</span>
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-molten-amber/20 to-signal-red/20 border border-molten-amber/40 flex items-center justify-center text-molten-amber group-hover:shadow-[0_0_14px_rgba(245,163,59,0.35)] transition-all">
+              <span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+            </div>
+          </div>
+          <div class="mt-4 flex items-baseline justify-between">
+            <span class="font-display text-3xl lg:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-molten-amber to-signal-red tracking-tight" id="stat-ai-reports">0</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-gradient-to-r from-molten-amber/15 to-signal-red/15 text-molten-amber border border-molten-amber/30 font-semibold">RISK HIGH</span>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-line/70 flex items-center justify-between text-[11px] font-mono text-text-tertiary">
+            <span>ViT Score &ge; 70.0%</span>
+            <span class="text-molten-amber font-medium">Generative Flags</span>
+          </div>
+        </div>
+
+        <!-- Human Created Card -->
+        <div class="p-5 rounded-xl glass-panel glass-card-glow relative overflow-hidden transition-all group">
+          <div class="flex items-center justify-between text-text-secondary">
+            <span class="text-xs uppercase font-mono tracking-wider">LIKELY HUMAN-CREATED</span>
+            <div class="w-8 h-8 rounded-lg bg-emerald-status/10 border border-emerald-status/30 flex items-center justify-center text-emerald-status group-hover:shadow-[0_0_12px_rgba(16,185,129,0.3)] transition-all">
+              <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+            </div>
+          </div>
+          <div class="mt-4 flex items-baseline justify-between">
+            <span class="font-display text-3xl lg:text-4xl font-bold text-emerald-status tracking-tight" id="stat-human-reports">0</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-status/15 text-emerald-status border border-emerald-status/30">PREDICTED HUMAN</span>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-line/70 flex items-center justify-between text-[11px] font-mono text-text-tertiary">
+            <span>Optical Sensor Match</span>
+            <span class="text-emerald-status">Probabilistic Verdict</span>
+          </div>
+        </div>
+
+        <!-- Inconclusive Card -->
+        <div class="p-5 rounded-xl glass-panel glass-card-glow relative overflow-hidden transition-all group">
+          <div class="flex items-center justify-between text-text-secondary">
+            <span class="text-xs uppercase font-mono tracking-wider">INCONCLUSIVE / ANOMALY</span>
+            <div class="w-8 h-8 rounded-lg bg-surface-2 border border-border-line flex items-center justify-center text-text-secondary group-hover:text-cyan-glow transition-colors">
+              <span class="material-symbols-outlined text-[18px]">help_outline</span>
+            </div>
+          </div>
+          <div class="mt-4 flex items-baseline justify-between">
+            <span class="font-display text-3xl lg:text-4xl font-bold text-text-secondary tracking-tight" id="stat-inconclusive-reports">0</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-surface-3 text-text-tertiary border border-border-line">MARGINAL</span>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-line/70 flex items-center justify-between text-[11px] font-mono text-text-tertiary">
+            <span>30% &lt; Score &lt; 70%</span>
+            <span>Manual Review</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- FILTER & ACTIONS TOOLBAR -->
+      <div class="p-4 rounded-xl glass-panel border border-border-line flex flex-wrap items-center justify-between gap-4">
+        
+        <!-- Search Input -->
+        <div class="relative w-full sm:w-96">
+          <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-text-tertiary pointer-events-none">search</span>
+          <input class="w-full bg-surface-1 border border-border-line text-xs font-mono text-white placeholder:text-text-tertiary px-4 py-2.5 pl-10 rounded-lg focus:outline-none focus:border-electric-violet transition-colors" id="report-search-input" placeholder="Search by exhibit filename or SHA-256 hash..." type="text"/>
+        </div>
+
+        <!-- Verdict Filter & Action Controls -->
+        <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+          
+          <div class="relative">
+            <select class="appearance-none bg-surface-1 border border-border-line text-xs font-mono text-text-primary px-3.5 py-2.5 pr-9 rounded-lg focus:outline-none focus:border-electric-violet cursor-pointer transition-colors" id="verdict-filter-select">
+              <option value="all">All Forensic Verdicts</option>
+              <option value="ai">Likely AI-Generated</option>
+              <option value="human">Likely Human-Created</option>
+              <option value="inconclusive">Inconclusive Artifacts</option>
+            </select>
+            <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-[18px] text-text-tertiary pointer-events-none">expand_more</span>
+          </div>
+
+          <button class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-border-glow bg-surface-2 hover:bg-surface-3 text-white text-xs font-mono font-medium transition-all shadow-sm shrink-0" id="export-csv-btn" type="button">
+            <span class="material-symbols-outlined text-[17px] text-cyan-glow">download</span>
+            <span>Export CSV Ledger</span>
+          </button>
+
+          <button class="p-2.5 rounded-lg border border-border-line bg-surface-1 hover:bg-surface-2 text-text-tertiary hover:text-white transition-colors" onclick="location.reload()" title="Refresh Ledger" type="button">
+            <span class="material-symbols-outlined text-[18px]">refresh</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- REPORTS LEDGER TABLE -->
+      <section class="glass-panel rounded-2xl border border-border-line overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+        
+        <div class="overflow-x-auto w-full">
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="bg-surface-1 border-b border-border-line text-text-tertiary font-mono uppercase text-[10px] tracking-wider h-11">
+                <th class="py-3 px-5 font-semibold">Evidence Exhibit &amp; SHA-256 Hash</th>
+                <th class="py-3 px-5 font-semibold">Date Analyzed (UTC)</th>
+                <th class="py-3 px-5 font-semibold">Forensic Classification</th>
+                <th class="py-3 px-5 font-semibold">Inference Model</th>
+                <th class="py-3 px-5 text-right font-semibold">Report Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-border-line/60" id="reports-table-body">
+              <tr>
+                <td class="py-14 text-center text-text-tertiary" colspan="5">
+                  <span class="material-symbols-outlined text-3xl block mb-2 text-text-tertiary animate-spin">progress_activity</span>
+                  <span class="font-mono text-xs">Querying persistent forensic ledger...</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Table Footer -->
+        <div class="px-6 py-3.5 flex flex-col sm:flex-row items-center justify-between text-xs text-text-tertiary font-mono bg-surface-1 border-t border-border-line select-none gap-2">
+          <div class="flex items-center gap-2">
+            <span id="showing-count">Showing records</span>
+            <span>·</span>
+            <span class="text-cyan-glow flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-cyan-glow"></span>SESSION RECORDS
+            </span>
+          </div>
+          <div class="text-[11px] text-text-tertiary">
+            EVIDENCE RETENTION: ACTIVE WORKSTATION SESSION
+          </div>
+        </div>
+
+      </section>
+
+      <!-- THREE ARCHITECTURAL STANDARDS CARDS -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Card 1: C2PA -->
+        <div class="p-6 rounded-xl glass-panel border border-border-line flex flex-col justify-between hover:border-electric-violet/40 transition-colors">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between">
+              <h3 class="font-heading text-sm font-bold text-white">C2PA Provenance Manifest Scan</h3>
+              <span class="material-symbols-outlined text-[20px] text-electric-violet">verified</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              Scans ingested exhibits for embedded C2PA provenance signatures. Absence of signed credentials is noted in the findings dossier.
             </p>
-</div>
-<!-- Right Count Tag -->
-<div class="self-start sm:self-end shrink-0">
-<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#171D25] border border-[#2A313C] text-sm text-[#F3F5F8]">
-<span class="w-2 h-2 rounded-full bg-[#bef532]"></span>
-<span id="reports-count-label" class="font-mono text-[13px] text-[#F3F5F8] font-medium">8 Reports Recorded</span>
-<span class="text-[#788493] font-mono">·</span>
-<span id="reports-source-badge" class="font-mono text-[11px] uppercase tracking-wider text-[#788493]">DEMO DATA</span>
-</div>
-</div>
-</div>
-<!-- Filter & Utilities Toolbar -->
-<div class="mt-6 p-4 bg-[#171D25] border border-[#2A313C] rounded-[10px] flex flex-wrap items-center justify-between gap-4">
-<!-- Left: Search input -->
-<div class="relative w-full sm:w-80">
-<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-[#788493] pointer-events-none">search</span>
-<input class="w-full bg-[#11161D] border border-[#2A313C] text-sm text-[#F3F5F8] placeholder:text-[#788493] px-4 py-2 pl-10 rounded-lg focus:outline-none focus:border-[#3B82F6] transition-colors" id="report-search-input" placeholder="Search by filename or SHA-256 hash..." type="text"/>
-</div>
-<!-- Center: Filter Dropdown -->
-<div class="relative">
-<select class="appearance-none bg-[#11161D] border border-[#2A313C] text-sm text-[#F3F5F8] px-3.5 py-2 pr-9 rounded-lg focus:outline-none focus:border-[#3B82F6] cursor-pointer transition-colors" id="verdict-filter-select">
-<option value="all">All Verdicts</option>
-<option value="ai">Likely AI-Generated</option>
-<option value="human">Likely Human-Created</option>
-<option value="inconclusive">Inconclusive</option>
-</select>
-<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-[18px] text-[#788493] pointer-events-none">expand_more</span>
-</div>
-<!-- Right: Export Button -->
-<button class="border border-[#2A313C] hover:bg-[#1B222C] text-sm text-[#F3F5F8] px-4 py-2 rounded-lg flex items-center gap-2 transition-colors shrink-0" id="export-csv-btn" type="button">
-<span class="material-symbols-outlined text-[18px] text-[#60A5FA]">download</span>
-<span>Export Ledger CSV</span>
-</button>
-</div>
-<!-- Reports Ledger Table -->
-<div class="bg-[#171D25] border border-[#2A313C] rounded-[10px] mt-4 overflow-hidden">
-<div class="overflow-x-auto w-full">
-<table class="w-full text-left border-collapse min-w-[880px]">
-<thead>
-<tr class="bg-[#11161D]/80 text-[11px] uppercase tracking-wider text-[#788493] font-semibold border-b border-[#2A313C]">
-<th class="px-6 py-3">SOURCE FILE &amp; CRYPTOGRAPHIC HASH</th>
-<th class="px-6 py-3">DATE ANALYZED (UTC)</th>
-<th class="px-6 py-3">CLASSIFICATION</th>
-<th class="px-6 py-3">ENGINE MODEL</th>
-<th class="px-6 py-3 text-right">REPORT ACTION</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-[#2A313C]/60 text-sm font-sans" id="reports-table-body">
-<!-- Row 1 -->
-<tr class="h-[52px] hover:bg-[#1B222C]/60 transition-colors group">
-<td class="px-6 py-3">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-[18px] text-[#788493] group-hover:text-[#60A5FA] transition-colors shrink-0">image</span>
-<div class="flex flex-col min-w-0">
-<span class="text-[#F3F5F8] font-medium truncate">payload_render_v4.png</span>
-<div class="flex items-center gap-1.5 text-[11px] font-mono text-[#788493] mt-0.5">
-<span>SHA-256</span>
-<span class="text-[#A3ACB8]">7e2f91ba4c92...</span>
-</div>
-</div>
-</div>
-</td>
-<td class="px-6 py-3 text-[#A3ACB8] font-mono text-[12px] whitespace-nowrap">
-                    2026-05-18 14:22:04 UTC
-                  </td>
-<td class="px-6 py-3 whitespace-nowrap">
-<div class="inline-flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-amber-400 shrink-0"></span>
-<span class="text-amber-300 font-medium text-sm">Likely AI-Generated</span>
-</div>
-</td>
-<td class="px-6 py-3 whitespace-nowrap">
-<span class="font-mono text-[12px] text-[#A3ACB8] bg-[#11161D] px-2.5 py-1 rounded border border-[#2A313C]/50">Forensic-ViT-B16</span>
-</td>
-<td class="px-6 py-3 text-right whitespace-nowrap">
-<a class="inline-flex items-center gap-1 text-[#60A5FA] hover:text-[#93C5FD] font-medium text-sm transition-colors" href="#">
-<span>View Report</span>
-<span class="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
-</a>
-</td>
-</tr>
-<!-- Row 2 -->
-<tr class="h-[52px] hover:bg-[#1B222C]/60 transition-colors group">
-<td class="px-6 py-3">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-[18px] text-[#788493] group-hover:text-[#60A5FA] transition-colors shrink-0">photo_camera</span>
-<div class="flex flex-col min-w-0">
-<span class="text-[#F3F5F8] font-medium truncate">field_evidence_canon.jpg</span>
-<div class="flex items-center gap-1.5 text-[11px] font-mono text-[#788493] mt-0.5">
-<span>SHA-256</span>
-<span class="text-[#A3ACB8]">d4106673ab19...</span>
-</div>
-</div>
-</div>
-</td>
-<td class="px-6 py-3 text-[#A3ACB8] font-mono text-[12px] whitespace-nowrap">
-                    2026-05-18 13:15:40 UTC
-                  </td>
-<td class="px-6 py-3 whitespace-nowrap">
-<div class="inline-flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
-<span class="text-[#F3F5F8] font-medium text-sm">Likely Human-Created</span>
-</div>
-</td>
-<td class="px-6 py-3 whitespace-nowrap">
-<span class="font-mono text-[12px] text-[#A3ACB8] bg-[#11161D] px-2.5 py-1 rounded border border-[#2A313C]/50">Forensic-ViT-B16</span>
-</td>
-<td class="px-6 py-3 text-right whitespace-nowrap">
-<a class="inline-flex items-center gap-1 text-[#60A5FA] hover:text-[#93C5FD] font-medium text-sm transition-colors" href="#">
-<span>View Report</span>
-<span class="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
-</a>
-</td>
-</tr>
-<!-- Row 3 -->
-<tr class="h-[52px] hover:bg-[#1B222C]/60 transition-colors group">
-<td class="px-6 py-3">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-[18px] text-[#788493] group-hover:text-[#60A5FA] transition-colors shrink-0">videocam</span>
-<div class="flex flex-col min-w-0">
-<span class="text-[#F3F5F8] font-medium truncate">surveillance_crop_stills.webp</span>
-<div class="flex items-center gap-1.5 text-[11px] font-mono text-[#788493] mt-0.5">
-<span>SHA-256</span>
-<span class="text-[#A3ACB8]">3c189912f00a...</span>
-</div>
-</div>
-</div>
-</td>
-<td class="px-6 py-3 text-[#A3ACB8] font-mono text-[12px] whitespace-nowrap">
-                    2026-05-18 11:58:22 UTC
-                  </td>
-<td class="px-6 py-3 whitespace-nowrap">
-<div class="inline-flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-[#788493] shrink-0"></span>
-<span class="text-[#788493] font-medium text-sm">Inconclusive</span>
-</div>
-</td>
-<td class="px-6 py-3 whitespace-nowrap">
-<span class="font-mono text-[12px] text-[#A3ACB8] bg-[#11161D] px-2.5 py-1 rounded border border-[#2A313C]/50">Forensic-ViT-B16</span>
-</td>
-<td class="px-6 py-3 text-right whitespace-nowrap">
-<a class="inline-flex items-center gap-1 text-[#60A5FA] hover:text-[#93C5FD] font-medium text-sm transition-colors" href="#">
-<span>View Report</span>
-<span class="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
-</a>
-</td>
-</tr>
-<!-- Row 4 -->
-<tr class="h-[52px] hover:bg-[#1B222C]/60 transition-colors group">
-<td class="px-6 py-3">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-[18px] text-[#788493] group-hover:text-[#60A5FA] transition-colors shrink-0">badge</span>
-<div class="flex flex-col min-w-0">
-<span class="text-[#F3F5F8] font-medium truncate">press_release_portrait.png</span>
-<div class="flex items-center gap-1.5 text-[11px] font-mono text-[#788493] mt-0.5">
-<span>SHA-256</span>
-<span class="text-[#A3ACB8]">8a7199fa239d...</span>
-</div>
-</div>
-</div>
-</td>
-<td class="px-6 py-3 text-[#A3ACB8] font-mono text-[12px] whitespace-nowrap">
-                    2026-05-18 10:40:15 UTC
-                  </td>
-<td class="px-6 py-3 whitespace-nowrap">
-<div class="inline-flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-amber-400 shrink-0"></span>
-<span class="text-amber-300 font-medium text-sm">Likely AI-Generated</span>
-</div>
-</td>
-<td class="px-6 py-3 whitespace-nowrap">
-<span class="font-mono text-[12px] text-[#A3ACB8] bg-[#11161D] px-2.5 py-1 rounded border border-[#2A313C]/50">Forensic-ViT-B16</span>
-</td>
-<td class="px-6 py-3 text-right whitespace-nowrap">
-<a class="inline-flex items-center gap-1 text-[#60A5FA] hover:text-[#93C5FD] font-medium text-sm transition-colors" href="#">
-<span>View Report</span>
-<span class="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
-</a>
-</td>
-</tr>
-<!-- Row 5 -->
-<tr class="h-[52px] hover:bg-[#1B222C]/60 transition-colors group">
-<td class="px-6 py-3">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-[18px] text-[#788493] group-hover:text-[#60A5FA] transition-colors shrink-0">satellite_alt</span>
-<div class="flex flex-col min-w-0">
-<span class="text-[#F3F5F8] font-medium truncate">telemetry_satellite_scan.tiff</span>
-<div class="flex items-center gap-1.5 text-[11px] font-mono text-[#788493] mt-0.5">
-<span>SHA-256</span>
-<span class="text-[#A3ACB8]">1f9488a088cd...</span>
-</div>
-</div>
-</div>
-</td>
-<td class="px-6 py-3 text-[#A3ACB8] font-mono text-[12px] whitespace-nowrap">
-                    2026-05-17 19:12:08 UTC
-                  </td>
-<td class="px-6 py-3 whitespace-nowrap">
-<div class="inline-flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
-<span class="text-[#F3F5F8] font-medium text-sm">Likely Human-Created</span>
-</div>
-</td>
-<td class="px-6 py-3 whitespace-nowrap">
-<span class="font-mono text-[12px] text-[#A3ACB8] bg-[#11161D] px-2.5 py-1 rounded border border-[#2A313C]/50">Forensic-ViT-B16</span>
-</td>
-<td class="px-6 py-3 text-right whitespace-nowrap">
-<a class="inline-flex items-center gap-1 text-[#60A5FA] hover:text-[#93C5FD] font-medium text-sm transition-colors" href="#">
-<span>View Report</span>
-<span class="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
-</a>
-</td>
-</tr>
-<!-- Row 6 -->
-<tr class="h-[52px] hover:bg-[#1B222C]/60 transition-colors group">
-<td class="px-6 py-3">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-[18px] text-[#788493] group-hover:text-[#60A5FA] transition-colors shrink-0">fingerprint</span>
-<div class="flex flex-col min-w-0">
-<span class="text-[#F3F5F8] font-medium truncate">forensic_exhibit_012.png</span>
-<div class="flex items-center gap-1.5 text-[11px] font-mono text-[#788493] mt-0.5">
-<span>SHA-256</span>
-<span class="text-[#A3ACB8]">66abef0122e7...</span>
-</div>
-</div>
-</div>
-</td>
-<td class="px-6 py-3 text-[#A3ACB8] font-mono text-[12px] whitespace-nowrap">
-                    2026-05-17 16:45:11 UTC
-                  </td>
-<td class="px-6 py-3 whitespace-nowrap">
-<div class="inline-flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-amber-400 shrink-0"></span>
-<span class="text-amber-300 font-medium text-sm">Likely AI-Generated</span>
-</div>
-</td>
-<td class="px-6 py-3 whitespace-nowrap">
-<span class="font-mono text-[12px] text-[#A3ACB8] bg-[#11161D] px-2.5 py-1 rounded border border-[#2A313C]/50">Forensic-ViT-B16</span>
-</td>
-<td class="px-6 py-3 text-right whitespace-nowrap">
-<a class="inline-flex items-center gap-1 text-[#60A5FA] hover:text-[#93C5FD] font-medium text-sm transition-colors" href="#">
-<span>View Report</span>
-<span class="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
-</a>
-</td>
-</tr>
-<!-- Row 7 -->
-<tr class="h-[52px] hover:bg-[#1B222C]/60 transition-colors group">
-<td class="px-6 py-3">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-[18px] text-[#788493] group-hover:text-[#60A5FA] transition-colors shrink-0">biotech</span>
-<div class="flex flex-col min-w-0">
-<span class="text-[#F3F5F8] font-medium truncate">lab_macro_photograph.jpg</span>
-<div class="flex items-center gap-1.5 text-[11px] font-mono text-[#788493] mt-0.5">
-<span>SHA-256</span>
-<span class="text-[#A3ACB8]">e82390141bca...</span>
-</div>
-</div>
-</div>
-</td>
-<td class="px-6 py-3 text-[#A3ACB8] font-mono text-[12px] whitespace-nowrap">
-                    2026-05-17 14:10:30 UTC
-                  </td>
-<td class="px-6 py-3 whitespace-nowrap">
-<div class="inline-flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
-<span class="text-[#F3F5F8] font-medium text-sm">Likely Human-Created</span>
-</div>
-</td>
-<td class="px-6 py-3 whitespace-nowrap">
-<span class="font-mono text-[12px] text-[#A3ACB8] bg-[#11161D] px-2.5 py-1 rounded border border-[#2A313C]/50">Forensic-ViT-B16</span>
-</td>
-<td class="px-6 py-3 text-right whitespace-nowrap">
-<a class="inline-flex items-center gap-1 text-[#60A5FA] hover:text-[#93C5FD] font-medium text-sm transition-colors" href="#">
-<span>View Report</span>
-<span class="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
-</a>
-</td>
-</tr>
-<!-- Row 8 -->
-<tr class="h-[52px] hover:bg-[#1B222C]/60 transition-colors group">
-<td class="px-6 py-3">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-[18px] text-[#788493] group-hover:text-[#60A5FA] transition-colors shrink-0">directions_car</span>
-<div class="flex flex-col min-w-0">
-<span class="text-[#F3F5F8] font-medium truncate">vehicle_dash_recorder.webp</span>
-<div class="flex items-center gap-1.5 text-[11px] font-mono text-[#788493] mt-0.5">
-<span>SHA-256</span>
-<span class="text-[#A3ACB8]">09ac44a1fa55...</span>
-</div>
-</div>
-</div>
-</td>
-<td class="px-6 py-3 text-[#A3ACB8] font-mono text-[12px] whitespace-nowrap">
-                    2026-05-17 11:05:44 UTC
-                  </td>
-<td class="px-6 py-3 whitespace-nowrap">
-<div class="inline-flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
-<span class="text-[#F3F5F8] font-medium text-sm">Likely Human-Created</span>
-</div>
-</td>
-<td class="px-6 py-3 whitespace-nowrap">
-<span class="font-mono text-[12px] text-[#A3ACB8] bg-[#11161D] px-2.5 py-1 rounded border border-[#2A313C]/50">Forensic-ViT-B16</span>
-</td>
-<td class="px-6 py-3 text-right whitespace-nowrap">
-<a class="inline-flex items-center gap-1 text-[#60A5FA] hover:text-[#93C5FD] font-medium text-sm transition-colors" href="#">
-<span>View Report</span>
-<span class="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
-</a>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<!-- Table Footer / Pagination -->
-<div class="px-6 py-3 flex items-center justify-between text-xs text-[#788493] bg-[#11161D]/50 border-t border-[#2A313C] select-none">
-<div class="flex items-center gap-2 font-mono">
-<span>Showing 1–8 of 8</span>
-<span>·</span>
-<span class="text-[#A3ACB8]">DEMO DATA</span>
-</div>
-<div class="flex items-center gap-1.5 font-mono">
-<button class="px-2.5 py-1 rounded bg-[#11161D] border border-[#2A313C] text-[#788493] opacity-60 cursor-not-allowed hover:text-[#F3F5F8]" disabled="" type="button">
-                Prev
-              </button>
-<span class="px-2.5 py-1 rounded bg-[#3B82F6]/20 border border-[#3B82F6]/40 text-[#60A5FA] font-semibold">1</span>
-<button class="px-2.5 py-1 rounded bg-[#11161D] border border-[#2A313C] text-[#788493] opacity-60 cursor-not-allowed hover:text-[#F3F5F8]" disabled="" type="button">
-                Next
-              </button>
-</div>
-</div>
-</div>
-<!-- Bottom Architecture Cards (3 equal cards, mt-6, p-5, bg-[#171D25], border border-[#2A313C], rounded-[10px]) -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-<!-- Card 1 -->
-<div class="p-5 bg-[#171D25] border border-[#2A313C] rounded-[10px] flex flex-col justify-between hover:border-[#3B82F6]/40 transition-colors">
-<div class="flex flex-col space-y-2">
-<div class="flex items-center justify-between">
-<h3 class="text-[15px] font-semibold text-[#F3F5F8] font-display">C2PA Manifest Verification</h3>
-<span class="material-symbols-outlined text-[18px] text-[#3B82F6]">verified</span>
-</div>
-<p class="text-[13px] text-[#A3ACB8] leading-relaxed">
-                Content credentials and hardware cryptographic signatures evaluated per ISO/IEC 29110 specifications.
-              </p>
-</div>
-<div class="mt-4 pt-3 border-t border-[#2A313C]/60 flex items-center justify-between">
-<span class="font-mono text-[10px] uppercase text-[#788493] tracking-wider">STANDARD SPEC</span>
-<span class="font-mono text-[11px] text-[#60A5FA] font-medium">C2PA v2.1 Compliant</span>
-</div>
-</div>
-<!-- Card 2 -->
-<div class="p-5 bg-[#171D25] border border-[#2A313C] rounded-[10px] flex flex-col justify-between hover:border-[#3B82F6]/40 transition-colors">
-<div class="flex flex-col space-y-2">
-<div class="flex items-center justify-between">
-<h3 class="text-[15px] font-semibold text-[#F3F5F8] font-display">Chain of Custody Sealing</h3>
-<span class="material-symbols-outlined text-[18px] text-[#bef532]">lock</span>
-</div>
-<p class="text-[13px] text-[#A3ACB8] leading-relaxed">
-                All analyzed media SHA-256 digests recorded with immutable timestamp proofs in local persistent volume.
-              </p>
-</div>
-<div class="mt-4 pt-3 border-t border-[#2A313C]/60 flex items-center justify-between">
-<span class="font-mono text-[10px] uppercase text-[#788493] tracking-wider">INTEGRITY AUDIT</span>
-<span class="font-mono text-[11px] text-[#F3F5F8] font-medium">Immutable Logs</span>
-</div>
-</div>
-<!-- Card 3 -->
-<div class="p-5 bg-[#171D25] border border-[#2A313C] rounded-[10px] flex flex-col justify-between hover:border-[#3B82F6]/40 transition-colors">
-<div class="flex flex-col space-y-2">
-<div class="flex items-center justify-between">
-<h3 class="text-[15px] font-semibold text-[#F3F5F8] font-display">Local Weights Execution</h3>
-<span class="material-symbols-outlined text-[18px] text-amber-400">memory</span>
-</div>
-<p class="text-[13px] text-[#A3ACB8] leading-relaxed">
-                Inference executed on local host PyTorch device. Zero outbound telemetry or cloud API dependencies.
-              </p>
-</div>
-<div class="mt-4 pt-3 border-t border-[#2A313C]/60 flex items-center justify-between">
-<span class="font-mono text-[10px] uppercase text-[#788493] tracking-wider">NETWORK ISOLATION</span>
-<span class="font-mono text-[11px] text-[#bef532] font-medium">0 B / sec Outbound</span>
-</div>
-</div>
-</div>
-</div>
-</main>
-</div>
-<!-- Interactive Search / Filter Client Logic -->
-<script>
-    (function() {
-      const searchInput = document.getElementById('report-search-input');
-      const verdictFilter = document.getElementById('verdict-filter-select');
-      const tableBody = document.getElementById('reports-table-body');
-      const exportBtn = document.getElementById('export-csv-btn');
-      const countLabel = document.getElementById('reports-count-label');
-      const sourceBadge = document.getElementById('reports-source-badge');
-      let loadedJobs = [];
+          </div>
+          <div class="mt-5 pt-3.5 border-t border-border-line/70 flex items-center justify-between text-[11px] font-mono">
+            <span class="text-text-tertiary">SPECIFICATION</span>
+            <span class="text-cyan-glow font-medium">C2PA: Unverified / Absent</span>
+          </div>
+        </div>
 
-      function filterRows() {
-        if (!tableBody) return;
-        const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
-        const verdict = verdictFilter ? verdictFilter.value : 'all';
-        const rows = tableBody.querySelectorAll('tr');
+        <!-- Card 2: Chain-of-Custody -->
+        <div class="p-6 rounded-xl glass-panel border border-border-line flex flex-col justify-between hover:border-electric-violet/40 transition-colors">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between">
+              <h3 class="font-heading text-sm font-bold text-white">File Integrity Hashing</h3>
+              <span class="material-symbols-outlined text-[20px] text-emerald-status">lock</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              Computes SHA-256 cryptographic digests upon upload to verify file content integrity against modification during active session.
+            </p>
+          </div>
+          <div class="mt-5 pt-3.5 border-t border-border-line/70 flex items-center justify-between text-[11px] font-mono">
+            <span class="text-text-tertiary">INTEGRITY AUDIT</span>
+            <span class="text-emerald-status font-medium">SHA-256 Ingestion Hash</span>
+          </div>
+        </div>
 
-        rows.forEach(row => {
-          const text = row.innerText.toLowerCase();
-          let matchesQuery = query === '' || text.includes(query);
-          let matchesVerdict = true;
+        <!-- Card 3: Neural Classifier -->
+        <div class="p-6 rounded-xl glass-panel border border-border-line flex flex-col justify-between hover:border-electric-violet/40 transition-colors">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between">
+              <h3 class="font-heading text-sm font-bold text-white">Neural ViT Inference</h3>
+              <span class="material-symbols-outlined text-[20px] text-magenta">memory</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              Ateeqq/ai-vs-human-image-detector ViT transformer with directional 70.0% confidence cutoff and raw probability matrix.
+            </p>
+          </div>
+          <div class="mt-5 pt-3.5 border-t border-border-line/70 flex items-center justify-between text-[11px] font-mono">
+            <span class="text-text-tertiary">ARCHITECTURE</span>
+            <span class="text-magenta font-medium">PyTorch ViT-B16</span>
+          </div>
+        </div>
 
-          if (verdict === 'ai') {
-            matchesVerdict = text.includes('likely ai-generated') || text.includes('ai-generated');
-          } else if (verdict === 'human') {
-            matchesVerdict = text.includes('likely human-created') || text.includes('human-created');
-          } else if (verdict === 'inconclusive') {
-            matchesVerdict = text.includes('inconclusive');
-          }
+      </div>
 
-          row.style.display = (matchesQuery && matchesVerdict) ? '' : 'none';
-        });
+    </main>
+  </div>
+
+  <!-- Interactive Ledger Client Script -->
+  <script>
+  (function () {
+    // UTC Live Clock
+    function updateClock() {
+      const now = new Date();
+      const str = 'UTC ' + now.toUTCString().slice(17, 25);
+      const el = document.getElementById('utc-clock');
+      if (el) el.textContent = str;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    const searchInput = document.getElementById('report-search-input');
+    const verdictFilter = document.getElementById('verdict-filter-select');
+    const tableBody = document.getElementById('reports-table-body');
+    const exportBtn = document.getElementById('export-csv-btn');
+    const countLabel = document.getElementById('reports-count-label');
+    const sourceBadge = document.getElementById('reports-source-badge');
+    const showingCount = document.getElementById('showing-count');
+
+    let loadedJobs = [];
+
+    // Filter Logic
+    function filterRows() {
+      if (!tableBody) return;
+      const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+      const verdict = verdictFilter ? verdictFilter.value : 'all';
+      const rows = tableBody.querySelectorAll('tr[data-record]');
+
+      let visibleCount = 0;
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        const rowVerdict = (row.getAttribute('data-verdict') || '').toLowerCase();
+        let matchesQuery = query === '' || text.includes(query);
+        let matchesVerdict = true;
+
+        if (verdict === 'ai') {
+          matchesVerdict = rowVerdict.includes('ai-generated');
+        } else if (verdict === 'human') {
+          matchesVerdict = rowVerdict.includes('human-created');
+        } else if (verdict === 'inconclusive') {
+          matchesVerdict = rowVerdict.includes('inconclusive');
+        }
+
+        const show = matchesQuery && matchesVerdict;
+        row.style.display = show ? '' : 'none';
+        if (show) visibleCount++;
+      });
+
+      if (showingCount) {
+        showingCount.textContent = `Showing ${visibleCount} of ${rows.length} records`;
       }
+    }
 
-      if (searchInput) searchInput.addEventListener('input', filterRows);
-      if (verdictFilter) verdictFilter.addEventListener('change', filterRows);
+    if (searchInput) searchInput.addEventListener('input', filterRows);
+    if (verdictFilter) verdictFilter.addEventListener('change', filterRows);
 
-      if (exportBtn) {
-        exportBtn.addEventListener('click', () => {
-          if (!loadedJobs || loadedJobs.length === 0) {
-            const originalContent = exportBtn.innerHTML;
-            exportBtn.innerHTML = '<span class="material-symbols-outlined text-[18px] text-emerald-400">check</span><span>Ledger Exported</span>';
-            setTimeout(() => { exportBtn.innerHTML = originalContent; }, 2000);
-            return;
-          }
-          const headers = ["Job ID", "Filename", "Date UTC", "Verdict", "AI Score %", "Human Score %", "SHA-256"];
-          const csvRows = [headers.join(",")];
-          loadedJobs.forEach(j => {
-            const r = j.result || {};
-            const row = [
-              `"${j.job_id || ''}"`,
-              `"${(j.filename || '').replace(/"/g, '""')}"`,
-              `"${j.completed_at || j.created_at || ''}"`,
-              `"${r.verdict || j.status || ''}"`,
-              `"${r.ai_score != null ? r.ai_score : ''}"`,
-              `"${r.human_score != null ? r.human_score : ''}"`,
-              `"${j.sha256 || ''}"`
-            ];
-            csvRows.push(row.join(","));
-          });
-          const blob = new Blob([csvRows.join("\n")], { type: "text/csv;charset=utf-8;" });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = `spectra_investigation_ledger_${new Date().toISOString().slice(0,10)}.csv`;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
+    // Copy to clipboard helper
+    window.copyDigest = function (btn, text) {
+      if (!text || text === '—') return;
+      navigator.clipboard.writeText(text).then(() => {
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (icon) {
+          icon.textContent = 'check';
+          icon.classList.add('text-emerald-status');
+          setTimeout(() => {
+            icon.textContent = 'content_copy';
+            icon.classList.remove('text-emerald-status');
+          }, 1800);
+        }
+      }).catch(() => {});
+    };
+
+    // CSV Export
+    if (exportBtn) {
+      exportBtn.addEventListener('click', () => {
+        if (!loadedJobs || loadedJobs.length === 0) {
+          alert('No ledger records available to export.');
+          return;
+        }
+        const headers = ["Job ID", "Filename", "Date UTC", "Verdict", "AI Score %", "Human Score %", "SHA-256", "Dimensions", "Format", "File Size"];
+        const csvRows = [headers.join(",")];
+        loadedJobs.forEach(j => {
+          const r = j.result || {};
+          const row = [
+            `"${j.job_id || ''}"`,
+            `"${(j.filename || '').replace(/"/g, '""')}"`,
+            `"${j.completed_at || j.created_at || ''}"`,
+            `"${r.verdict || j.status || ''}"`,
+            `"${r.ai_score != null ? r.ai_score : ''}"`,
+            `"${r.human_score != null ? r.human_score : ''}"`,
+            `"${j.sha256 || ''}"`,
+            `"${j.width ? j.width + 'x' + j.height : ''}"`,
+            `"${j.format || ''}"`,
+            `"${j.filesize_display || ''}"`
+          ];
+          csvRows.push(row.join(","));
         });
-      }
+        const blob = new Blob([csvRows.join("\n")], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `SPECTRA_FORENSIC_LEDGER_${new Date().toISOString().slice(0, 10)}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+    }
 
-      async function loadReports() {
-        try {
-          const res = await fetch('/api/history');
-          if (!res.ok) return;
-          const data = await res.json();
-          const jobs = data.jobs || [];
-          loadedJobs = jobs;
+    // Load Live Records
+    async function loadReports() {
+      try {
+        const res = await fetch('/api/history');
+        if (!res.ok) throw new Error('API history unreachable');
+        const data = await res.json();
+        const stats = data.stats || {};
+        const jobs = data.jobs || [];
 
-          if (!tableBody) return;
+        if (jobs.length === 0) {
+          loadedJobs = [];
+          document.getElementById('stat-total-reports').textContent = '0';
+          document.getElementById('stat-ai-reports').textContent = '0';
+          document.getElementById('stat-human-reports').textContent = '0';
+          document.getElementById('stat-inconclusive-reports').textContent = '0';
+          if (countLabel) countLabel.textContent = '0 Records';
+          tableBody.innerHTML = `<tr><td colspan="5" class="py-16 text-center text-text-tertiary font-mono text-xs">No media exhibits analyzed in active session ledger. <a href="/analyze/" class="text-electric-violet underline ml-1">Ingest media exhibit</a> to begin recorded investigations.</td></tr>`;
+          return;
+        }
 
-          if (jobs.length === 0) {
-            return;
+        loadedJobs = jobs;
+
+        // Update Stat Cards strictly from actual session records
+        const totalCount = stats.total ?? jobs.length;
+        const aiCount = stats.ai_generated ?? 0;
+        const humanCount = stats.human_created ?? 0;
+        const incCount = (stats.inconclusive ?? 0) + (stats.failed ?? 0);
+
+        document.getElementById('stat-total-reports').textContent = totalCount;
+        document.getElementById('stat-ai-reports').textContent = aiCount;
+        document.getElementById('stat-human-reports').textContent = humanCount;
+        document.getElementById('stat-inconclusive-reports').textContent = incCount;
+
+        if (countLabel) {
+          countLabel.textContent = totalCount + (totalCount === 1 ? ' Record' : ' Records');
+        }
+
+        // Render Table Rows
+        const rowsHtml = jobs.map(j => {
+          const r = j.result || {};
+          const isError = j.status === 'error';
+          const isPending = j.status === 'queued' || j.status === 'validating' || j.status === 'classifying';
+          const verdict = isError
+            ? 'Analysis Failed'
+            : isPending
+            ? 'Processing...'
+            : (r.verdict || 'Inconclusive');
+
+          const ts = j.completed_at
+            ? new Date(j.completed_at).toISOString().replace('T', ' ').slice(0, 19) + ' UTC'
+            : (j.created_at ? new Date(j.created_at).toISOString().replace('T', ' ').slice(0, 19) + ' UTC' : '—');
+          
+          const fullSha = j.sha256 || '—';
+          const shortSha = j.sha256 ? j.sha256.slice(0, 14) + '...' : (isError ? 'Error' : 'Computing');
+
+          let dotClass = 'bg-text-tertiary';
+          let badgeClass = 'bg-surface-3 text-text-tertiary border-border-line';
+          let conf = '';
+
+          if (isError) {
+            dotClass = 'bg-rose-status shadow-[0_0_8px_rgba(244,63,94,0.5)]';
+            badgeClass = 'bg-rose-status/15 text-rose-status border-rose-status/30';
+          } else if (isPending) {
+            dotClass = 'bg-cyan-glow animate-pulse';
+            badgeClass = 'bg-cyan-glow/15 text-cyan-glow border-cyan-glow/30';
+          } else if (verdict === 'AI-Generated') {
+            dotClass = 'bg-molten-amber shadow-[0_0_8px_rgba(245,163,59,0.6)]';
+            badgeClass = 'bg-gradient-to-r from-molten-amber/15 to-signal-red/15 text-molten-amber border-molten-amber/35 font-semibold';
+            conf = r.ai_score != null ? ' · ' + r.ai_score + '%' : '';
+          } else if (verdict === 'Human-Created') {
+            dotClass = 'bg-emerald-status shadow-[0_0_8px_rgba(16,185,129,0.5)]';
+            badgeClass = 'bg-emerald-status/10 text-emerald-status border-emerald-status/30';
+            conf = r.human_score != null ? ' · ' + r.human_score + '%' : '';
+          } else if (verdict === 'Inconclusive') {
+            dotClass = 'bg-cyan-glow shadow-[0_0_8px_rgba(56,189,248,0.5)]';
+            badgeClass = 'bg-cyan-glow/10 text-cyan-glow border-cyan-glow/30';
           }
 
-          if (countLabel) {
-            countLabel.textContent = jobs.length + (jobs.length === 1 ? ' Report Recorded' : ' Reports Recorded');
-          }
-          if (sourceBadge) {
-            sourceBadge.textContent = 'ACTIVE LEDGER';
-            sourceBadge.className = 'font-mono text-[11px] uppercase tracking-wider text-[#bef532]';
-          }
+          const inspectUrl = isPending ? `/progress/?job_id=${j.job_id}` : `/results/?job_id=${j.job_id}`;
+          const downloadUrl = `/api/reports/${j.job_id}`;
 
-          const rowsHtml = jobs.map(j => {
-            const r = j.result || {};
-            const verdict = r.verdict || (j.status === 'error' ? 'Error' : 'Pending');
-            const ts = j.completed_at ? new Date(j.completed_at).toISOString().replace('T', ' ').slice(0, 19) + ' UTC' : '—';
-            const sha = j.sha256 ? j.sha256.substring(0, 16) + '...' : '—';
-            const dot = verdict === 'AI-Generated' ? 'bg-amber-400' : verdict === 'Human-Created' ? 'bg-emerald-400' : 'bg-[#788493]';
-            const verdictColor = verdict === 'AI-Generated' ? 'text-amber-300' : verdict === 'Human-Created' ? 'text-[#bef532]' : 'text-[#788493]';
-            const verdictLabel = verdict === 'AI-Generated' ? 'Likely AI-Generated' : verdict === 'Human-Created' ? 'Likely Human-Created' : verdict;
-
-            return `<tr class="h-[52px] hover:bg-[#1B222C]/60 transition-colors group">
-              <td class="px-6 py-3">
-                <div class="flex items-center gap-3">
-                  <span class="material-symbols-outlined text-[18px] text-[#788493] group-hover:text-[#60A5FA] transition-colors shrink-0">image</span>
-                  <div class="flex flex-col min-w-0">
-                    <span class="text-[#F3F5F8] font-medium truncate">${j.filename}</span>
-                    <div class="flex items-center gap-1.5 text-[11px] font-mono text-[#788493] mt-0.5">
-                      <span>SHA-256</span>
-                      <span class="text-[#A3ACB8]">${sha}</span>
-                    </div>
+          return `<tr class="hover:bg-surface-2/60 transition-colors h-16 group" data-record="true" data-verdict="${verdict}">
+            <td class="py-3 px-5">
+              <div class="flex items-center gap-3.5">
+                <div class="w-10 h-10 rounded-lg bg-surface-2 border border-border-line flex items-center justify-center shrink-0 group-hover:border-electric-violet/40 transition-colors">
+                  <span class="material-symbols-outlined text-cyan-glow text-[20px]">image</span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                  <span class="text-xs font-semibold text-text-primary truncate max-w-[220px] sm:max-w-xs">${j.filename}</span>
+                  <div class="flex items-center gap-1.5 mt-0.5">
+                    <span class="font-mono text-[10px] text-text-tertiary">SHA-256:</span>
+                    <span class="font-mono text-[10px] text-text-secondary truncate max-w-[140px] sm:max-w-[190px]">${shortSha}</span>
+                    <button class="text-text-tertiary hover:text-cyan-glow transition-colors ml-1" onclick="copyDigest(this, '${fullSha}')" title="Copy full SHA-256">
+                      <span class="material-symbols-outlined text-[13px]">content_copy</span>
+                    </button>
                   </div>
                 </div>
-              </td>
-              <td class="px-6 py-3 text-[#A3ACB8] font-mono text-[12px] whitespace-nowrap">
-                ${ts}
-              </td>
-              <td class="px-6 py-3 whitespace-nowrap">
-                <div class="inline-flex items-center gap-2">
-                  <span class="w-2 h-2 rounded-full ${dot} shrink-0"></span>
-                  <span class="${verdictColor} font-medium text-sm">${verdictLabel}</span>
-                </div>
-              </td>
-              <td class="px-6 py-3 whitespace-nowrap">
-                <span class="font-mono text-[12px] text-[#A3ACB8] bg-[#11161D] px-2.5 py-1 rounded border border-[#2A313C]/50">ViT-B16 (Local)</span>
-              </td>
-              <td class="px-6 py-3 text-right whitespace-nowrap">
-                <div class="flex items-center justify-end gap-3">
-                  <a class="inline-flex items-center gap-1 text-[#60A5FA] hover:text-[#93C5FD] font-medium text-sm transition-colors" href="/results/?job_id=${j.job_id}">
-                    <span>View Report</span>
-                    <span class="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-0.5">arrow_forward</span>
-                  </a>
-                  ${j.status === 'complete' ? `<a class="inline-flex items-center gap-1 text-[#A3ACB8] hover:text-[#F3F5F8] font-medium text-sm transition-colors" href="/api/reports/${j.job_id}" download title="Download TXT Report"><span class="material-symbols-outlined text-[16px]">download</span></a>` : ''}
-                </div>
-              </td>
-            </tr>`;
-          }).join('');
+              </div>
+            </td>
+            <td class="py-3 px-5 text-text-secondary font-mono text-[11px] whitespace-nowrap">
+              ${ts}
+            </td>
+            <td class="py-3 px-5 whitespace-nowrap">
+              <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full border text-[11px] font-mono ${badgeClass}">
+                <span class="w-1.5 h-1.5 rounded-full ${dotClass} shrink-0"></span>
+                <span>${verdict}${conf}</span>
+              </div>
+            </td>
+            <td class="py-3 px-5 whitespace-nowrap">
+              <span class="font-mono text-[11px] text-text-tertiary bg-surface-2 px-2.5 py-1 rounded border border-border-line">
+                ViT-B16 (Ateeqq)
+              </span>
+            </td>
+            <td class="py-3 px-5 text-right whitespace-nowrap font-mono">
+              <div class="flex items-center justify-end gap-3">
+                <a class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-2 hover:bg-surface-3 border border-border-line text-electric-violet hover:text-white text-xs font-medium transition-all" href="${inspectUrl}">
+                  <span>Inspect</span>
+                  <span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+                </a>
+                ${j.status === 'complete' ? `
+                <a class="p-1.5 rounded-lg hover:bg-surface-3 text-text-tertiary hover:text-cyan-glow transition-colors" href="${downloadUrl}" download title="Download TXT Certificate">
+                  <span class="material-symbols-outlined text-[17px]">download</span>
+                </a>` : ''}
+              </div>
+            </td>
+          </tr>`;
+        }).join('');
 
-          tableBody.innerHTML = rowsHtml;
-          filterRows();
-        } catch(e) {
-          console.warn('Could not load reports:', e);
-        }
+        tableBody.innerHTML = rowsHtml;
+        filterRows();
+
+      } catch (err) {
+        console.warn('Could not load reports history:', err);
+        tableBody.innerHTML = `<tr><td colspan="5" class="py-12 text-center text-rose-status text-xs font-mono"><span class="material-symbols-outlined text-2xl block mb-2">error</span>Error querying ledger: ${err.message}</td></tr>`;
       }
+    }
 
-      loadReports();
-    })();
+    loadReports();
+
+    // Mobile Sidebar Drawer Toggle
+    const mobileToggle = document.getElementById('mobile-sidebar-toggle');
+    const mobileClose = document.getElementById('mobile-sidebar-close');
+    const mobileBackdrop = document.getElementById('mobile-sidebar-backdrop');
+    const sidebar = document.getElementById('main-sidebar');
+
+    function openSidebar() {
+      if (sidebar) sidebar.classList.remove('-translate-x-full');
+      if (mobileBackdrop) mobileBackdrop.classList.remove('hidden');
+    }
+    function closeSidebar() {
+      if (sidebar) sidebar.classList.add('-translate-x-full');
+      if (mobileBackdrop) mobileBackdrop.classList.add('hidden');
+    }
+
+    if (mobileToggle) mobileToggle.addEventListener('click', openSidebar);
+    if (mobileClose) mobileClose.addEventListener('click', closeSidebar);
+    if (mobileBackdrop) mobileBackdrop.addEventListener('click', closeSidebar);
+  })();
   </script>
-</body></html>
+</body>
+</html>

@@ -1,530 +1,612 @@
-<!DOCTYPE html><html class="dark" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Manrope:wght@500;600;700&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script><script id="tailwind-config">tailwind.config = {
-  darkMode: "class",
-  theme: {
-    extend: {
-      colors: {
-        "primary": "#b8c3ff",
-        "primary-container": "#2457ff",
-        "on-primary": "#002487",
-        "secondary": "#c8ff3d",
-        "secondary-container": "#a3d700",
-        "surface": "#0f141c",
-        "surface-container": "#171D25",
-        "surface-container-low": "#131820",
-        "surface-container-high": "#1E2530",
-        "surface-container-highest": "#283140",
-        "surface-container-lowest": "#0b0f15",
-        "on-surface": "#F3F5F8",
-        "on-surface-variant": "#A3ACB8",
-        "outline": "#6B7685",
-        "outline-variant": "#2A313C",
-        "error": "#E76670",
-        "error-container": "#93000a"
-      },
-      fontFamily: {
-        "headline-lg": ["Manrope", "sans-serif"],
-        "headline-md": ["Manrope", "sans-serif"],
-        "headline-sm": ["Manrope", "sans-serif"],
-        "body-lg": ["Inter", "sans-serif"],
-        "body-md": ["Inter", "sans-serif"],
-        "body-sm": ["Inter", "sans-serif"],
-        "label-md": ["Inter", "sans-serif"],
-        "label-sm": ["Inter", "sans-serif"],
-        "code-hash": ["JetBrains Mono", "monospace"]
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Analysis in Progress — SPECTRA Forensic Workstation</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="/vendor/three.min.js"></script>
+  <script>
+    if (typeof THREE === 'undefined') {
+      document.write('<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"><\/script>');
+    }
+  </script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "obsidian": "#070A0F",
+            "surface-1": "#0C101A",
+            "surface-2": "#111624",
+            "surface-3": "#181F33",
+            "border-line": "#1D2538",
+            "border-glow": "#2E3B57",
+            "cobalt": "#2457FF",
+            "electric-violet": "#8B5CF6",
+            "magenta": "#D946EF",
+            "cyan-glow": "#38BDF8",
+            "emerald-status": "#10B981",
+            "amber-status": "#F59E0B",
+            "rose-status": "#F43F5E",
+            "molten-amber": "#F5A33B",
+            "warm-orange": "#F07832",
+            "signal-red": "#F0523B",
+            "text-primary": "#F8FAFC",
+            "text-secondary": "#94A3B8",
+            "text-tertiary": "#64748B"
+          },
+          fontFamily: {
+            sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+            heading: ["Manrope", "sans-serif"],
+            display: ["Space Grotesk", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; background-color: #070A0F; color: #F8FAFC; }
+      body { overscroll-behavior: none; }
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #070A0F; }
+    ::-webkit-scrollbar-thumb { background: #1D2538; border-radius: 3px; }
+    .glass-panel {
+      background: linear-gradient(135deg, rgba(17, 22, 36, 0.8) 0%, rgba(12, 16, 26, 0.9) 100%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(29, 37, 56, 0.85);
+    }
+  </style>
+</head>
+<body class="bg-obsidian font-sans text-text-primary antialiased selection:bg-electric-violet selection:text-white min-h-screen flex">
+
+  <!-- Mobile Sidebar Backdrop Overlay -->
+  <div id="mobile-sidebar-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden hidden"></div>
+
+  <!-- Shell: Precision Sidebar (232px) -->
+  <aside id="main-sidebar" class="fixed left-0 top-0 h-full w-[232px] bg-surface-1 border-r border-border-line z-50 flex flex-col justify-between select-none -translate-x-full lg:translate-x-0 transition-transform duration-300">
+    <div class="flex flex-col">
+      <!-- Brand Header -->
+      <div class="h-16 px-5 flex items-center justify-between border-b border-border-line bg-gradient-to-r from-surface-1 to-[#0F1422]">
+        <div class="flex items-center gap-3.5">
+          <div class="relative w-8 h-8 rounded-lg bg-[#141A29] border border-border-glow flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(36,87,255,0.25)]">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 32 32">
+              <line stroke="#FFFFFF" stroke-linecap="round" stroke-width="2" x1="3" x2="13" y1="16" y2="16"></line>
+              <polygon fill="none" points="16,5 28,25 6,25" stroke="#94A3B8" stroke-width="1.75"></polygon>
+              <line stroke="#38BDF8" stroke-linecap="round" stroke-width="1.75" x1="21" x2="30" y1="16" y2="11"></line>
+              <line stroke="#8B5CF6" stroke-linecap="round" stroke-width="1.75" x1="22" x2="30" y1="18" y2="18"></line>
+              <line stroke="#D946EF" stroke-linecap="round" stroke-width="1.75" x1="22" x2="30" y1="20" y2="25"></line>
+            </svg>
+          </div>
+          <div class="flex flex-col min-w-0">
+            <div class="flex items-center gap-1.5">
+              <span class="font-display font-bold text-[15px] tracking-wider text-text-primary leading-none uppercase">SPECTRA</span>
+              <span class="text-[9px] font-mono px-1 py-0.5 rounded bg-electric-violet/15 text-electric-violet border border-electric-violet/30 leading-none">v2.4</span>
+            </div>
+            <span class="font-mono text-[9px] tracking-widest text-text-tertiary uppercase mt-1 leading-none">DIGITAL FORENSICS</span>
+          </div>
+        </div>
+        <button id="mobile-sidebar-close" type="button" class="lg:hidden p-1 text-text-tertiary hover:text-white" aria-label="Close menu">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <!-- Navigation — Primary Destinations -->
+      <nav class="flex flex-col pt-4 px-3 gap-1.5">
+        <a aria-current="page" class="group flex items-center h-10 px-3.5 rounded-lg text-sm font-semibold bg-gradient-to-r from-cobalt/20 via-electric-violet/20 to-transparent text-white border-l-[3px] border-electric-violet shadow-[0_0_14px_rgba(139,92,246,0.25)] transition-all" href="/analyze/">
+          <span class="material-symbols-outlined text-[19px] mr-3 text-cyan-glow">fingerprint</span>
+          <span class="tracking-wide">Analyze</span>
+        </a>
+        <a class="group flex items-center h-10 px-3.5 rounded-lg text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface-2 border-l-[3px] border-transparent transition-all" href="/reports/">
+          <span class="material-symbols-outlined text-[19px] mr-3 text-text-tertiary group-hover:text-cyan-glow transition-colors">receipt_long</span>
+          <span class="tracking-wide">Investigation Records</span>
+        </a>
+      </nav>
+
+      <!-- Active Investigation Status -->
+      <div class="mx-3 mt-6 p-3 rounded-lg bg-surface-2/70 border border-electric-violet/30 text-xs font-mono shadow-[0_0_12px_rgba(139,92,246,0.15)]">
+        <div class="flex items-center justify-between text-text-tertiary mb-1.5 text-[10px] uppercase tracking-wider">
+          <span>INVESTIGATION ACTIVE</span>
+          <span class="text-cyan-glow flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-cyan-glow animate-ping"></span>SCAN
+          </span>
+        </div>
+        <div class="text-[11px] text-white truncate font-semibold">Globe Quantum Pass</div>
+        <div class="text-[10px] text-electric-violet mt-1">Multi-Stage Inspection</div>
+      </div>
+    </div>
+
+    <!-- Pinned Telemetry -->
+    <div class="flex flex-col px-3 pb-4 gap-2 border-t border-border-line pt-3 bg-surface-1/90">
+      <div class="flex items-center justify-between px-2 py-1">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-cyan-glow shadow-[0_0_8px_rgba(56,189,248,0.5)]"></span>
+          <span class="font-mono text-[10px] tracking-wider text-text-secondary uppercase">EVIDENCE LOCKED</span>
+        </div>
+        <span class="font-mono text-[10px] text-text-tertiary">STAGE 02</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main View -->
+  <div class="pl-0 lg:pl-[232px] min-h-screen bg-obsidian flex flex-col flex-1 w-full min-w-0">
+    
+    <!-- Top System Bar -->
+    <header class="fixed top-0 left-0 lg:left-[232px] right-0 h-14 sm:h-16 bg-surface-1/80 backdrop-blur-md border-b border-border-line z-40 flex items-center justify-between px-4 sm:px-6 lg:px-8 select-none">
+      <div class="flex items-center gap-3 font-mono text-xs text-text-secondary min-w-0">
+        <!-- Mobile Toggle Button -->
+        <button id="mobile-sidebar-toggle" type="button" class="lg:hidden p-1.5 rounded-lg text-text-secondary hover:text-white bg-surface-2 border border-border-line transition-colors flex items-center justify-center shrink-0 mr-1" aria-label="Toggle Navigation">
+          <span class="material-symbols-outlined text-[20px]">menu</span>
+        </button>
+        <span class="font-semibold text-white tracking-wide truncate">ACTIVE FORENSICS · NEURAL GLOBE</span>
+      </div>
+      <div class="flex items-center gap-3 shrink-0">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-electric-violet/40 bg-electric-violet/10 text-xs font-mono shadow-[0_0_12px_rgba(139,92,246,0.2)]">
+          <span class="w-2 h-2 rounded-full bg-cyan-glow animate-pulse"></span>
+          <span class="text-white font-code-hash font-medium hidden sm:inline">PIPELINE ACTIVE · STAGE 02 OF 03</span>
+          <span class="text-white font-code-hash font-medium sm:hidden">STAGE 02/03</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="relative pt-20 w-full min-h-screen p-4 sm:p-6 lg:p-8 space-y-6 min-w-0">
+      
+      <!-- Top Title Area -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span class="font-mono text-[11px] text-cyan-glow uppercase tracking-widest">DIGITAL EVIDENCE IDENTITY</span>
+          <h1 class="font-heading text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-1">
+            Forensic Examination in Progress
+          </h1>
+        </div>
+        <div class="flex items-center gap-3 font-mono text-xs">
+          <button id="abortBtn" type="button" class="px-4 py-2 rounded-lg border border-rose-status/30 hover:bg-rose-status/10 text-rose-status text-xs font-medium transition-all flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">cancel</span>
+            <span>Abort Analysis</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Two-Column Workspace (Evidence Identity on Left + 3D Forensic Globe Centerpiece on Right) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-7 items-stretch">
+        
+        <!-- LEFT: Evidence Exhibit & Cryptographic Identity -->
+        <section class="lg:col-span-4 glass-panel rounded-2xl p-6 flex flex-col justify-between shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+          <div class="space-y-5">
+            
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-[10px] text-text-tertiary uppercase tracking-wider">EVIDENCE INTAKE RECORD</span>
+              <span class="px-2 py-0.5 rounded font-mono text-[10px] bg-cyan-glow/15 text-cyan-glow border border-cyan-glow/30" id="preview-badge">EVIDENCE EXHIBIT</span>
+            </div>
+
+            <!-- Exhibit Image Preview -->
+            <div class="relative w-full rounded-xl overflow-hidden border border-border-line bg-surface-1 aspect-video flex items-center justify-center group shadow-inner">
+              <img alt="Evidence Preview" class="w-full h-full object-contain bg-obsidian" id="preview-img" src=""/>
+              <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent opacity-60"></div>
+              <div class="absolute bottom-2 left-2.5 font-mono text-[10px] px-2 py-0.5 rounded bg-surface-1/80 border border-border-line text-white backdrop-blur-sm">
+                SESSION INGEST
+              </div>
+            </div>
+
+            <!-- Metadata Key-Value List -->
+            <div class="space-y-2.5 pt-2">
+              <div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-2 border border-border-line text-xs font-mono">
+                <span class="text-text-tertiary">Filename</span>
+                <span class="text-white font-medium truncate max-w-[170px]" id="preview-filename">Reading...</span>
+              </div>
+              <div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-2 border border-border-line text-xs font-mono">
+                <span class="text-text-tertiary">Resolution</span>
+                <span class="text-white font-medium" id="preview-dim">Calculating...</span>
+              </div>
+              <div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-2 border border-border-line text-xs font-mono">
+                <span class="text-text-tertiary">Format &amp; Size</span>
+                <span class="text-text-secondary" id="preview-format">Parsing...</span>
+              </div>
+              
+              <!-- SHA-256 Checksum Box -->
+              <div class="p-3 rounded-lg bg-surface-2 border border-border-line space-y-1.5 font-mono">
+                <div class="flex items-center justify-between text-[10px] text-text-tertiary">
+                  <span title="Cryptographic file integrity digest (does not verify image origin)">SHA-256 INGESTION HASH</span>
+                  <button id="copyHashBtn" type="button" class="hover:text-cyan-glow transition-colors" title="Copy SHA-256">
+                    <span class="material-symbols-outlined text-[14px]">content_copy</span>
+                  </button>
+                </div>
+                <div class="text-[11px] text-cyan-glow select-all break-all" id="progress-sha256">
+                  Computing hash...
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="pt-4 mt-4 border-t border-border-line flex items-center justify-between text-[10px] font-mono text-text-tertiary">
+            <span>C2PA PROVENANCE</span>
+            <span class="text-amber-status flex items-center gap-1 font-mono">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-status"></span>NOT DETECTED (NO MANIFEST)
+            </span>
+          </div>
+        </section>
+
+        <!-- RIGHT: The Cinematic 3D Forensic Globe & Real Pipeline Stages -->
+        <section class="lg:col-span-8 glass-panel rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(0,0,0,0.5)] relative overflow-hidden">
+          
+          <!-- Radial ambient atmosphere -->
+          <div class="absolute -top-32 -right-32 w-96 h-96 bg-cobalt/20 rounded-full blur-[120px] pointer-events-none"></div>
+          <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-electric-violet/20 rounded-full blur-[130px] pointer-events-none"></div>
+
+          <div class="relative z-10 flex flex-col items-center">
+            
+            <!-- Dynamic Status Heading & Subtitle -->
+            <div class="text-center max-w-lg mb-2">
+              <h2 class="font-heading text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug">
+                Investigating image...
+              </h2>
+              <p class="font-sans text-xs sm:text-sm text-text-secondary mt-1 leading-relaxed">
+                Evaluating image patterns using the local classification model.
+              </p>
+            </div>
+
+            <!-- Central 3D Globe Frame -->
+            <div class="relative w-full max-w-[560px] h-[360px] sm:h-[400px] my-2 flex items-center justify-center rounded-2xl overflow-hidden bg-radial from-[#0E1528] to-transparent border border-border-line/60 shadow-[inset_0_0_40px_rgba(36,87,255,0.1)]">
+              
+              <!-- Three.js Globe Container -->
+              <div id="threejs-container-ANIMATION_71" class="w-full h-full bg-transparent">
+                <!-- Three.js canvas renders here -->
+              </div>
+
+              <!-- HUD Cyber Overlay Elements -->
+              <div class="absolute top-3 left-4 pointer-events-none flex flex-col text-[10px] font-mono text-text-tertiary gap-0.5">
+                <span class="text-cyan-glow font-semibold">SPECTRA NEURAL SPHERE</span>
+                <span>HARMONIC ORBIT R125</span>
+              </div>
+              <div class="absolute top-3 right-4 pointer-events-none text-[10px] font-mono text-text-tertiary">
+                <span class="px-2 py-0.5 rounded bg-surface-1/80 border border-border-line text-emerald-status">INFERENCE ACTIVE</span>
+              </div>
+              <div class="absolute bottom-3 left-4 pointer-events-none text-[10px] font-mono text-text-tertiary">
+                <span>ROTATION: 0.0018 rad/s</span>
+              </div>
+              <div class="absolute bottom-3 right-4 pointer-events-none text-[10px] font-mono text-text-tertiary flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-electric-violet animate-pulse"></span>
+                <span>SPECTRAL TENSOR PASS</span>
+              </div>
+            </div>
+
+            <!-- Real Processing Stages (01, 02, 03) -->
+            <div class="w-full mt-4 flex flex-col gap-2.5 max-w-xl">
+              
+              <!-- Stage 1 -->
+              <div id="stage-1" class="flex items-center justify-between p-3 rounded-xl bg-surface-2/90 border border-border-line transition-all">
+                <div class="flex items-center gap-3 min-w-0">
+                  <div class="w-6 h-6 rounded-lg bg-cobalt/20 border border-cobalt/40 flex items-center justify-center text-cobalt shrink-0 text-xs font-mono font-bold">
+                    01
+                  </div>
+                  <div class="flex flex-col min-w-0">
+                    <span class="text-xs font-semibold text-white truncate">Validate source file</span>
+                    <span class="text-[10px] text-text-tertiary font-mono truncate">SHA-256 checksum &amp; format validation</span>
+                  </div>
+                </div>
+                <span class="stage-badge px-2.5 py-0.5 rounded font-mono text-[10px] font-semibold bg-cobalt/15 text-cobalt border border-cobalt/30 uppercase shrink-0">
+                  Validating
+                </span>
+              </div>
+
+              <!-- Stage 2 -->
+              <div id="stage-2" class="flex items-center justify-between p-3 rounded-xl bg-surface-2/90 border border-electric-violet/40 shadow-[0_0_12px_rgba(139,92,246,0.15)] transition-all">
+                <div class="flex items-center gap-3 min-w-0">
+                  <div class="w-6 h-6 rounded-lg bg-electric-violet/20 border border-electric-violet/40 flex items-center justify-center text-electric-violet shrink-0 text-xs font-mono font-bold">
+                    02
+                  </div>
+                  <div class="flex flex-col min-w-0">
+                    <span class="text-xs font-semibold text-white truncate">Run image classification</span>
+                    <span class="text-[10px] text-cyan-glow font-mono truncate">Executing neural pattern pass...</span>
+                  </div>
+                </div>
+                <span class="stage-badge px-2.5 py-0.5 rounded font-mono text-[10px] font-semibold bg-electric-violet/20 text-electric-violet border border-electric-violet/40 uppercase shrink-0">
+                  Active Investigation
+                </span>
+              </div>
+
+              <!-- Stage 3 -->
+              <div id="stage-3" class="flex items-center justify-between p-3 rounded-xl bg-surface-2/50 border border-border-line/60 opacity-70 transition-all">
+                <div class="flex items-center gap-3 min-w-0">
+                  <div class="w-6 h-6 rounded-lg bg-surface-3 border border-border-line flex items-center justify-center text-text-tertiary shrink-0 text-xs font-mono font-bold">
+                    03
+                  </div>
+                  <div class="flex flex-col min-w-0">
+                    <span class="text-xs font-semibold text-text-secondary truncate">Prepare investigation report</span>
+                    <span class="text-[10px] text-text-tertiary font-mono truncate">Cryptographic findings manifest</span>
+                  </div>
+                </div>
+                <span class="stage-badge px-2.5 py-0.5 rounded font-mono text-[10px] font-medium bg-surface-3 text-text-tertiary border border-border-line uppercase shrink-0">
+                  Queued
+                </span>
+              </div>
+
+            </div>
+
+            <!-- Degraded / Error State Notification Card with Genuine Retry -->
+            <div id="error-card" class="hidden w-full max-w-xl mt-4 p-4 rounded-xl bg-rose-status/10 border border-rose-status/40 space-y-3 font-mono text-xs shadow-lg animate-fadeIn">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2 text-rose-status font-bold">
+                  <span class="material-symbols-outlined text-[18px]">error</span>
+                  <span>INFERENCE SERVICE DEGRADED / FAILED</span>
+                </div>
+                <span class="px-2 py-0.5 rounded bg-rose-status/20 text-rose-status text-[10px] border border-rose-status/30">STATUS 503</span>
+              </div>
+              <p class="text-text-secondary text-[11px] leading-relaxed break-words" id="error-detail-text">
+                The primary Ateeqq/ai-vs-human-image-detector classifier is unreachable. Verify external service health.
+              </p>
+              <div class="flex flex-wrap items-center gap-3 pt-1">
+                <button id="retryJobBtn" type="button" class="px-4 py-2 rounded-lg bg-rose-status/25 hover:bg-rose-status/40 text-white font-semibold border border-rose-status/50 transition-all flex items-center gap-1.5 cursor-pointer shadow-md">
+                  <span class="material-symbols-outlined text-[16px]">refresh</span>
+                  <span>Retry Forensic Analysis</span>
+                </button>
+                <a href="/analyze/" class="px-4 py-2 rounded-lg bg-surface-2 hover:bg-surface-3 text-text-secondary hover:text-white border border-border-line transition-all flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                  <span>Return to Ingest</span>
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="pt-4 mt-4 border-t border-border-line flex items-center justify-between text-[11px] font-mono text-text-tertiary">
+            <span>MODEL: Ateeqq/ai-vs-human-image-detector</span>
+            <span class="text-cyan-glow">LIVE POLLING ACTIVE (1000ms)</span>
+          </div>
+        </section>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Three.js Forensic Globe Script (Preserved & Elevated with WebGL Fallback) -->
+  <script>
+  (function initForensicGlobe() {
+    const container = document.getElementById('threejs-container-ANIMATION_71');
+    if (!container) return;
+
+    function renderFallback() {
+      container.innerHTML = `
+        <div id="globe-fallback" class="w-full h-full flex flex-col items-center justify-center p-4 text-center select-none relative">
+          <svg class="w-48 h-48 sm:w-56 sm:h-56 animate-spin" style="animation-duration: 25s;" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="85" stroke="#2457FF" stroke-width="1.2" stroke-dasharray="6 4" opacity="0.45" />
+            <circle cx="100" cy="100" r="70" stroke="#8B5CF6" stroke-width="1" opacity="0.4" />
+            <circle cx="100" cy="100" r="54" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="10 6" opacity="0.5" />
+            <ellipse cx="100" cy="100" rx="84" ry="30" stroke="#8B5CF6" stroke-width="1.2" transform="rotate(-25 100 100)" opacity="0.45" />
+            <ellipse cx="100" cy="100" rx="84" ry="30" stroke="#2457FF" stroke-width="1.2" transform="rotate(35 100 100)" opacity="0.45" />
+            <circle cx="100" cy="100" r="10" fill="#8B5CF6" opacity="0.6" />
+            <circle cx="100" cy="100" r="3.5" fill="#FFFFFF" />
+            <line x1="100" y1="20" x2="100" y2="180" stroke="#38BDF8" stroke-width="0.8" stroke-dasharray="4 4" opacity="0.3" />
+            <line x1="20" y1="100" x2="180" y2="100" stroke="#38BDF8" stroke-width="0.8" stroke-dasharray="4 4" opacity="0.3" />
+          </svg>
+          <div class="mt-2 font-mono text-[10px] text-text-tertiary tracking-wider uppercase flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-cyan-glow animate-pulse"></span>
+            <span>VECTOR FORENSIC RADAR ACTIVE</span>
+          </div>
+        </div>
+      `;
+      window.setGlobeState = function(state) {
+        const svg = container.querySelector('svg');
+        if (!svg) return;
+        const color = state === 'complete' ? '#10B981' : state === 'error' ? '#F43F5E' : '#2457FF';
+        svg.querySelectorAll('circle, ellipse').forEach(el => el.setAttribute('stroke', color));
+      };
+    }
+
+    if (typeof THREE === 'undefined') {
+      renderFallback();
+      return;
+    }
+
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true,
+        powerPreference: 'high-performance'
+      });
+    } catch (e) {
+      console.warn('[SPECTRA] WebGL unavailable, switching to vector fallback:', e);
+      renderFallback();
+      return;
+    }
+
+    const getWidth = () => container.clientWidth || 520;
+    const getHeight = () => container.clientHeight || 380;
+
+    let width = getWidth();
+    let height = getHeight();
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(38, width / height, 1, 1000);
+    camera.position.set(0, 0, 195);
+
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setClearColor(0x000000, 0);
+
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+    container.appendChild(renderer.domElement);
+
+    const rootGroup = new THREE.Group();
+    scene.add(rootGroup);
+
+    // 1. Inner Structural Core
+    const innerGeo = new THREE.IcosahedronGeometry(68, 2);
+    const innerMat = new THREE.MeshBasicMaterial({
+      color: 0x182648,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.38
+    });
+    const innerSphere = new THREE.Mesh(innerGeo, innerMat);
+    rootGroup.add(innerSphere);
+
+    // 2. Outer Glass Layer
+    const outerGeo = new THREE.SphereGeometry(69.5, 32, 32);
+    const outerMat = new THREE.MeshStandardMaterial({
+      color: 0x0c1527,
+      roughness: 0.25,
+      metalness: 0.4,
+      transparent: true,
+      opacity: 0.32,
+      emissive: 0x1d3c78,
+      emissiveIntensity: 0.45,
+      blending: THREE.AdditiveBlending
+    });
+    const outerSphere = new THREE.Mesh(outerGeo, outerMat);
+    rootGroup.add(outerSphere);
+
+    // 3. Grid Latitude / Longitudinal lines
+    const linesGroup = new THREE.Group();
+    rootGroup.add(linesGroup);
+
+    const lineMat = new THREE.LineBasicMaterial({
+      color: 0x3d70d9,
+      transparent: true,
+      opacity: 0.42
+    });
+
+    for (let lat = -60; lat <= 60; lat += 30) {
+      const radius = 69 * Math.cos((lat * Math.PI) / 180);
+      const y = 69 * Math.sin((lat * Math.PI) / 180);
+      const points = [];
+      const segments = 48;
+      for (let j = 0; j <= segments; j++) {
+        const theta = (j / segments) * Math.PI * 2;
+        points.push(new THREE.Vector3(Math.cos(theta) * radius, y, Math.sin(theta) * radius));
+      }
+      const latGeo = new THREE.BufferGeometry().setFromPoints(points);
+      linesGroup.add(new THREE.Line(latGeo, lineMat));
+    }
+
+    // 4. Concentric Orbital Rings
+    const orbit1Radius = 88;
+    const orbitRing1 = new THREE.Mesh(
+      new THREE.RingGeometry(orbit1Radius - 0.5, orbit1Radius + 0.5, 96),
+      new THREE.MeshBasicMaterial({ color: 0x2457ff, side: THREE.DoubleSide, transparent: true, opacity: 0.38 })
+    );
+    orbitRing1.rotation.x = Math.PI / 2.8;
+    orbitRing1.rotation.y = Math.PI / 5.2;
+    rootGroup.add(orbitRing1);
+
+    const orbit2Radius = 104;
+    const orbitRing2 = new THREE.Mesh(
+      new THREE.RingGeometry(orbit2Radius - 0.4, orbit2Radius + 0.4, 96),
+      new THREE.MeshBasicMaterial({ color: 0x8b5cf6, side: THREE.DoubleSide, transparent: true, opacity: 0.35 })
+    );
+    orbitRing2.rotation.x = -Math.PI / 3.4;
+    orbitRing2.rotation.y = -Math.PI / 6.5;
+    rootGroup.add(orbitRing2);
+
+    // 5. Scanning Point along Orbit 2
+    const scanPointGeo = new THREE.SphereGeometry(1.2, 16, 16);
+    const scanPointMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+    const scanPoint = new THREE.Mesh(scanPointGeo, scanPointMat);
+    orbitRing2.add(scanPoint);
+
+    // 5b. Molten Amber Anomaly Sentinel Beacon on Orbit 1 (Signature Forensic Accent)
+    const anomalyPointGeo = new THREE.SphereGeometry(1.4, 16, 16);
+    const anomalyPointMat = new THREE.MeshBasicMaterial({ color: 0xF5A33B });
+    const anomalyPoint = new THREE.Mesh(anomalyPointGeo, anomalyPointMat);
+    orbitRing1.add(anomalyPoint);
+
+    // Ambient & Studio Lighting
+    const ambientLight = new THREE.AmbientLight(0x0a1530, 1.8);
+    scene.add(ambientLight);
+
+    const diffusedKeyLight = new THREE.PointLight(0x285bee, 2.4, 340);
+    diffusedKeyLight.position.set(70, 65, 85);
+    scene.add(diffusedKeyLight);
+
+    const rimLight = new THREE.PointLight(0xa855f7, 2.2, 260);
+    rimLight.position.set(-80, -55, -70);
+    scene.add(rimLight);
+
+    function handleResize() {
+      const w = getWidth();
+      const h = getHeight();
+      if (w > 0 && h > 0) {
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
       }
     }
-  }
-};</script></head><body class="bg-[#0b0e12] font-body-md text-[#F3F5F8] antialiased selection:bg-primary-container selection:text-white min-h-screen">
-<!-- Persistent Sidebar (228px, #0D1117) -->
-<aside class="fixed left-0 top-0 h-full w-[228px] bg-[#0D1117] border-r border-[#2A313C] z-50 flex flex-col justify-between select-none">
-<div class="flex flex-col">
-<div class="h-14 px-4 flex items-center gap-3 border-b border-[#2A313C]">
-<img alt="SPECTRA Logo" class="h-6 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XvrSfEm4eUtpOr_7XYW4JLhd4vd2Q8U9uUZDyhpjOmrng5nPMuQRW3Sy1Tt-lRfnLuCL6Cc_aZMo6f9IiRSlCOgJn6EtwjfXiB0Fp9e3A2GHCFGhQ65NkqF-0EeQxGEOGi6_a2TZ39Yx6BW0ciUUXYs-r7ukpVRe3IpslGamu3CAleEPc6abUxjPC68Xv0TvmYypt5JyJOpVTJuZRt6YUiE3C1p1B6iPqPvkWxVTwf0VXTvZG_oXfimYMQ">
-<div class="flex flex-col min-w-0">
-<span class="font-headline-sm text-[13px] font-semibold tracking-wider text-[#F3F5F8] uppercase leading-tight">SPECTRA</span>
-<span class="font-code-hash text-[9px] tracking-widest text-[#6B7685] uppercase leading-none mt-0.5">AI MEDIA FORENSICS</span>
-</div>
-</div>
-<nav class="flex flex-col pt-3 px-2 gap-1">
-<a class="group flex items-center h-10 px-3 rounded text-[#A3ACB8] hover:text-[#F3F5F8] hover:bg-[#171D25] transition-all text-sm font-medium" href="/overview/">
-<span class="material-symbols-outlined text-[18px] mr-3 text-[#6B7685] group-hover:text-[#F3F5F8] transition-colors">dashboard</span>
-<span>Overview</span>
-</a>
-<a aria-current="page" class="group flex items-center h-10 px-3 rounded transition-all bg-[#2457FF]/15 text-[#b8c3ff] border-l-[3px] border-[#2457FF] font-medium text-sm" href="/analyze/">
-<span class="material-symbols-outlined text-[18px] mr-3 text-[#2457FF]">center_focus_strong</span>
-<span>Analyze Media</span>
-</a>
-<a class="group flex items-center h-10 px-3 rounded text-[#A3ACB8] hover:text-[#F3F5F8] hover:bg-[#171D25] transition-all text-sm font-medium" href="/reports/">
-<span class="material-symbols-outlined text-[18px] mr-3 text-[#6B7685] group-hover:text-[#F3F5F8] transition-colors">policy</span>
-<span>Investigation Reports</span>
-</a>
-</nav>
-</div>
-<div class="flex flex-col px-2 pb-4 gap-3 border-t border-[#2A313C] pt-3">
-<a class="group flex items-center h-10 px-3 rounded text-[#A3ACB8] hover:text-[#F3F5F8] hover:bg-[#171D25] transition-all text-sm font-medium" href="#">
-<span class="material-symbols-outlined text-[18px] mr-3 text-[#6B7685] group-hover:text-[#F3F5F8] transition-colors">settings</span>
-<span>Settings</span>
-</a>
-<div class="flex items-center px-3 py-1 gap-2">
-<span class="w-1.5 h-1.5 rounded-full bg-[#c8ff3d] shrink-0"></span>
-<span class="font-code-hash text-[11px] tracking-wider text-[#6B7685] uppercase">LOCAL PROCESSING</span>
-</div>
-</div>
-</aside>
-<!-- Main Wrapper -->
-<div class="pl-[228px] min-h-screen bg-[#0b0e12]">
-<!-- Top bar (56px, #0D1117) -->
-<header class="fixed top-0 left-[228px] right-0 h-14 bg-[#0D1117]/90 backdrop-blur-md border-b border-[#2A313C] z-40 flex items-center justify-between px-6 select-none">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-[18px] text-[#2457FF]">verified_user</span>
-<span class="text-sm font-medium text-[#F3F5F8]">Analysis in Progress</span>
-</div>
-<div class="flex items-center gap-3">
-<div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#0b0e12] border border-[#2A313C]">
-<span class="w-1.5 h-1.5 rounded-full bg-[#c8ff3d] shrink-0"></span>
-<span class="font-code-hash text-[11px] text-[#A3ACB8] uppercase tracking-wider">Local Analysis</span>
-</div>
-<div class="w-8 h-8 rounded-full bg-[#2457FF]/20 border border-[#2457FF]/40 flex items-center justify-center text-[#b8c3ff]">
-<span class="material-symbols-outlined text-[18px]">person</span>
-</div>
-</div>
-</header>
-<main class="relative pt-14 w-full min-h-screen p-8 max-w-[1440px] mx-auto">
-<!-- Header Section -->
-<section class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6">
-<div class="flex flex-col min-w-0">
-<h1 class="text-[28px] font-semibold text-[#F3F5F8] leading-tight font-headline-lg tracking-tight">Analysis in Progress</h1>
-<p class="text-[14px] text-[#A3ACB8] mt-1.5 font-body-md">
-          Evaluating source media through local neural classification and integrity verification.
-        </p>
-</div>
-<div class="flex items-center gap-3 shrink-0">
-<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#2457FF]/15 border border-[#2457FF]/30 shadow-sm backdrop-blur-sm">
-<span class="w-2 h-2 rounded-full bg-[#c8ff3d] animate-pulse shrink-0"></span>
-<span class="font-code-hash text-[11px] font-semibold text-[#b8c3ff] tracking-wider uppercase">
-            PIPELINE ACTIVE · STAGE 02 OF 03
-          </span>
-</div>
-</div>
-</section>
-<!-- Two-Column Layout (mt-6, gap 24px) -->
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-<!-- LEFT COLUMN: Source Preview (Solid Charcoal bg-[#0f141c]) -->
-<div class="lg:col-span-5 bg-[#0f141c] border border-[#2A313C] rounded-[12px] p-6 flex flex-col justify-between shadow-xl relative overflow-hidden">
-<div class="relative z-10 flex flex-col">
-<!-- Header -->
-<div class="flex items-center justify-between pb-4 border-b border-[#2A313C]/70">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-[20px] text-[#b8c3ff]">photo</span>
-<h2 class="text-base font-semibold text-[#F3F5F8] font-headline-sm">Source Preview</h2>
-</div>
-<span id="preview-badge" class="px-2 py-0.5 rounded font-code-hash text-[11px] uppercase tracking-wider bg-[#1E2530] text-[#A3ACB8] font-medium border border-[#2A313C]" style="display:none">
-              EVIDENCE EXHIBIT
-            </span>
-</div>
-<!-- Bounded Clean Photo Preview -->
-<div class="relative w-full aspect-[16/10] rounded-lg overflow-hidden bg-[#0b0f15] border border-[#2A313C]/90 mt-5 group shadow-inner">
-<img id="preview-img" alt="Uploaded Exhibit" class="w-full h-full object-cover" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 400 250'%3E%3Crect width='400' height='250' fill='%230b0f15'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%236B7685' font-family='sans-serif' font-size='13'%3EIngesting Bitstream...%3C/text%3E%3C/svg%3E">
-<!-- Dimensions badge -->
-<div class="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded bg-[#0b0f15]/85 backdrop-blur-sm border border-[#2A313C]/80">
-<span id="preview-dim" class="font-code-hash text-[11px] text-[#F3F5F8] font-medium tracking-tight">Detecting...</span>
-</div>
-</div>
-<!-- Genuine File Metadata -->
-<div class="flex flex-col gap-2.5 mt-5">
-<div class="flex items-center justify-between py-2.5 px-3 rounded-md bg-[#131820] border border-[#2A313C]/60 text-xs">
-<span class="text-[#6B7685] font-medium uppercase tracking-wider font-code-hash text-[11px]">Filename</span>
-<span id="preview-filename" class="font-code-hash text-[#F3F5F8] font-medium text-xs">Reading...</span>
-</div>
-<div class="flex items-center justify-between py-2.5 px-3 rounded-md bg-[#131820] border border-[#2A313C]/60 text-xs">
-<span class="text-[#6B7685] font-medium uppercase tracking-wider font-code-hash text-[11px]">Format &amp; Size</span>
-<span id="preview-format" class="text-[#A3ACB8] font-medium font-code-hash text-xs">Calculating...</span>
-</div>
-<!-- SHA-256 Checksum -->
-<div class="flex flex-col gap-1.5 p-3 rounded-md bg-[#131820] border border-[#2A313C]/70">
-<div class="flex items-center justify-between">
-<span class="font-code-hash text-[11px] text-[#6B7685] uppercase tracking-wider">SHA-256 Checksum</span>
-</div>
-<div class="flex items-center justify-between gap-2 mt-0.5">
-<code id="progress-sha256" class="font-code-hash text-[12px] text-[#A3ACB8] truncate select-all">
-                  Computing hash...
-                </code>
-<button aria-label="Copy hash string" class="shrink-0 p-1 rounded hover:bg-[#1E2530] text-[#6B7685] hover:text-[#F3F5F8] transition-colors" id="copyHashBtn" title="Copy full hash" type="button">
-<span class="material-symbols-outlined text-[15px]">content_copy</span>
-</button>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- RIGHT COLUMN: Investigation Panel (Solid Charcoal bg-[#0f141c]) -->
-<div class="lg:col-span-7 bg-[#0f141c] border border-[#2A313C] rounded-[12px] p-6 sm:p-7 flex flex-col justify-between shadow-xl relative overflow-hidden">
-<div class="relative z-10 flex flex-col">
-<!-- Frosted-glass Container around 3D Globe with Refined Styling -->
-<div class="relative bg-[#131922]/75 backdrop-blur-md border border-[#232c3a] rounded-xl p-6 shadow-inner flex flex-col items-center text-center overflow-hidden">
-<!-- Clean Status Header -->
-<h2 class="text-[20px] font-semibold text-[#F3F5F8] font-headline-md tracking-tight leading-snug">
-            Investigating image...
-          </h2>
-<!-- Clean Subtitle -->
-<p class="text-[14px] text-[#A3ACB8] font-body-md mt-1 max-w-[480px]">
-            Evaluating image patterns using the local classification model.
-          </p>
-<!-- 3D Glass Globe Visualization Container with ample breathing room -->
-<div class="relative w-full max-w-[520px] h-[380px] my-3 flex items-center justify-center rounded-lg overflow-hidden">
-<!-- STITCH_THREEJS_START:ANIMATION_71 class="w-full h-full bg-transparent" -->
-<div class="w-full h-full bg-transparent" style="display:block;">
-<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
-<div id="threejs-container-ANIMATION_71" style="width:100%;height:100%"></div>
-<script>
-(function() {
-  const container = document.getElementById('threejs-container-ANIMATION_71');
-  const devicePixelRatio = window.devicePixelRatio || 1;
-  (function() {
-  const container = document.getElementById('threejs-container-SPECTRA_GLOBE_ULTRA_GLASS') || document.querySelector('[id^="threejs-container-"]');
-  if (!container) return;
-
-  const containerEl = container;
-  const getWidth = () => containerEl.clientWidth || containerEl.offsetWidth || 520;
-  const getHeight = () => containerEl.clientHeight || containerEl.offsetHeight || 380;
-
-  let width = getWidth();
-  let height = getHeight();
-
-  // Scene & Camera
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(38, width / height, 1, 1000);
-  camera.position.set(0, 0, 195);
-
-  // WebGL Renderer
-  const renderer = new THREE.WebGLRenderer({
-    alpha: true,
-    antialias: true,
-    powerPreference: 'high-performance'
-  });
-  renderer.setSize(width, height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  renderer.setClearColor(0x000000, 0); // Transparent background
-
-  while (containerEl.firstChild) {
-    containerEl.removeChild(containerEl.firstChild);
-  }
-  containerEl.appendChild(renderer.domElement);
-
-  renderer.domElement.style.width = '100%';
-  renderer.domElement.style.height = '100%';
-  renderer.domElement.style.display = 'block';
-
-  // Master group with slight aerospace axial tilt
-  const rootGroup = new THREE.Group();
-  rootGroup.rotation.x = 0.22;
-  rootGroup.rotation.z = -0.06;
-  scene.add(rootGroup);
-
-  const GLOBE_RADIUS = 54;
-
-  // 1. Subtle Atmospheric Backdrop Halo (Restrained radial blue glow behind globe)
-  const glowCanvas = document.createElement('canvas');
-  glowCanvas.width = 128;
-  glowCanvas.height = 128;
-  const gCtx = glowCanvas.getContext('2d');
-  const gradient = gCtx.createRadialGradient(64, 64, 14, 64, 64, 62);
-  gradient.addColorStop(0, 'rgba(24, 60, 175, 0.28)');
-  gradient.addColorStop(0.35, 'rgba(18, 45, 130, 0.12)');
-  gradient.addColorStop(0.7, 'rgba(11, 25, 75, 0.03)');
-  gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-  gCtx.fillStyle = gradient;
-  gCtx.fillRect(0, 0, 128, 128);
-
-  const glowTexture = new THREE.CanvasTexture(glowCanvas);
-  const glowSpriteMat = new THREE.SpriteMaterial({
-    map: glowTexture,
-    transparent: true,
-    blending: THREE.AdditiveBlending,
-    depthWrite: false
-  });
-  const glowSprite = new THREE.Sprite(glowSpriteMat);
-  glowSprite.scale.set(GLOBE_RADIUS * 2.8, GLOBE_RADIUS * 2.8, 1);
-  scene.add(glowSprite);
-
-  // 2. Sophisticated Glass-like Multi-layer Construction
-  // Core Inner Body: Deep translucent graphite-indigo nucleus providing substance and light transmission backing
-  const innerGeo = new THREE.SphereGeometry(GLOBE_RADIUS * 0.97, 64, 64);
-  const innerMat = new THREE.MeshPhongMaterial({
-    color: 0x070e1a,
-    emissive: 0x050c18,
-    emissiveIntensity: 0.5,
-    shininess: 25,
-    transparent: true,
-    opacity: 0.95
-  });
-  const innerMesh = new THREE.Mesh(innerGeo, innerMat);
-  rootGroup.add(innerMesh);
-
-  // Outer Translucent Glass Shell: Deep cobalt-blue, subtle light transmission, realistic soft rim reflections
-  // Replaced multiple harsh white specular hotspots with a single subdued cobalt specular response
-  const outerGeo = new THREE.SphereGeometry(GLOBE_RADIUS, 80, 80);
-  const outerMat = new THREE.MeshPhongMaterial({
-    color: 0x0c2152,
-    emissive: 0x08173c,
-    emissiveIntensity: 0.4,
-    specular: 0x2e5ee8,
-    shininess: 45,
-    transparent: true,
-    opacity: 0.65,
-    depthWrite: false,
-    side: THREE.DoubleSide
-  });
-  const outerMesh = new THREE.Mesh(outerGeo, outerMat);
-  rootGroup.add(outerMesh);
-
-  // 3. Delicate Latitude and Longitude Curves (Fine, Low-Contrast, No triangular mesh)
-  const linesGroup = new THREE.Group();
-  const lineMat = new THREE.LineBasicMaterial({
-    color: 0x2457ff,
-    transparent: true,
-    opacity: 0.24
-  });
-  const equatorMat = new THREE.LineBasicMaterial({
-    color: 0x3d6eff,
-    transparent: true,
-    opacity: 0.38
-  });
-
-  // Latitudes
-  const latSteps = [-54, -36, -18, 0, 18, 36, 54];
-  latSteps.forEach(deg => {
-    const phi = (deg * Math.PI) / 180;
-    const r = (GLOBE_RADIUS + 0.22) * Math.cos(phi);
-    const y = (GLOBE_RADIUS + 0.22) * Math.sin(phi);
-    const circleCurve = new THREE.EllipseCurve(0, 0, r, r, 0, 2 * Math.PI, false, 0);
-    const pts = circleCurve.getPoints(80);
-    const geo = new THREE.BufferGeometry().setFromPoints(
-      pts.map(p => new THREE.Vector3(p.x, y, p.y))
-    );
-    const line = new THREE.Line(geo, deg === 0 ? equatorMat : lineMat);
-    linesGroup.add(line);
-  });
-
-  // Longitudes (Meridians)
-  const meridianCount = 8;
-  for (let m = 0; m < meridianCount; m++) {
-    const angle = (m * Math.PI) / meridianCount;
-    const curve = new THREE.EllipseCurve(0, 0, GLOBE_RADIUS + 0.22, GLOBE_RADIUS + 0.22, 0, 2 * Math.PI, false, 0);
-    const pts = curve.getPoints(80);
-    const geo = new THREE.BufferGeometry().setFromPoints(
-      pts.map(p => new THREE.Vector3(p.x, p.y, 0))
-    );
-    const line = new THREE.Line(geo, lineMat);
-    line.rotation.y = angle;
-    linesGroup.add(line);
-  }
-  rootGroup.add(linesGroup);
-
-  // 4. Maximum Two Fine Orbital Rings: One Cobalt Blue & One Muted Lime Green
-  // Orbit 1: Muted cobalt blue fine orbit
-  const orbit1Radius = GLOBE_RADIUS * 1.34;
-  const orbit1Geo = new THREE.TorusGeometry(orbit1Radius, 0.28, 8, 96);
-  const orbit1Mat = new THREE.MeshBasicMaterial({
-    color: 0x2457ff,
-    transparent: true,
-    opacity: 0.35
-  });
-  const orbitRing1 = new THREE.Mesh(orbit1Geo, orbit1Mat);
-  orbitRing1.rotation.x = Math.PI / 2.35;
-  orbitRing1.rotation.y = 0.20;
-  rootGroup.add(orbitRing1);
-
-  // Orbit 2: Muted lime-green fine inclined orbit
-  const orbit2Radius = GLOBE_RADIUS * 1.46;
-  const orbit2Geo = new THREE.TorusGeometry(orbit2Radius, 0.22, 8, 96);
-  const orbit2Mat = new THREE.MeshBasicMaterial({
-    color: 0xc8ff3d,
-    transparent: true,
-    opacity: 0.28
-  });
-  const orbitRing2 = new THREE.Mesh(orbit2Geo, orbit2Mat);
-  orbitRing2.rotation.x = -Math.PI / 3.2;
-  orbitRing2.rotation.y = -0.28;
-  rootGroup.add(orbitRing2);
-
-  // 5. One Small, Controlled Lime Scanning Point along Orbit 2
-  const scanPointGeo = new THREE.SphereGeometry(1.1, 16, 16);
-  const scanPointMat = new THREE.MeshBasicMaterial({ color: 0xc8ff3d });
-  const scanPoint = new THREE.Mesh(scanPointGeo, scanPointMat);
-  orbitRing2.add(scanPoint);
-
-  // Small, restrained soft glow sprite for scanning marker
-  const pCanvas = document.createElement('canvas');
-  pCanvas.width = 48;
-  pCanvas.height = 48;
-  const pCtx = pCanvas.getContext('2d');
-  const pGrad = pCtx.createRadialGradient(24, 24, 1, 24, 24, 22);
-  pGrad.addColorStop(0, 'rgba(200, 255, 61, 0.75)');
-  pGrad.addColorStop(0.35, 'rgba(200, 255, 61, 0.22)');
-  pGrad.addColorStop(1, 'rgba(200, 255, 61, 0)');
-  pCtx.fillStyle = pGrad;
-  pCtx.fillRect(0, 0, 48, 48);
-
-  const pointTex = new THREE.CanvasTexture(pCanvas);
-  const pointSpriteMat = new THREE.SpriteMaterial({
-    map: pointTex,
-    transparent: true,
-    blending: THREE.AdditiveBlending
-  });
-  const pointSprite = new THREE.Sprite(pointSpriteMat);
-  pointSprite.scale.set(6.5, 6.5, 1);
-  scanPoint.add(pointSprite);
-
-  // 6. Restrained Single Diffused Light Source (Replacing multiple harsh white hotspots)
-  // Ambient lighting for deep corporate cyber-clarity
-  const ambientLight = new THREE.AmbientLight(0x0a1530, 1.8);
-  scene.add(ambientLight);
-
-  // Single diffused cobalt key light with natural soft falloff
-  const diffusedKeyLight = new THREE.PointLight(0x285bee, 2.2, 340);
-  diffusedKeyLight.position.set(70, 65, 85);
-  scene.add(diffusedKeyLight);
-
-  // Refined blue rim light for realistic edge definition without harsh white blow-out
-  const rimLight = new THREE.PointLight(0x2457ff, 1.6, 260);
-  rimLight.position.set(-80, -55, -70);
-  scene.add(rimLight);
-
-  // Immediate render
-  renderer.render(scene, camera);
-
-  // Resize handler
-  function handleResize() {
-    const w = getWidth();
-    const h = getHeight();
-    if (w > 0 && h > 0) {
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
+    window.addEventListener('resize', handleResize);
+    if (window.ResizeObserver) {
+      new ResizeObserver(handleResize).observe(container);
     }
-  }
-  window.addEventListener('resize', handleResize);
-  setTimeout(handleResize, 100);
 
-  // Sophisticated, slow, smooth animation loop
-  let elapsed = 0;
-  function renderLoop() {
-    requestAnimationFrame(renderLoop);
-    elapsed += 0.008; // Deliberate, calm enterprise tempo
+    // Animation Loop
+    let elapsed = 0;
+    function renderLoop() {
+      requestAnimationFrame(renderLoop);
+      elapsed += 0.008;
 
-    // Smooth, slow planetary rotation
-    rootGroup.rotation.y += 0.0018;
-    linesGroup.rotation.y += 0.0009;
+      rootGroup.rotation.y += 0.0018;
+      linesGroup.rotation.y += 0.0009;
 
-    // Subtle orbital ring rotation
-    orbitRing1.rotation.z += 0.0024;
-    orbitRing2.rotation.z -= 0.0020;
+      orbitRing1.rotation.z += 0.0024;
+      orbitRing2.rotation.z -= 0.0020;
 
-    // Small lime marker travelling along orbit 2
-    const ptAngle = elapsed * 0.95;
-    scanPoint.position.set(
-      Math.cos(ptAngle) * orbit2Radius,
-      Math.sin(ptAngle) * orbit2Radius,
-      0
-    );
+      const ptAngle = elapsed * 0.95;
+      scanPoint.position.set(
+        Math.cos(ptAngle) * orbit2Radius,
+        Math.sin(ptAngle) * orbit2Radius,
+        0
+      );
 
-    // Very gentle subtle breathing pulse during active neural evaluation
-    const pulse = Math.sin(elapsed * 1.5) * 0.05 + 0.95;
-    diffusedKeyLight.intensity = 2.2 * pulse;
-    outerMat.emissiveIntensity = 0.4 * pulse;
+      const anomalyAngle = -elapsed * 0.72;
+      anomalyPoint.position.set(
+        Math.cos(anomalyAngle) * orbit1Radius,
+        Math.sin(anomalyAngle) * orbit1Radius,
+        0
+      );
 
-    renderer.render(scene, camera);
-  }
-  renderLoop();
+      const pulse = Math.sin(elapsed * 1.5) * 0.05 + 0.95;
+      diffusedKeyLight.intensity = 2.4 * pulse;
+      outerMat.emissiveIntensity = 0.45 * pulse;
 
-  window.setGlobeState = function(state) {
-    if (state === 'complete') {
-      outerMat.color.setHex(0x1a452a);
-      outerMat.emissive.setHex(0x2d8a4e);
-      diffusedKeyLight.color.setHex(0xc8ff3d);
-    } else if (state === 'error') {
-      outerMat.color.setHex(0x451a1a);
-      outerMat.emissive.setHex(0x8a2d2d);
-      diffusedKeyLight.color.setHex(0xe76670);
+      renderer.render(scene, camera);
     }
-  };
-})();
-})();
-</script>
-</div>
-<!-- STITCH_THREEJS_END:ANIMATION_71 -->
-</div>
-</div>
-<!-- Three Clear Processing Stages -->
-<div class="mt-5 flex flex-col gap-2.5">
-<!-- Stage 01: Validate source file -->
-<div id="stage-1" class="flex items-center justify-between p-3.5 rounded-lg bg-[#131820] border border-[#2A313C] transition-colors">
-<div class="flex items-center gap-3 min-w-0">
-<div class="w-6 h-6 rounded-md bg-[#2457FF]/20 border border-[#2457FF]/40 flex items-center justify-center shrink-0 text-[#2457FF]">
-<span class="material-symbols-outlined text-[16px]">check</span>
-</div>
-<div class="flex flex-col min-w-0">
-<span class="text-xs sm:text-[13px] font-semibold text-[#F3F5F8] truncate">01 — Validate source file</span>
-<span class="text-[11px] text-[#6B7685] font-code-hash truncate">SHA-256 checksum verified &amp; format sanitized</span>
-</div>
-</div>
-<span class="stage-badge px-2 py-0.5 rounded font-code-hash text-[10px] font-semibold bg-[#2457FF]/15 text-[#b8c3ff] tracking-wider uppercase shrink-0 border border-[#2457FF]/20">
-              Validating
-            </span>
-</div>
-<!-- Stage 02: Run image classification -->
-<div id="stage-2" class="flex items-center justify-between p-3.5 rounded-lg bg-[#1E2530] border border-[#2457FF]/50 relative shadow-sm">
-<div class="flex items-center gap-3 min-w-0">
-<div class="relative w-6 h-6 rounded-md bg-[#2457FF] flex items-center justify-center shrink-0 text-white shadow">
-<span class="material-symbols-outlined text-[15px] animate-spin" style="animation-duration: 2.2s;">sync</span>
-<span class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#c8ff3d]"></span>
-</div>
-<div class="flex flex-col min-w-0">
-<span class="text-xs sm:text-[13px] font-semibold text-white flex items-center gap-2 truncate">
-                02 — Run image classification
-              </span>
-<span class="text-[11px] text-[#c8ff3d] font-code-hash flex items-center gap-1.5 truncate">
-<span class="w-1.5 h-1.5 rounded-full bg-[#c8ff3d] animate-pulse"></span>
-                Executing neural pattern pass...
-              </span>
-</div>
-</div>
-<span class="stage-badge px-2.5 py-0.5 rounded font-code-hash text-[10px] font-semibold bg-[#2457FF]/25 text-[#b8c3ff] tracking-wider uppercase shrink-0 border border-[#2457FF]/40">
-              Active Investigation
-            </span>
-</div>
-<!-- Stage 03: Prepare investigation report -->
-<div id="stage-3" class="flex items-center justify-between p-3.5 rounded-lg bg-[#131820]/50 border border-[#2A313C]/40 opacity-70">
-<div class="flex items-center gap-3 min-w-0">
-<div class="w-6 h-6 rounded-md bg-[#1E2530] flex items-center justify-center shrink-0 text-[#6B7685]">
-<span class="material-symbols-outlined text-[15px]">pending</span>
-</div>
-<div class="flex flex-col min-w-0">
-<span class="text-xs sm:text-[13px] font-semibold text-[#6B7685] truncate">03 — Prepare investigation report</span>
-<span class="text-[11px] text-[#6B7685]/80 font-code-hash truncate">Cryptographic findings manifest</span>
-</div>
-</div>
-<span class="stage-badge px-2 py-0.5 rounded font-code-hash text-[10px] font-medium bg-[#1E2530] text-[#6B7685] tracking-wider uppercase shrink-0 border border-[#2A313C]/40">
-              Queued
-            </span>
-</div>
-</div>
-</div>
-<!-- Clean Professional Footer with Abort Button -->
-<div class="mt-6 pt-4 border-t border-[#2A313C]/70 flex items-center justify-end relative z-10">
-<button class="h-8 px-4 rounded-lg font-medium text-xs text-[#E76670] border border-[#E76670]/30 hover:bg-[#E76670]/10 transition-all flex items-center gap-1.5 shrink-0" id="abortBtn" type="button">
-<span class="material-symbols-outlined text-[15px]">cancel</span>
-<span>Abort Analysis</span>
-</button>
-</div>
-</div>
-</div>
-</main>
-</div>
-<script>
-  // Simple Script for Copy & Abort Actions
-  (function() {
+    renderLoop();
+
+    window.setGlobeState = function(state) {
+      if (state === 'complete') {
+        outerMat.color.setHex(0x0f331e);
+        outerMat.emissive.setHex(0x10b981);
+        diffusedKeyLight.color.setHex(0x10b981);
+        scanPointMat.color.setHex(0x10b981);
+        anomalyPointMat.color.setHex(0x10b981);
+      } else if (state === 'error') {
+        outerMat.color.setHex(0x3e1010);
+        outerMat.emissive.setHex(0xf43f5e);
+        diffusedKeyLight.color.setHex(0xf43f5e);
+        scanPointMat.color.setHex(0xf43f5e);
+        anomalyPointMat.color.setHex(0xF0523B);
+      }
+    };
+  })();
+  </script>
+
+  <!-- Real Job Polling & UI State Synchronization -->
+  <script>
+  (function initProgressTracker() {
+    // Copy Hash
     const copyBtn = document.getElementById('copyHashBtn');
     if (copyBtn) {
       copyBtn.addEventListener('click', function() {
@@ -535,131 +617,191 @@
           const icon = copyBtn.querySelector('.material-symbols-outlined');
           if (icon) {
             icon.textContent = 'check';
-            icon.classList.add('text-[#c8ff3d]');
-            setTimeout(() => { icon.textContent = 'content_copy'; icon.classList.remove('text-[#c8ff3d]'); }, 1800);
+            icon.classList.add('text-emerald-status');
+            setTimeout(() => {
+              icon.textContent = 'content_copy';
+              icon.classList.remove('text-emerald-status');
+            }, 1800);
           }
         }).catch(() => {});
       });
     }
 
+    // Abort
     const abortBtn = document.getElementById('abortBtn');
     if (abortBtn) {
       abortBtn.addEventListener('click', function() {
-        if (confirm('Are you sure you want to abort? You will be returned to the upload screen.')) {
+        if (confirm('Abort active investigation and return to ingestion workbench?')) {
           window.location.href = '/analyze/';
         }
       });
     }
+
+    // URL Params
+    const params = new URLSearchParams(window.location.search);
+    const jobId = params.get('job_id');
+    if (!jobId) return;
+
+    const statusHeading = document.querySelector('h2.font-heading');
+    const statusSubtitle = document.querySelector('p.text-text-secondary');
+    const previewImg = document.getElementById('preview-img');
+    const filenameEl = document.getElementById('preview-filename');
+    const dimEl = document.getElementById('preview-dim');
+    const formatEl = document.getElementById('preview-format');
+    const sha256El = document.getElementById('progress-sha256');
+    const pipelineBadge = document.querySelector('.inline-flex.items-center.gap-2.px-3\\.5');
+
+    const stage1 = document.getElementById('stage-1');
+    const stage2 = document.getElementById('stage-2');
+    const stage3 = document.getElementById('stage-3');
+    const errorCard = document.getElementById('error-card');
+    const errorDetailText = document.getElementById('error-detail-text');
+    const retryJobBtn = document.getElementById('retryJobBtn');
+
+    if (previewImg) {
+      previewImg.src = '/api/jobs/' + jobId + '/image';
+    }
+
+    if (retryJobBtn) {
+      retryJobBtn.addEventListener('click', async function() {
+        retryJobBtn.disabled = true;
+        const origContent = retryJobBtn.innerHTML;
+        retryJobBtn.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">sync</span><span>Retrying...</span>';
+        try {
+          const retryRes = await fetch('/api/jobs/' + jobId + '/retry', { method: 'POST' });
+          if (retryRes.ok) {
+            if (errorCard) errorCard.classList.add('hidden');
+            if (statusHeading) statusHeading.textContent = 'Re-queueing investigation...';
+            if (statusSubtitle) statusSubtitle.textContent = 'Connecting to Ateeqq/ai-vs-human-image-detector classifier...';
+            setStageBadge(stage1, 'Queued', 'queued');
+            setStageBadge(stage2, 'Queued', 'queued');
+            setStageBadge(stage3, 'Queued', 'queued');
+            if (window.setGlobeState) window.setGlobeState('active');
+            clearInterval(pollInterval);
+            poll();
+            pollInterval = setInterval(poll, 1000);
+          } else {
+            const errData = await retryRes.json().catch(() => ({}));
+            alert('Retry failed: ' + (errData.detail || 'Service rejected retry request.'));
+          }
+        } catch (err) {
+          alert('Network failure attempting retry: ' + err.message);
+        } finally {
+          retryJobBtn.disabled = false;
+          retryJobBtn.innerHTML = origContent;
+        }
+      });
+    }
+
+    function setStageBadge(stageEl, statusText, statusType) {
+      if (!stageEl) return;
+      const badge = stageEl.querySelector('.stage-badge');
+      if (!badge) return;
+      badge.textContent = statusText;
+      if (statusType === 'complete') {
+        badge.className = 'stage-badge px-2.5 py-0.5 rounded font-mono text-[10px] font-semibold bg-emerald-status/15 text-emerald-status border border-emerald-status/30 uppercase shrink-0';
+      } else if (statusType === 'active') {
+        badge.className = 'stage-badge px-2.5 py-0.5 rounded font-mono text-[10px] font-semibold bg-electric-violet/20 text-electric-violet border border-electric-violet/40 uppercase shrink-0 animate-pulse';
+      } else {
+        badge.className = 'stage-badge px-2.5 py-0.5 rounded font-mono text-[10px] font-medium bg-surface-3 text-text-tertiary border border-border-line uppercase shrink-0';
+      }
+    }
+
+    function updateUI(job) {
+      const status = job.status;
+      if (filenameEl && job.filename) filenameEl.textContent = job.filename;
+      if (dimEl && job.width && job.height) dimEl.textContent = job.width + ' × ' + job.height + ' px';
+      if (formatEl && job.format) formatEl.textContent = job.format + ' · ' + (job.filesize_display || '');
+      if (sha256El && job.sha256) sha256El.textContent = job.sha256;
+
+      if (status === 'queued') {
+        if (errorCard) errorCard.classList.add('hidden');
+        if (statusHeading) statusHeading.textContent = 'Queued for analysis...';
+        if (statusSubtitle) statusSubtitle.textContent = 'Awaiting execution slot in local workstation queue.';
+        if (pipelineBadge) pipelineBadge.querySelector('span.font-code-hash').textContent = 'PIPELINE QUEUED · STAGE 01 OF 03';
+        setStageBadge(stage1, 'Queued', 'queued');
+        setStageBadge(stage2, 'Queued', 'queued');
+        setStageBadge(stage3, 'Queued', 'queued');
+      } else if (status === 'validating') {
+        if (errorCard) errorCard.classList.add('hidden');
+        if (statusHeading) statusHeading.textContent = 'Validating file integrity...';
+        if (statusSubtitle) statusSubtitle.textContent = 'Computing SHA-256 fingerprint and parsing image metadata.';
+        if (pipelineBadge) pipelineBadge.querySelector('span.font-code-hash').textContent = 'PIPELINE ACTIVE · STAGE 01 OF 03';
+        setStageBadge(stage1, 'Validating', 'active');
+        setStageBadge(stage2, 'Queued', 'queued');
+        setStageBadge(stage3, 'Queued', 'queued');
+      } else if (status === 'classifying') {
+        if (errorCard) errorCard.classList.add('hidden');
+        if (statusHeading) statusHeading.textContent = 'Running neural pattern classifier...';
+        if (statusSubtitle) statusSubtitle.textContent = 'Executing ViT feature extraction via Ateeqq/ai-vs-human-image-detector.';
+        if (pipelineBadge) pipelineBadge.querySelector('span.font-code-hash').textContent = 'PIPELINE ACTIVE · STAGE 02 OF 03';
+        setStageBadge(stage1, 'Completed', 'complete');
+        setStageBadge(stage2, 'Classifying', 'active');
+        setStageBadge(stage3, 'Queued', 'queued');
+      } else if (status === 'complete') {
+        if (errorCard) errorCard.classList.add('hidden');
+        if (statusHeading) statusHeading.textContent = 'Investigation Complete!';
+        if (statusSubtitle) statusSubtitle.textContent = 'Forensic classification complete. Redirecting to findings report...';
+        if (pipelineBadge) pipelineBadge.querySelector('span.font-code-hash').textContent = 'PIPELINE COMPLETE · FINDINGS RECORDED';
+        setStageBadge(stage1, 'Completed', 'complete');
+        setStageBadge(stage2, 'Completed', 'complete');
+        setStageBadge(stage3, 'Ready', 'complete');
+        if (window.setGlobeState) window.setGlobeState('complete');
+        setTimeout(() => { window.location.href = '/results/?job_id=' + jobId; }, 1100);
+        return true;
+      } else if (status === 'error') {
+        if (statusHeading) statusHeading.textContent = 'Investigation Failed';
+        if (statusSubtitle) statusSubtitle.textContent = job.error || 'Inference engine error occurred during forensic examination.';
+        if (pipelineBadge) pipelineBadge.querySelector('span.font-code-hash').textContent = 'PIPELINE DEGRADED / ERROR';
+        setStageBadge(stage1, 'Checked', 'complete');
+        setStageBadge(stage2, 'Failed', 'queued');
+        setStageBadge(stage3, 'Halted', 'queued');
+        if (window.setGlobeState) window.setGlobeState('error');
+
+        if (errorCard && errorDetailText) {
+          errorDetailText.textContent = job.error || 'The Ateeqq/ai-vs-human-image-detector inference service is unavailable.';
+          errorCard.classList.remove('hidden');
+        }
+        return true;
+      }
+      return false;
+    }
+
+    let pollInterval;
+    async function poll() {
+      try {
+        const res = await fetch('/api/jobs/' + jobId);
+        if (!res.ok) { clearInterval(pollInterval); return; }
+        const job = await res.json();
+        const done = updateUI(job);
+        if (done) clearInterval(pollInterval);
+      } catch (e) {
+        console.error('Poll error:', e);
+      }
+    }
+
+    poll();
+    pollInterval = setInterval(poll, 1000);
+
+    // Mobile Sidebar Drawer Toggle
+    const mobileToggle = document.getElementById('mobile-sidebar-toggle');
+    const mobileClose = document.getElementById('mobile-sidebar-close');
+    const mobileBackdrop = document.getElementById('mobile-sidebar-backdrop');
+    const sidebar = document.getElementById('main-sidebar');
+
+    function openSidebar() {
+      if (sidebar) sidebar.classList.remove('-translate-x-full');
+      if (mobileBackdrop) mobileBackdrop.classList.remove('hidden');
+    }
+    function closeSidebar() {
+      if (sidebar) sidebar.classList.add('-translate-x-full');
+      if (mobileBackdrop) mobileBackdrop.classList.add('hidden');
+    }
+
+    if (mobileToggle) mobileToggle.addEventListener('click', openSidebar);
+    if (mobileClose) mobileClose.addEventListener('click', closeSidebar);
+    if (mobileBackdrop) mobileBackdrop.addEventListener('click', closeSidebar);
   })();
-</script>
-
-<!-- Real job polling -->
-<script>
-(function() {
-  const params = new URLSearchParams(window.location.search);
-  const jobId = params.get('job_id');
-  if (!jobId) return;
-
-  const statusHeading = document.querySelector('h2.text-\\[20px\\]');
-  const statusSubtitle = document.querySelector('p.text-\\[14px\\].text-\\[\\#A3ACB8\\].font-body-md');
-  const previewImg = document.getElementById('preview-img');
-  const filenameEl = document.getElementById('preview-filename');
-  const dimEl = document.getElementById('preview-dim');
-  const formatEl = document.getElementById('preview-format');
-  const sha256El = document.getElementById('progress-sha256');
-  const pipelineBadge = document.querySelector('.inline-flex.items-center.gap-2.px-3\\.5');
-
-  const stage1 = document.getElementById('stage-1');
-  const stage2 = document.getElementById('stage-2');
-  const stage3 = document.getElementById('stage-3');
-
-  if (previewImg) {
-    previewImg.src = '/api/jobs/' + jobId + '/image';
-  }
-
-  function setStageBadge(stageEl, statusText, statusType) {
-    if (!stageEl) return;
-    const badge = stageEl.querySelector('.stage-badge');
-    if (!badge) return;
-    badge.textContent = statusText;
-    if (statusType === 'complete') {
-      badge.className = 'stage-badge px-2 py-0.5 rounded font-code-hash text-[10px] font-semibold bg-[#2457FF]/15 text-[#b8c3ff] tracking-wider uppercase shrink-0 border border-[#2457FF]/20';
-    } else if (statusType === 'active') {
-      badge.className = 'stage-badge px-2.5 py-0.5 rounded font-code-hash text-[10px] font-semibold bg-[#2457FF]/25 text-[#b8c3ff] tracking-wider uppercase shrink-0 border border-[#2457FF]/40 animate-pulse';
-    } else {
-      badge.className = 'stage-badge px-2 py-0.5 rounded font-code-hash text-[10px] font-medium bg-[#1E2530] text-[#6B7685] tracking-wider uppercase shrink-0 border border-[#2A313C]/40';
-    }
-  }
-
-  function updateUI(job) {
-    const status = job.status;
-    const previewBadge = document.getElementById('preview-badge');
-    if (previewBadge) {
-      previewBadge.style.display = 'inline-block';
-      previewBadge.textContent = 'EVIDENCE EXHIBIT';
-    }
-    if (filenameEl && job.filename) filenameEl.textContent = job.filename;
-    if (dimEl && job.width && job.height) dimEl.textContent = job.width + ' \u00d7 ' + job.height + ' px';
-    if (formatEl && job.format) formatEl.textContent = job.format + ' \u00b7 ' + (job.filesize_display || '');
-    if (sha256El && job.sha256) sha256El.textContent = job.sha256;
-
-    if (status === 'queued') {
-      if (statusHeading) statusHeading.textContent = 'Queued for analysis...';
-      if (statusSubtitle) statusSubtitle.textContent = 'Waiting in local workstation queue.';
-      if (pipelineBadge) pipelineBadge.querySelector('span.font-code-hash').textContent = 'PIPELINE QUEUED \u00b7 STAGE 01 OF 03';
-      setStageBadge(stage1, 'Queued', 'queued');
-      setStageBadge(stage2, 'Queued', 'queued');
-      setStageBadge(stage3, 'Queued', 'queued');
-    } else if (status === 'validating') {
-      if (statusHeading) statusHeading.textContent = 'Validating file integrity...';
-      if (statusSubtitle) statusSubtitle.textContent = 'Computing SHA-256 fingerprint and parsing image metadata.';
-      if (pipelineBadge) pipelineBadge.querySelector('span.font-code-hash').textContent = 'PIPELINE ACTIVE \u00b7 STAGE 01 OF 03';
-      setStageBadge(stage1, 'Validating', 'active');
-      setStageBadge(stage2, 'Queued', 'queued');
-      setStageBadge(stage3, 'Queued', 'queued');
-    } else if (status === 'classifying') {
-      if (statusHeading) statusHeading.textContent = 'Running neural pattern classifier...';
-      if (statusSubtitle) statusSubtitle.textContent = 'Local CPU inference via Ateeqq/ai-vs-human-image-detector.';
-      if (pipelineBadge) pipelineBadge.querySelector('span.font-code-hash').textContent = 'PIPELINE ACTIVE \u00b7 STAGE 02 OF 03';
-      setStageBadge(stage1, 'Completed', 'complete');
-      setStageBadge(stage2, 'Classifying', 'active');
-      setStageBadge(stage3, 'Queued', 'queued');
-    } else if (status === 'complete') {
-      if (statusHeading) statusHeading.textContent = 'Analysis complete!';
-      if (statusSubtitle) statusSubtitle.textContent = 'Findings verified. Redirecting to forensic report...';
-      if (pipelineBadge) pipelineBadge.querySelector('span.font-code-hash').textContent = 'PIPELINE COMPLETE \u00b7 ALL STAGES DONE';
-      setStageBadge(stage1, 'Completed', 'complete');
-      setStageBadge(stage2, 'Completed', 'complete');
-      setStageBadge(stage3, 'Ready', 'complete');
-      if (window.setGlobeState) window.setGlobeState('complete');
-      setTimeout(() => { window.location.href = '/results/?job_id=' + jobId; }, 1200);
-      return true;
-    } else if (status === 'error') {
-      if (statusHeading) statusHeading.textContent = 'Analysis Failed';
-      if (statusSubtitle) statusSubtitle.textContent = job.error || 'An error occurred during image processing.';
-      if (pipelineBadge) pipelineBadge.querySelector('span.font-code-hash').textContent = 'PIPELINE ERROR';
-      setStageBadge(stage1, 'Error', 'queued');
-      setStageBadge(stage2, 'Error', 'queued');
-      setStageBadge(stage3, 'Error', 'queued');
-      if (window.setGlobeState) window.setGlobeState('error');
-      return true;
-    }
-    return false;
-  }
-
-  let pollInterval;
-  async function poll() {
-    try {
-      const res = await fetch('/api/jobs/' + jobId);
-      if (!res.ok) { clearInterval(pollInterval); return; }
-      const job = await res.json();
-      const done = updateUI(job);
-      if (done) clearInterval(pollInterval);
-    } catch (e) { console.error('Poll error:', e); }
-  }
-
-  poll();
-  pollInterval = setInterval(poll, 1000);
-})();
-</script>
-</body></html>
+  </script>
+</body>
+</html>

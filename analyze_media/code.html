@@ -1,368 +1,434 @@
 <!DOCTYPE html>
-
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta content="web_dashboard" name="shell-type"/>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Manrope:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<style>
-    @layer base {
-      html, body { margin: 0; padding: 0; }
-      body { overscroll-behavior: none; }
-    }
-    ::-webkit-scrollbar { display: none; }
-  </style>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Analyze Media — SPECTRA Forensic Workstation</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
       theme: {
         extend: {
           colors: {
-            primary: "#b8c3ff",
-            "primary-container": "#2457ff",
-            surface: "#0f141b",
-            "surface-container": "#171D25",
-            "surface-container-low": "#11161D",
-            "on-surface": "#F3F5F8",
-            "on-surface-variant": "#A3ACB8",
-            outline: "#788493",
-            "outline-variant": "#2A313C",
-            secondary: "#bef532"
+            "obsidian": "#070A0F",
+            "surface-1": "#0C101A",
+            "surface-2": "#111624",
+            "surface-3": "#181F33",
+            "border-line": "#1D2538",
+            "border-glow": "#2E3B57",
+            "cobalt": "#2457FF",
+            "electric-violet": "#8B5CF6",
+            "magenta": "#D946EF",
+            "cyan-glow": "#38BDF8",
+            "emerald-status": "#10B981",
+            "amber-status": "#F59E0B",
+            "rose-status": "#F43F5E",
+            "molten-amber": "#F5A33B",
+            "warm-orange": "#F07832",
+            "signal-red": "#F0523B",
+            "text-primary": "#F8FAFC",
+            "text-secondary": "#94A3B8",
+            "text-tertiary": "#64748B"
           },
           fontFamily: {
-            headline: ["Manrope", "sans-serif"],
-            body: ["Inter", "sans-serif"],
-            code: ["JetBrains Mono", "monospace"]
+            sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+            heading: ["Manrope", "sans-serif"],
+            display: ["Space Grotesk", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"]
           }
         }
       }
     };
   </script>
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; background-color: #070A0F; color: #F8FAFC; }
+      body { overscroll-behavior: none; }
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #070A0F; }
+    ::-webkit-scrollbar-thumb { background: #1D2538; border-radius: 3px; }
+    .glass-panel {
+      background: linear-gradient(135deg, rgba(17, 22, 36, 0.75) 0%, rgba(12, 16, 26, 0.85) 100%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(29, 37, 56, 0.85);
+    }
+  </style>
 </head>
-<body class="bg-[#11161D] font-body text-[#F3F5F8] antialiased selection:bg-[#2457FF]/30 selection:text-white min-h-screen flex">
-<!-- Left Sidebar (228px, #0D1117, border #2A313C) -->
-<aside class="fixed left-0 top-0 h-full w-[228px] bg-[#0D1117] border-r border-[#2A313C] z-50 flex flex-col justify-between select-none">
-<div class="flex flex-col">
-<!-- Logo Header -->
-<div class="h-14 px-4 flex items-center gap-3 border-b border-[#2A313C]">
-<img alt="SPECTRA Logo" class="h-6 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XvrSfEm4eUtpOr_7XYW4JLhd4vd2Q8U9uUZDyhpjOmrng5nPMuQRW3Sy1Tt-lRfnLuCL6Cc_aZMo6f9IiRSlCOgJn6EtwjfXiB0Fp9e3A2GHCFGhQ65NkqF-0EeQxGEOGi6_a2TZ39Yx6BW0ciUUXYs-r7ukpVRe3IpslGamu3CAleEPc6abUxjPC68Xv0TvmYypt5JyJOpVTJuZRt6YUiE3C1p1B6iPqPvkWxVTwf0VXTvZG_oXfimYMQ"/>
-<div class="flex flex-col min-w-0">
-<span class="font-headline text-[13px] font-semibold tracking-wider text-[#F3F5F8] uppercase leading-none">SPECTRA</span>
-<span class="font-code text-[9px] tracking-widest text-[#788493] uppercase mt-1 leading-none">AI MEDIA FORENSICS</span>
-</div>
-</div>
-<!-- Navigation -->
-<nav class="flex flex-col pt-3 px-2 gap-1">
-<a class="group flex items-center h-10 px-3 rounded text-[#A3ACB8] hover:text-[#F3F5F8] hover:bg-[#171D25] transition-all text-sm" href="/overview/">
-<span class="material-symbols-outlined text-[18px] mr-3 text-[#788493] group-hover:text-[#F3F5F8] transition-colors">dashboard</span>
-<span>Overview</span>
-</a>
-<a aria-current="page" class="group flex items-center h-10 px-3 rounded transition-all bg-[#2457FF]/15 text-[#88a5ff] border-l-[3px] border-[#2457FF] font-medium text-sm" href="/analyze/">
-<span class="material-symbols-outlined text-[18px] mr-3 text-[#2457FF]">add_photo_alternate</span>
-<span class="text-[#F3F5F8]">Analyze Media</span>
-</a>
-<a class="group flex items-center h-10 px-3 rounded text-[#A3ACB8] hover:text-[#F3F5F8] hover:bg-[#171D25] transition-all text-sm" href="/reports/">
-<span class="material-symbols-outlined text-[18px] mr-3 text-[#788493] group-hover:text-[#F3F5F8] transition-colors">policy</span>
-<span>Investigation Reports</span>
-</a>
-</nav>
-</div>
-<!-- Bottom Sidebar Status & Settings -->
-<div class="flex flex-col px-2 pb-4 gap-2 border-t border-[#2A313C] pt-3">
-<a class="group flex items-center h-10 px-3 rounded text-[#A3ACB8] hover:text-[#F3F5F8] hover:bg-[#171D25] transition-all text-sm" href="#">
-<span class="material-symbols-outlined text-[18px] mr-3 text-[#788493] group-hover:text-[#F3F5F8] transition-colors">settings</span>
-<span>Settings</span>
-</a>
-<div class="flex items-center px-3 py-1.5 gap-2">
-<span class="w-1.5 h-1.5 rounded-full bg-[#bef532] shrink-0"></span>
-<span class="font-code text-[11px] tracking-wider text-[#A3ACB8] uppercase font-medium">LOCAL PROCESSING</span>
-</div>
-</div>
-</aside>
-<!-- Main Canvas Container -->
-<div class="pl-[228px] w-full min-h-screen flex flex-col bg-[#11161D]">
-<!-- Top Bar (56px, #11161D, border-b #2A313C) -->
-<header class="h-14 bg-[#11161D] border-b border-[#2A313C] flex items-center justify-between px-8 select-none sticky top-0 z-40">
-<div class="flex items-center gap-3">
-<h2 class="text-sm font-semibold text-[#F3F5F8] tracking-tight">Analyze Media</h2>
-</div>
-<div class="flex items-center gap-3">
-<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#2A313C] bg-[#0D1117]">
-<span class="w-1.5 h-1.5 rounded-full bg-[#bef532]"></span>
-<span class="font-code text-[11px] text-[#A3ACB8] uppercase tracking-wider font-medium">Local Analysis</span>
-</div>
-</div>
-</header>
-<!-- Page Content (padding 32px) -->
-<main class="p-8 max-w-[1440px] w-full mx-auto flex flex-col flex-1">
-<!-- Page Header -->
-<div class="flex flex-col gap-1 mb-6">
-<h1 class="text-[28px] font-semibold text-[#F3F5F8] tracking-tight font-headline">Analyze Media</h1>
-<p class="text-[14px] text-[#A3ACB8]">Examine an image and review its available authenticity signals.</p>
-</div>
-<!-- Two-column Investigation Workspace (55/45 Split, gap 24px) -->
-<div class="grid grid-cols-1 lg:grid-cols-10 gap-6 items-stretch">
-<!-- LEFT: Source Media Panel (55% / 5.5 cols -> lg:col-span-5 or lg:w- balanced via 11-col/custom split: lg:col-span-11 grid / flex) -->
-<section class="lg:col-span-6 bg-[#171D25] border border-[#2A313C] rounded-[10px] p-8 flex flex-col justify-between min-h-[520px]">
-<div>
-<!-- Header -->
-<div class="flex items-center justify-between mb-6">
-<h2 class="text-[16px] font-semibold text-[#F3F5F8]">Source Media</h2>
-<span class="px-2.5 py-0.5 rounded text-xs font-medium font-code tracking-wide bg-[#11161D] border border-[#2A313C] text-[#A3ACB8]" id="source-badge">
+<body class="bg-obsidian font-sans text-text-primary antialiased selection:bg-electric-violet selection:text-white min-h-screen flex">
+
+  <!-- Mobile Sidebar Backdrop Overlay -->
+  <div id="mobile-sidebar-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden hidden"></div>
+
+  <!-- Shell: Precision Sidebar (232px) -->
+  <aside id="main-sidebar" class="fixed left-0 top-0 h-full w-[232px] bg-surface-1 border-r border-border-line z-50 flex flex-col justify-between select-none -translate-x-full lg:translate-x-0 transition-transform duration-300">
+    <div class="flex flex-col">
+      <!-- Brand Header -->
+      <div class="h-16 px-5 flex items-center justify-between border-b border-border-line bg-gradient-to-r from-surface-1 to-[#0F1422]">
+        <div class="flex items-center gap-3.5">
+          <div class="relative w-8 h-8 rounded-lg bg-[#141A29] border border-border-glow flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(36,87,255,0.25)]">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 32 32">
+              <line stroke="#FFFFFF" stroke-linecap="round" stroke-width="2" x1="3" x2="13" y1="16" y2="16"></line>
+              <polygon fill="none" points="16,5 28,25 6,25" stroke="#94A3B8" stroke-width="1.75"></polygon>
+              <line stroke="#38BDF8" stroke-linecap="round" stroke-width="1.75" x1="21" x2="30" y1="16" y2="11"></line>
+              <line stroke="#8B5CF6" stroke-linecap="round" stroke-width="1.75" x1="22" x2="30" y1="18" y2="18"></line>
+              <line stroke="#D946EF" stroke-linecap="round" stroke-width="1.75" x1="22" x2="30" y1="20" y2="25"></line>
+            </svg>
+          </div>
+          <div class="flex flex-col min-w-0">
+            <div class="flex items-center gap-1.5">
+              <span class="font-display font-bold text-[15px] tracking-wider text-text-primary leading-none uppercase">SPECTRA</span>
+              <span class="text-[9px] font-mono px-1 py-0.5 rounded bg-electric-violet/15 text-electric-violet border border-electric-violet/30 leading-none">v2.4</span>
+            </div>
+            <span class="font-mono text-[9px] tracking-widest text-text-tertiary uppercase mt-1 leading-none">DIGITAL FORENSICS</span>
+          </div>
+        </div>
+        <button id="mobile-sidebar-close" type="button" class="lg:hidden p-1 text-text-tertiary hover:text-white" aria-label="Close menu">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <!-- Navigation — Primary Destinations -->
+      <nav class="flex flex-col pt-4 px-3 gap-1.5">
+        <a aria-current="page" class="group flex items-center h-10 px-3.5 rounded-lg text-sm font-semibold bg-gradient-to-r from-cobalt/20 via-electric-violet/20 to-transparent text-white border-l-[3px] border-electric-violet shadow-[0_0_14px_rgba(139,92,246,0.25)] transition-all" href="/analyze/">
+          <span class="material-symbols-outlined text-[19px] mr-3 text-cyan-glow">fingerprint</span>
+          <span class="tracking-wide">Analyze</span>
+        </a>
+        <a class="group flex items-center h-10 px-3.5 rounded-lg text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface-2 border-l-[3px] border-transparent transition-all" href="/reports/">
+          <span class="material-symbols-outlined text-[19px] mr-3 text-text-tertiary group-hover:text-cyan-glow transition-colors">receipt_long</span>
+          <span class="tracking-wide">Investigation Records</span>
+        </a>
+      </nav>
+
+      <!-- System Specifications Box -->
+      <div class="mx-3 mt-6 p-3 rounded-lg bg-surface-2/70 border border-border-line text-xs font-mono">
+        <div class="flex items-center justify-between text-text-tertiary mb-1.5 text-[10px] uppercase tracking-wider">
+          <span>INGESTION STANDARD</span>
+          <span class="text-cyan-glow">EXIF / SHA-256</span>
+        </div>
+        <div class="text-[11px] text-text-secondary truncate">JPG, PNG, WEBP &lt; 20MB</div>
+        <div class="text-[10px] text-text-tertiary mt-1">Local Memory Buffer</div>
+      </div>
+    </div>
+
+    <!-- Pinned Telemetry Status -->
+    <div class="flex flex-col px-3 pb-4 gap-2 border-t border-border-line pt-3 bg-surface-1/90">
+      <div class="flex items-center justify-between px-2 py-1">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-status shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+          <span class="font-mono text-[10px] tracking-wider text-text-secondary uppercase">ZERO-CLOUD LEAK</span>
+        </div>
+        <span class="font-mono text-[10px] text-text-tertiary">ISO-29110</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main View -->
+  <div class="pl-0 lg:pl-[232px] min-h-screen bg-obsidian flex flex-col flex-1 w-full min-w-0">
+    
+    <!-- Top System Bar -->
+    <header class="fixed top-0 left-0 lg:left-[232px] right-0 h-14 sm:h-16 bg-surface-1/80 backdrop-blur-md border-b border-border-line z-40 flex items-center justify-between px-4 sm:px-6 lg:px-8 select-none">
+      <div class="flex items-center gap-3 font-mono text-xs text-text-secondary min-w-0">
+        <!-- Mobile Toggle Button -->
+        <button id="mobile-sidebar-toggle" type="button" class="lg:hidden p-1.5 rounded-lg text-text-secondary hover:text-white bg-surface-2 border border-border-line transition-colors flex items-center justify-center shrink-0 mr-1" aria-label="Toggle Navigation">
+          <span class="material-symbols-outlined text-[20px]">menu</span>
+        </button>
+        <span class="font-semibold text-white tracking-wide truncate">MEDIA INGESTION &amp; FORENSIC WORKBENCH</span>
+      </div>
+      <div class="flex items-center gap-3 sm:gap-4 shrink-0">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-border-glow bg-surface-2/60 text-xs font-mono">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-status shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+          <span class="text-text-secondary">READY FOR INGESTION</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Workspace Main Content -->
+    <main class="relative pt-20 sm:pt-24 w-full min-h-screen p-4 sm:p-6 lg:p-8 space-y-5 min-w-0">
+      
+      <!-- Page Header -->
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+        <div class="flex flex-col space-y-0.5 min-w-0">
+          <div class="inline-flex items-center gap-2 px-2 py-0.5 rounded bg-cyan-glow/15 border border-cyan-glow/30 text-cyan-glow font-mono text-[10px] uppercase tracking-widest w-fit">
+            <span>EVIDENCE WORKBENCH · INTAKE</span>
+          </div>
+          <h1 class="font-heading text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+            Ingest &amp; Analyze Media
+          </h1>
+          <p class="text-xs text-text-secondary max-w-2xl">
+            Submit digital media for SHA-256 cryptographic registration and ViT neural synthesis pattern assessment.
+          </p>
+        </div>
+      </div>
+
+      <!-- Main Workspace: 2-Column Split (Source Media + Forensic Pipeline) with min-w-0 grid overflow protection -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 items-stretch w-full min-w-0">
+        
+        <!-- LEFT: Source Media Ingestion Container -->
+        <section class="lg:col-span-6 glass-panel rounded-2xl p-4 sm:p-4.5 flex flex-col justify-between shadow-[0_8px_32px_rgba(0,0,0,0.5)] min-w-0">
+          <div>
+            <div class="flex items-center justify-between mb-4 gap-2">
+              <div class="flex items-center gap-2 min-w-0">
+                <span class="material-symbols-outlined text-[19px] text-cyan-glow shrink-0">attach_file</span>
+                <h2 class="font-heading text-sm sm:text-base font-bold text-white truncate">Source Media Exhibit</h2>
+              </div>
+              <span class="px-2 py-0.5 rounded font-mono text-[10px] font-medium tracking-wide bg-surface-2 border border-border-line text-text-secondary shrink-0" id="source-badge">
                 Awaiting Ingest
               </span>
-</div>
-<!-- Upload Drop Zone Container -->
-<div class="bg-[#11161D] border-2 border-dashed border-[#2A313C] hover:border-[#2457FF] rounded-xl p-10 text-center flex flex-col items-center justify-center transition-colors min-h-[350px]" id="drop-zone">
-<!-- Empty State -->
-<div class="flex flex-col items-center" id="empty-state">
-<!-- Clean line upload icon in rounded circle -->
-<div class="w-12 h-12 rounded-full bg-[#171D25] border border-[#2A313C] flex items-center justify-center text-[#2457FF]">
-<span class="material-symbols-outlined text-[24px]">cloud_upload</span>
-</div>
-<h3 class="text-[18px] font-semibold text-[#F3F5F8] mt-4">Add source media</h3>
-<p class="text-[14px] text-[#A3ACB8] mt-1 max-w-sm">Upload an image to begin authenticity analysis</p>
-<!-- Format Badges -->
-<div class="flex items-center gap-2 mt-4">
-<span class="font-code text-[11px] px-2 py-0.5 rounded bg-[#171D25] border border-[#2A313C] text-[#788493] font-medium">JPG</span>
-<span class="font-code text-[11px] px-2 py-0.5 rounded bg-[#171D25] border border-[#2A313C] text-[#788493] font-medium">PNG</span>
-<span class="font-code text-[11px] px-2 py-0.5 rounded bg-[#171D25] border border-[#2A313C] text-[#788493] font-medium">WEBP</span>
-</div>
-<!-- Primary Action -->
-<input accept="image/*" class="hidden" id="file-input" type="file"/>
-<button class="bg-[#2457FF] hover:bg-[#1d4ed8] text-white px-6 py-2.5 rounded-lg text-sm font-medium mt-5 transition-colors flex items-center gap-2 shadow-sm" id="browse-btn" type="button">
-<span class="material-symbols-outlined text-[18px]">folder_open</span>
-<span>Browse Files</span>
-</button>
-<!-- Secondary Action -->
-<button class="text-xs text-[#2457FF] hover:underline mt-3 cursor-pointer transition-all" id="demo-sample-btn" type="button">
-                  or use demo sample (sample_exhibit_09.png)
-                </button>
-</div>
-<!-- Loaded State Preview (Hidden by default) -->
-<div class="hidden w-full flex-col items-center" id="loaded-state">
-<div class="relative w-full rounded-lg overflow-hidden border border-[#2A313C] bg-[#0D1117] group">
-<img alt="Loaded Exhibit" class="w-full h-56 object-cover object-center" id="preview-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-pcykJMnsLp7DSmd6oRHjncYWG2Frq0TUxaZlOanv_LWqzvWfHK4M_EmDMmxU3Vsst2tMfFJrWSTuH9hCz5Gsh9pjS0mBV_caULb2xi30u-GhZWJ4qt5UNcF2JZRvXqsvwDxbMFzkWmZIvIwuWxf2gZaqKCcqulrWUB96cJniJ5l-1UDxgVnU38EBWXHWcE25rvt2xKnDRPcecrjqfiM2GA8rzuOfDNFUyUsx3IrZA63Dtjtv24H_Cw"/>
-<div class="absolute inset-0 bg-[#0D1117]/70 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-<button class="px-3 py-1.5 rounded bg-[#171D25] border border-[#2A313C] text-xs font-medium text-[#F3F5F8] hover:bg-[#2A313C] flex items-center gap-1.5 transition-colors" id="replace-file-btn" type="button">
-<span class="material-symbols-outlined text-[16px]">sync</span> Replace File
+            </div>
+
+            <!-- Upload Drop Zone Container -->
+            <div class="relative bg-surface-1/70 border-2 border-dashed border-border-line hover:border-electric-violet rounded-xl p-4 sm:p-6 text-center flex flex-col items-center justify-center transition-all min-h-[220px] sm:min-h-[250px] group cursor-pointer w-full min-w-0" id="drop-zone">
+              
+              <!-- Empty State -->
+              <div class="flex flex-col items-center w-full max-w-full" id="empty-state">
+                <div class="w-12 h-12 rounded-xl bg-surface-2 border border-border-glow flex items-center justify-center text-cyan-glow group-hover:scale-105 group-hover:shadow-[0_0_15px_rgba(56,189,248,0.25)] transition-all shrink-0">
+                  <span class="material-symbols-outlined text-[26px]">cloud_upload</span>
+                </div>
+                <h3 class="font-heading text-sm sm:text-base font-bold text-white mt-3 break-words">Select or Drop Evidence File</h3>
+                <p class="text-[11px] sm:text-xs text-text-secondary mt-1 max-w-sm leading-relaxed px-2">
+                  Drag and drop local image file here or browse your file system for cryptographic intake.
+                </p>
+
+                <!-- Supported Formats Badges -->
+                <div class="flex flex-wrap items-center justify-center gap-1.5 mt-3.5">
+                  <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-surface-2 border border-border-line text-text-tertiary">PNG</span>
+                  <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-surface-2 border border-border-line text-text-tertiary">JPG</span>
+                  <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-surface-2 border border-border-line text-text-tertiary">WEBP</span>
+                  <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-surface-2 border border-border-line text-text-tertiary">&lt; 20 MB</span>
+                </div>
+
+                <input accept="image/*" class="hidden" id="file-input" type="file"/>
+                
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-2.5 mt-4 w-full max-w-md">
+                  <button class="w-full sm:w-auto px-4 py-2 rounded-lg bg-cobalt hover:bg-[#1d4ed8] text-white text-xs font-semibold shadow-md transition-all flex items-center justify-center gap-1.5" id="browse-btn" type="button">
+                    <span class="material-symbols-outlined text-[16px]">folder_open</span>
+                    <span>Browse Local Disk</span>
+                  </button>
+                  <button class="text-xs font-mono text-cyan-glow hover:underline py-1 transition-all text-center break-all" id="demo-sample-btn" type="button">
+                    Use Sample Exhibit
+                  </button>
+                </div>
+              </div>
+
+              <!-- Loaded State Preview (Hidden until image selected) -->
+              <div class="hidden w-full flex flex-col items-center" id="loaded-state">
+                <div class="relative w-full rounded-xl overflow-hidden border border-border-line bg-surface-1 group/preview shadow-lg">
+                  <img alt="Loaded Exhibit" class="w-full h-48 sm:h-56 object-contain object-center bg-obsidian" id="preview-img" src=""/>
+                  <div class="absolute inset-0 bg-obsidian/70 backdrop-blur-xs opacity-0 group-hover/preview:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                    <button class="px-3 py-1.5 rounded-lg bg-surface-2 border border-border-glow text-xs font-mono text-white hover:bg-surface-3 flex items-center gap-1.5 transition-all shadow-md" id="replace-file-btn" type="button">
+                      <span class="material-symbols-outlined text-[15px]">sync</span>
+                      <span>Replace File</span>
                     </button>
-</div>
-</div>
-<div class="w-full mt-3 flex items-center justify-between px-3 py-2 rounded bg-[#171D25] border border-[#2A313C] text-xs font-code">
-<span class="text-[#F3F5F8] truncate max-w-[200px]" id="file-name-label">sample_exhibit_09.png</span>
-<span class="text-[#A3ACB8]" id="file-meta-label">4.2 MB · 3840×2160</span>
-</div>
-</div>
-</div>
-</div>
-<!-- Footer hint -->
-<p class="text-xs text-[#788493] mt-6 pt-4 border-t border-[#2A313C]/60 flex items-center gap-2" id="footer-hint">
-<span class="material-symbols-outlined text-[16px] text-[#788493]">info</span>
-<span>When a file is loaded, full resolution preview and observed file metadata will appear here.</span>
-</p>
-</section>
-<!-- RIGHT: Analysis Workflow Panel (45% / 4.5 cols) -->
-<section class="lg:col-span-4 bg-[#171D25] border border-[#2A313C] rounded-[10px] p-8 flex flex-col justify-between min-h-[520px]">
-<div>
-<!-- Header -->
-<div class="flex items-center justify-between mb-8">
-<h2 class="text-[16px] font-semibold text-[#F3F5F8]">Investigation Sequence</h2>
-<span class="px-2.5 py-0.5 rounded text-xs font-medium font-code tracking-wide bg-[#11161D] border border-[#2A313C] text-[#A3ACB8]">
-                Pipeline Ready
-              </span>
-</div>
-<!-- Workflow Stages Timeline -->
-<div class="relative flex flex-col gap-7 pl-2">
-<!-- Connecting Vertical Timeline Line -->
-<div class="absolute left-[19px] top-4 bottom-4 w-[1px] bg-[#2A313C]"></div>
-<!-- Stage 01: Validate source file -->
-<div class="relative flex items-start gap-4" id="stage-1">
-<div class="w-7 h-7 rounded-full bg-[#11161D] border border-[#2457FF] text-[#2457FF] flex items-center justify-center text-xs font-code font-semibold shrink-0 z-10 transition-colors" id="stage-1-icon">
+                  </div>
+                </div>
+
+                <!-- File Metadata Pill -->
+                <div class="w-full mt-3 flex items-center justify-between p-2.5 rounded-lg bg-surface-2 border border-border-line text-xs font-mono gap-2 min-w-0">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span class="material-symbols-outlined text-[15px] text-cyan-glow shrink-0">description</span>
+                    <span class="text-text-primary font-semibold truncate" id="file-name-label">filename.png</span>
+                  </div>
+                  <span class="text-text-tertiary shrink-0" id="file-meta-label">0.0 MB</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="pt-3 mt-3 border-t border-border-line flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-text-tertiary">
+            <span>INSPECTION PROTOCOL: LOCAL BUFFER</span>
+            <span class="text-emerald-status flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-status"></span>NO RETENTION POST-SESSION
+            </span>
+          </div>
+        </section>
+
+        <!-- RIGHT: Forensic Verification Pipeline Steps & Action (min-w-0 prevents grid overflow) -->
+        <section class="lg:col-span-6 glass-panel rounded-2xl p-4 sm:p-4.5 flex flex-col justify-between shadow-[0_8px_32px_rgba(0,0,0,0.5)] min-w-0 w-full">
+          <div class="flex flex-col space-y-3.5 min-w-0">
+            
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2 min-w-0">
+                <span class="material-symbols-outlined text-[19px] text-electric-violet shrink-0">timeline</span>
+                <h2 class="font-heading text-sm sm:text-base font-bold text-white break-words">Forensic Execution Sequence</h2>
+              </div>
+              <span class="font-mono text-[10px] text-text-tertiary shrink-0">3 STAGES</span>
+            </div>
+
+            <!-- Pipeline Cards -->
+            <div class="flex flex-col gap-2.5 min-w-0">
+              
+              <!-- Stage 1: Validation & Checksum -->
+              <div class="p-3 rounded-xl bg-surface-2/80 border border-border-line flex items-start gap-3 min-w-0">
+                <div class="w-6 h-6 rounded-lg bg-emerald-status/15 border border-emerald-status/30 text-emerald-status flex items-center justify-center text-[11px] font-mono font-bold shrink-0 mt-0.5">
                   01
                 </div>
-<div class="flex flex-col flex-1 min-w-0">
-<div class="flex items-center justify-between gap-2">
-<h3 class="text-[15px] font-medium text-[#F3F5F8]" id="stage-1-title">Validate source file</h3>
-<span class="text-[11px] font-code px-2 py-0.5 rounded bg-[#2457FF]/10 text-[#88a5ff] border border-[#2457FF]/30 font-medium" id="stage-1-badge">Ready</span>
-</div>
-<p class="text-[13px] text-[#A3ACB8] mt-1 leading-relaxed">
-                    Compute SHA-256 fingerprint, extract available EXIF headers, and verify bitstream integrity.
+                <div class="flex flex-col flex-1 min-w-0">
+                  <div class="flex flex-wrap items-center justify-between gap-1.5">
+                    <span class="text-xs font-bold text-white break-words">Cryptographic Ingest &amp; Checksum</span>
+                    <span class="font-mono text-[10px] text-emerald-status font-medium shrink-0">Automatic</span>
+                  </div>
+                  <p class="text-[11px] text-text-secondary mt-0.5 leading-relaxed break-words">
+                    Computes authoritative SHA-256 digest, validates magic bytes, and inspects EXIF tags.
                   </p>
-</div>
-</div>
-<!-- Stage 02: Run image classification -->
-<div class="relative flex items-start gap-4" id="stage-2">
-<div class="w-7 h-7 rounded-full bg-[#11161D] border border-[#2A313C] text-[#788493] flex items-center justify-center text-xs font-code font-semibold shrink-0 z-10 transition-colors" id="stage-2-icon">
+                </div>
+              </div>
+
+              <!-- Stage 2: Neural Classifier -->
+              <div class="p-3 rounded-xl bg-surface-2/80 border border-border-line flex items-start gap-3 min-w-0">
+                <div class="w-6 h-6 rounded-lg bg-surface-3 border border-border-glow text-text-tertiary flex items-center justify-center text-[11px] font-mono font-bold shrink-0 mt-0.5" id="stage2Icon">
                   02
                 </div>
-<div class="flex flex-col flex-1 min-w-0">
-<div class="flex items-center justify-between gap-2">
-<h3 class="text-[15px] font-medium text-[#A3ACB8]" id="stage-2-title">Run image classification</h3>
-<span class="text-[11px] font-code px-2 py-0.5 rounded bg-[#11161D] text-[#788493] border border-[#2A313C]" id="stage-2-badge">Pending</span>
-</div>
-<p class="text-[13px] text-[#788493] mt-1 leading-relaxed" id="stage-2-desc">
-                    Evaluate neural feature representations and frequency-domain artifact distributions via local classifier.
+                <div class="flex flex-col flex-1 min-w-0">
+                  <div class="flex flex-wrap items-center justify-between gap-1.5">
+                    <span class="text-xs font-bold text-white break-words" id="stage2Title">ViT Neural Synthesis Evaluation</span>
+                    <span class="font-mono text-[10px] text-text-tertiary font-medium px-2 py-0.5 rounded bg-surface-3 shrink-0" id="stage2Badge">Pending</span>
+                  </div>
+                  <p class="text-[11px] text-text-secondary mt-0.5 leading-relaxed break-words" id="stage2Desc">
+                    Passes RGB tensors through PyTorch ViT feature maps to quantify generative diffusion noise.
                   </p>
-</div>
-</div>
-<!-- Stage 03: Prepare analysis report -->
-<div class="relative flex items-start gap-4" id="stage-3">
-<div class="w-7 h-7 rounded-full bg-[#11161D] border border-[#2A313C] text-[#788493] flex items-center justify-center text-xs font-code font-semibold shrink-0 z-10 transition-colors" id="stage-3-icon">
+                </div>
+              </div>
+
+              <!-- Stage 3: Audit Ledger Sealing -->
+              <div class="p-3 rounded-xl bg-surface-2/80 border border-border-line flex items-start gap-3 min-w-0">
+                <div class="w-6 h-6 rounded-lg bg-surface-3 border border-border-glow text-text-tertiary flex items-center justify-center text-[11px] font-mono font-bold shrink-0 mt-0.5" id="stage3Icon">
                   03
                 </div>
-<div class="flex flex-col flex-1 min-w-0">
-<div class="flex items-center justify-between gap-2">
-<h3 class="text-[15px] font-medium text-[#A3ACB8]" id="stage-3-title">Prepare analysis report</h3>
-<span class="text-[11px] font-code px-2 py-0.5 rounded bg-[#11161D] text-[#788493] border border-[#2A313C]" id="stage-3-badge">Pending</span>
-</div>
-<p class="text-[13px] text-[#788493] mt-1 leading-relaxed" id="stage-3-desc">
-                    Compile classification scores, source metadata, and verifiable findings into exportable report.
+                <div class="flex flex-col flex-1 min-w-0">
+                  <div class="flex flex-wrap items-center justify-between gap-1.5">
+                    <span class="text-xs font-bold text-white break-words" id="stage3Title">Official Investigation Report</span>
+                    <span class="font-mono text-[10px] text-text-tertiary font-medium px-2 py-0.5 rounded bg-surface-3 shrink-0" id="stage3Badge">Queued</span>
+                  </div>
+                  <p class="text-[11px] text-text-secondary mt-0.5 leading-relaxed break-words" id="stage3Desc">
+                    Generates structured forensic dossier with SHA-256 integrity digest and downloadable certificate.
                   </p>
-</div>
-</div>
-</div>
-</div>
-<!-- Bottom Action Area -->
-<div class="mt-8 flex flex-col gap-2.5">
-<button class="w-full bg-[#2457FF]/40 text-white/50 cursor-not-allowed py-3 rounded-lg font-medium text-center flex items-center justify-center gap-2 transition-all text-sm" disabled="" id="cta-button">
-<span id="cta-text">Analyze Image</span>
-<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-</button>
-<p class="text-xs text-[#788493] text-center font-normal" id="cta-help">
-              Select or upload an exhibit to initiate analysis.
-            </p>
-</div>
-</section>
-</div>
-<!-- Privacy Notice at bottom -->
-<footer class="mt-6 p-4 bg-[#171D25]/60 border border-[#2A313C] rounded-[10px] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#A3ACB8]">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-[16px] text-[#788493] shrink-0">info</span>
-<span>Images are analyzed locally in this prototype. Model predictions are investigative indicators, not definitive proof of authenticity.</span>
-</div>
-<div class="inline-flex items-center gap-2 shrink-0">
-<span class="w-1.5 h-1.5 rounded-full bg-[#bef532]"></span>
-<span class="font-code text-[11px] text-[#A3ACB8]">Local Runtime (PyTorch Cached)</span>
-</div>
-</footer>
-</main>
-</div>
-<!-- Interactive State Logic -->
-<script>
-    (function() {
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Pre-Execution Integrity Notice -->
+            <div class="p-3 rounded-xl bg-surface-1 border border-border-line flex items-center gap-2.5 text-xs font-mono text-text-tertiary min-w-0">
+              <span class="material-symbols-outlined text-[17px] text-cyan-glow shrink-0">shield</span>
+              <span class="leading-normal text-[11px]">All analyzed exhibits are indexed with SHA-256 integrity digests in session ledger.</span>
+            </div>
+
+          </div>
+
+          <!-- Action Section -->
+          <div class="pt-4 mt-4 border-t border-border-line flex flex-col gap-2">
+            <button id="cta-btn" class="w-full h-11 rounded-xl bg-gradient-to-r from-cobalt via-electric-violet to-magenta hover:opacity-95 text-white font-heading font-bold text-xs sm:text-sm tracking-wide shadow-[0_0_20px_rgba(139,92,246,0.3)] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+              <span>Execute Forensic Investigation</span>
+              <span class="material-symbols-outlined text-[17px]">arrow_forward</span>
+            </button>
+            <span class="text-[11px] font-mono text-text-tertiary text-center" id="cta-help">
+              Select or drop an evidence file to begin analysis
+            </span>
+          </div>
+
+        </section>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Real File Upload & Execution Logic -->
+  <script>
+    (function () {
       const browseBtn = document.getElementById('browse-btn');
       const fileInput = document.getElementById('file-input');
-      const demoBtn = document.getElementById('demo-sample-btn');
+      const sampleBtn = document.getElementById('demo-sample-btn');
       const replaceBtn = document.getElementById('replace-file-btn');
       const emptyState = document.getElementById('empty-state');
       const loadedState = document.getElementById('loaded-state');
+      const previewImg = document.getElementById('preview-img');
+      const fileNameLabel = document.getElementById('file-name-label');
+      const fileMetaLabel = document.getElementById('file-meta-label');
       const sourceBadge = document.getElementById('source-badge');
-      const footerHint = document.getElementById('footer-hint');
-      const ctaBtn = document.getElementById('cta-button');
+      const ctaBtn = document.getElementById('cta-btn');
       const ctaHelp = document.getElementById('cta-help');
-      const ctaText = document.getElementById('cta-text');
 
-      const stage2Title = document.getElementById('stage-2-title');
-      const stage2Badge = document.getElementById('stage-2-badge');
-      const stage2Icon = document.getElementById('stage-2-icon');
-      const stage2Desc = document.getElementById('stage-2-desc');
+      const stage2Icon = document.getElementById('stage2Icon');
+      const stage2Title = document.getElementById('stage2Title');
+      const stage2Badge = document.getElementById('stage2Badge');
+      const stage2Desc = document.getElementById('stage2Desc');
 
-      const stage3Title = document.getElementById('stage-3-title');
-      const stage3Badge = document.getElementById('stage-3-badge');
-      const stage3Icon = document.getElementById('stage-3-icon');
-      const stage3Desc = document.getElementById('stage-3-desc');
+      const stage3Icon = document.getElementById('stage3Icon');
+      const stage3Title = document.getElementById('stage3Title');
+      const stage3Badge = document.getElementById('stage3Badge');
+      const stage3Desc = document.getElementById('stage3Desc');
 
-      let isLoaded = false;
       let stagedFile = null;
+      let isLoaded = false;
 
-      function setFileLoaded(name, meta, fileObj) {
+      function setFileLoaded(name, meta, file) {
         isLoaded = true;
-        stagedFile = fileObj || stagedFile;
-        emptyState.classList.add('hidden');
-        loadedState.classList.remove('hidden');
-        loadedState.classList.add('flex');
+        stagedFile = file;
+        fileNameLabel.textContent = name;
+        fileMetaLabel.textContent = meta;
+        sourceBadge.textContent = 'Evidence Staged';
+        sourceBadge.className = 'px-2.5 py-1 rounded font-mono text-[11px] font-medium tracking-wide bg-cyan-glow/15 border border-cyan-glow/30 text-cyan-glow';
 
-        const previewImg = document.getElementById('preview-img');
-        if (fileObj && previewImg) {
-          try {
-            previewImg.src = URL.createObjectURL(fileObj);
-          } catch(e) {}
-        }
-
-        document.getElementById('file-name-label').textContent = name;
-        document.getElementById('file-meta-label').textContent = meta;
-
-        sourceBadge.textContent = 'Ingested';
-        sourceBadge.className = 'px-2.5 py-0.5 rounded text-xs font-medium font-code tracking-wide bg-[#2457FF]/10 text-[#88a5ff] border border-[#2457FF]/30';
-
-        footerHint.innerHTML = '<span class="material-symbols-outlined text-[16px] text-[#bef532]">check_circle</span><span class="text-[#A3ACB8]">Bitstream loaded and staged in local memory. SHA-256 computed.</span>';
-
-        // Unlock CTA
-        ctaBtn.disabled = false;
-        ctaBtn.className = 'w-full bg-[#2457FF] hover:bg-[#1d4ed8] text-white cursor-pointer py-3 rounded-lg font-medium text-center flex items-center justify-center gap-2 transition-all text-sm shadow-md';
-        ctaHelp.textContent = 'Exhibit verified and ready for deep classification run.';
-        ctaHelp.className = 'text-xs text-[#A3ACB8] text-center font-normal';
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          previewImg.src = e.target.result;
+          emptyState.classList.add('hidden');
+          loadedState.classList.remove('hidden');
+          ctaHelp.textContent = 'Ready for investigation pass. Click above to proceed.';
+          ctaHelp.className = 'text-[11px] font-mono text-cyan-glow text-center';
+        };
+        reader.readAsDataURL(file);
       }
 
       function resetFile() {
         isLoaded = false;
         stagedFile = null;
-        if (fileInput) fileInput.value = '';
-        const previewImg = document.getElementById('preview-img');
-        if (previewImg) previewImg.src = '';
-        loadedState.classList.add('hidden');
-        loadedState.classList.remove('flex');
+        fileInput.value = '';
         emptyState.classList.remove('hidden');
-
+        loadedState.classList.add('hidden');
         sourceBadge.textContent = 'Awaiting Ingest';
-        sourceBadge.className = 'px-2.5 py-0.5 rounded text-xs font-medium font-code tracking-wide bg-[#11161D] border border-[#2A313C] text-[#A3ACB8]';
-
-        footerHint.innerHTML = '<span class="material-symbols-outlined text-[16px] text-[#788493]">info</span><span>When a file is loaded, full resolution preview and observed file metadata will appear here.</span>';
-
-        ctaBtn.disabled = true;
-        ctaBtn.className = 'w-full bg-[#2457FF]/40 text-white/50 cursor-not-allowed py-3 rounded-lg font-medium text-center flex items-center justify-center gap-2 transition-all text-sm';
-        ctaText.textContent = 'Analyze Image';
-        ctaHelp.textContent = 'Select or upload an exhibit to initiate analysis.';
-        ctaHelp.className = 'text-xs text-[#788493] text-center font-normal';
-
-        // Reset stages
-        stage2Title.className = 'text-[15px] font-medium text-[#A3ACB8]';
-        stage2Badge.className = 'text-[11px] font-code px-2 py-0.5 rounded bg-[#11161D] text-[#788493] border border-[#2A313C]';
-        stage2Badge.textContent = 'Pending';
-        stage2Icon.className = 'w-7 h-7 rounded-full bg-[#11161D] border border-[#2A313C] text-[#788493] flex items-center justify-center text-xs font-code font-semibold shrink-0 z-10 transition-colors';
-        stage2Desc.className = 'text-[13px] text-[#788493] mt-1 leading-relaxed';
-
-        stage3Title.className = 'text-[15px] font-medium text-[#A3ACB8]';
-        stage3Badge.className = 'text-[11px] font-code px-2 py-0.5 rounded bg-[#11161D] text-[#788493] border border-[#2A313C]';
-        stage3Badge.textContent = 'Pending';
-        stage3Icon.className = 'w-7 h-7 rounded-full bg-[#11161D] border border-[#2A313C] text-[#788493] flex items-center justify-center text-xs font-code font-semibold shrink-0 z-10 transition-colors';
-        stage3Desc.className = 'text-[13px] text-[#788493] mt-1 leading-relaxed';
+        sourceBadge.className = 'px-2.5 py-1 rounded font-mono text-[11px] font-medium tracking-wide bg-surface-2 border border-border-line text-text-secondary';
+        ctaHelp.textContent = 'Select or drop an evidence file to begin analysis';
+        ctaHelp.className = 'text-[11px] font-mono text-text-tertiary text-center';
       }
 
-      browseBtn.addEventListener('click', () => fileInput.click());
-      demoBtn.addEventListener('click', async () => {
+      browseBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        fileInput.click();
+      });
+
+      sampleBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
         const canvas = document.createElement('canvas');
         canvas.width = 1200; canvas.height = 800;
         const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, 1200, 800);
+        ctx.fillStyle = '#070A0F'; ctx.fillRect(0, 0, 1200, 800);
         ctx.fillStyle = '#38bdf8'; ctx.font = 'bold 36px monospace';
         ctx.fillText('EXHIBIT #09 · DIGITAL FORENSICS WORKSTATION', 80, 400);
         const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
         stagedFile = new File([blob], 'sample_exhibit_09.png', { type: 'image/png' });
         setFileLoaded('sample_exhibit_09.png', '4.2 MB · 3840×2160', stagedFile);
       });
-      replaceBtn.addEventListener('click', resetFile);
+
+      replaceBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        resetFile();
+      });
 
       fileInput.addEventListener('change', (e) => {
         if (e.target.files && e.target.files[0]) {
           const file = e.target.files[0];
           stagedFile = file;
-          const sizeMb = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+          const sizeMb = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
           setFileLoaded(file.name, sizeMb + ' · Native', file);
         }
       });
@@ -371,67 +437,95 @@
       const dropZone = document.getElementById('drop-zone');
       dropZone.addEventListener('dragover', (e) => {
         e.preventDefault();
-        dropZone.classList.add('border-[#2457FF]');
+        dropZone.classList.add('border-electric-violet', 'bg-electric-violet/10');
       });
       dropZone.addEventListener('dragleave', (e) => {
         e.preventDefault();
-        dropZone.classList.remove('border-[#2457FF]');
+        dropZone.classList.remove('border-electric-violet', 'bg-electric-violet/10');
       });
       dropZone.addEventListener('drop', (e) => {
         e.preventDefault();
-        dropZone.classList.remove('border-[#2457FF]');
+        dropZone.classList.remove('border-electric-violet', 'bg-electric-violet/10');
         if (e.dataTransfer.files && e.dataTransfer.files[0]) {
           const file = e.dataTransfer.files[0];
           stagedFile = file;
-          const sizeMb = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+          const sizeMb = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
           setFileLoaded(file.name, sizeMb + ' · Native', file);
+        }
+      });
+
+      dropZone.addEventListener('click', (e) => {
+        if (!isLoaded && !e.target.closest('button')) {
+          fileInput.click();
         }
       });
 
       // Analyze action — real API upload
       ctaBtn.addEventListener('click', async () => {
-        if (!isLoaded) return;
+        if (!isLoaded) {
+          fileInput.click();
+          return;
+        }
         const file = stagedFile || (fileInput.files && fileInput.files[0]);
         if (!file) return;
-        ctaBtn.disabled = true;
-        ctaBtn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Uploading...</span>';
 
-        stage2Icon.className = 'w-7 h-7 rounded-full bg-[#11161D] border border-[#2457FF] text-[#2457FF] flex items-center justify-center text-xs font-code font-semibold shrink-0 z-10 transition-colors';
-        stage2Title.className = 'text-[15px] font-medium text-[#F3F5F8]';
-        stage2Badge.className = 'text-[11px] font-code px-2 py-0.5 rounded bg-[#2457FF]/15 text-[#88a5ff] border border-[#2457FF]/30 font-medium animate-pulse';
+        ctaBtn.disabled = true;
+        ctaBtn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Ingesting &amp; Sealing...</span>';
+
+        stage2Icon.className = 'w-7 h-7 rounded-lg bg-electric-violet/20 border border-electric-violet text-electric-violet flex items-center justify-center text-xs font-mono font-bold shrink-0 mt-0.5';
+        stage2Badge.className = 'font-mono text-[10px] px-2 py-0.5 rounded bg-electric-violet/15 text-electric-violet border border-electric-violet/30 animate-pulse';
         stage2Badge.textContent = 'Running';
-        stage2Desc.className = 'text-[13px] text-[#A3ACB8] mt-1 leading-relaxed';
 
         try {
           const fd = new FormData();
           fd.append('file', file);
           const res = await fetch('/api/analyze', { method: 'POST', body: fd });
-          if (!res.ok) { const e = await res.json(); throw new Error(e.detail || 'Upload failed'); }
+          if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            throw new Error(errData.detail || 'Upload failed');
+          }
           const data = await res.json();
 
-          stage2Badge.className = 'text-[11px] font-code px-2 py-0.5 rounded bg-[#bef532]/10 text-[#bef532] border border-[#bef532]/30 font-medium';
+          stage2Badge.className = 'font-mono text-[10px] px-2 py-0.5 rounded bg-emerald-status/15 text-emerald-status border border-emerald-status/30';
           stage2Badge.textContent = 'Complete';
-          stage3Icon.className = 'w-7 h-7 rounded-full bg-[#11161D] border border-[#2457FF] text-[#2457FF] flex items-center justify-center text-xs font-code font-semibold shrink-0 z-10 transition-colors';
-          stage3Title.className = 'text-[15px] font-medium text-[#F3F5F8]';
-          stage3Badge.className = 'text-[11px] font-code px-2 py-0.5 rounded bg-[#bef532]/10 text-[#bef532] border border-[#bef532]/30 font-medium';
-          stage3Badge.textContent = 'Ready';
-          stage3Desc.className = 'text-[13px] text-[#A3ACB8] mt-1 leading-relaxed';
 
-          ctaBtn.disabled = false;
-          ctaBtn.className = 'w-full bg-[#2457FF] hover:bg-[#1d4ed8] text-white cursor-pointer py-3 rounded-lg font-medium text-center flex items-center justify-center gap-2 transition-all text-sm shadow-md';
-          ctaBtn.innerHTML = '<span>View Analysis Progress</span><span class="material-symbols-outlined text-[18px]">open_in_new</span>';
-          ctaHelp.textContent = 'Analysis submitted. Navigating to progress screen...';
-          ctaHelp.className = 'text-xs text-[#bef532] text-center font-normal';
+          stage3Icon.className = 'w-7 h-7 rounded-lg bg-cyan-glow/20 border border-cyan-glow text-cyan-glow flex items-center justify-center text-xs font-mono font-bold shrink-0 mt-0.5';
+          stage3Badge.className = 'font-mono text-[10px] px-2 py-0.5 rounded bg-cyan-glow/15 text-cyan-glow border border-cyan-glow/30';
+          stage3Badge.textContent = 'Navigating';
 
-          setTimeout(() => { window.location.href = '/progress/?job_id=' + data.job_id; }, 800);
+          ctaHelp.textContent = 'Exhibit sealed. Redirecting to live 3D investigation...';
+          ctaHelp.className = 'text-[11px] font-mono text-emerald-status text-center';
+
+          setTimeout(() => {
+            window.location.href = '/progress/?job_id=' + data.job_id;
+          }, 600);
         } catch (err) {
           ctaBtn.disabled = false;
-          ctaBtn.className = 'w-full bg-[#2457FF] hover:bg-[#1d4ed8] text-white cursor-pointer py-3 rounded-lg font-medium text-center flex items-center justify-center gap-2 transition-all text-sm shadow-md';
-          ctaBtn.innerHTML = '<span>Retry Analysis</span><span class="material-symbols-outlined text-[18px]">refresh</span>';
+          ctaBtn.innerHTML = '<span>Retry Investigation</span><span class="material-symbols-outlined text-[18px]">refresh</span>';
           ctaHelp.textContent = 'Error: ' + err.message;
-          ctaHelp.className = 'text-xs text-[#FF5C68] text-center font-normal';
+          ctaHelp.className = 'text-[11px] font-mono text-rose-status text-center';
         }
       });
+
+      // Mobile Sidebar Drawer Toggle
+      const mobileToggle = document.getElementById('mobile-sidebar-toggle');
+      const mobileClose = document.getElementById('mobile-sidebar-close');
+      const mobileBackdrop = document.getElementById('mobile-sidebar-backdrop');
+      const sidebar = document.getElementById('main-sidebar');
+
+      function openSidebar() {
+        if (sidebar) sidebar.classList.remove('-translate-x-full');
+        if (mobileBackdrop) mobileBackdrop.classList.remove('hidden');
+      }
+      function closeSidebar() {
+        if (sidebar) sidebar.classList.add('-translate-x-full');
+        if (mobileBackdrop) mobileBackdrop.classList.add('hidden');
+      }
+
+      if (mobileToggle) mobileToggle.addEventListener('click', openSidebar);
+      if (mobileClose) mobileClose.addEventListener('click', closeSidebar);
+      if (mobileBackdrop) mobileBackdrop.addEventListener('click', closeSidebar);
     })();
   </script>
-</body></html>
+</body>
+</html>
