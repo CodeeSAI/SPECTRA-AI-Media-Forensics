@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_dashboard" name="shell-type"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Manrope:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#b8c3ff",
+            "primary-container": "#2457ff",
+            surface: "#0f141b",
+            "surface-container": "#171D25",
+            "surface-container-low": "#11161D",
+            "on-surface": "#F3F5F8",
+            "on-surface-variant": "#A3ACB8",
+            outline: "#788493",
+            "outline-variant": "#2A313C",
+            secondary: "#bef532"
+          },
+          fontFamily: {
+            headline: ["Manrope", "sans-serif"],
+            body: ["Inter", "sans-serif"],
+            code: ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-[#11161D] font-body text-[#F3F5F8] antialiased selection:bg-[#2457FF]/30 selection:text-white min-h-screen flex">
+<!-- Left Sidebar (228px, #0D1117, border #2A313C) -->
+<aside class="fixed left-0 top-0 h-full w-[228px] bg-[#0D1117] border-r border-[#2A313C] z-50 flex flex-col justify-between select-none">
+<div class="flex flex-col">
+<!-- Logo Header -->
+<div class="h-14 px-4 flex items-center gap-3 border-b border-[#2A313C]">
+<img alt="SPECTRA Logo" class="h-6 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XvrSfEm4eUtpOr_7XYW4JLhd4vd2Q8U9uUZDyhpjOmrng5nPMuQRW3Sy1Tt-lRfnLuCL6Cc_aZMo6f9IiRSlCOgJn6EtwjfXiB0Fp9e3A2GHCFGhQ65NkqF-0EeQxGEOGi6_a2TZ39Yx6BW0ciUUXYs-r7ukpVRe3IpslGamu3CAleEPc6abUxjPC68Xv0TvmYypt5JyJOpVTJuZRt6YUiE3C1p1B6iPqPvkWxVTwf0VXTvZG_oXfimYMQ"/>
+<div class="flex flex-col min-w-0">
+<span class="font-headline text-[13px] font-semibold tracking-wider text-[#F3F5F8] uppercase leading-none">SPECTRA</span>
+<span class="font-code text-[9px] tracking-widest text-[#788493] uppercase mt-1 leading-none">AI MEDIA FORENSICS</span>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="flex flex-col pt-3 px-2 gap-1">
+<a class="group flex items-center h-10 px-3 rounded text-[#A3ACB8] hover:text-[#F3F5F8] hover:bg-[#171D25] transition-all text-sm" href="/overview/">
+<span class="material-symbols-outlined text-[18px] mr-3 text-[#788493] group-hover:text-[#F3F5F8] transition-colors">dashboard</span>
+<span>Overview</span>
+</a>
+<a aria-current="page" class="group flex items-center h-10 px-3 rounded transition-all bg-[#2457FF]/15 text-[#88a5ff] border-l-[3px] border-[#2457FF] font-medium text-sm" href="/analyze/">
+<span class="material-symbols-outlined text-[18px] mr-3 text-[#2457FF]">add_photo_alternate</span>
+<span class="text-[#F3F5F8]">Analyze Media</span>
+</a>
+<a class="group flex items-center h-10 px-3 rounded text-[#A3ACB8] hover:text-[#F3F5F8] hover:bg-[#171D25] transition-all text-sm" href="/reports/">
+<span class="material-symbols-outlined text-[18px] mr-3 text-[#788493] group-hover:text-[#F3F5F8] transition-colors">policy</span>
+<span>Investigation Reports</span>
+</a>
+</nav>
+</div>
+<!-- Bottom Sidebar Status & Settings -->
+<div class="flex flex-col px-2 pb-4 gap-2 border-t border-[#2A313C] pt-3">
+<a class="group flex items-center h-10 px-3 rounded text-[#A3ACB8] hover:text-[#F3F5F8] hover:bg-[#171D25] transition-all text-sm" href="#">
+<span class="material-symbols-outlined text-[18px] mr-3 text-[#788493] group-hover:text-[#F3F5F8] transition-colors">settings</span>
+<span>Settings</span>
+</a>
+<div class="flex items-center px-3 py-1.5 gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-[#bef532] shrink-0"></span>
+<span class="font-code text-[11px] tracking-wider text-[#A3ACB8] uppercase font-medium">LOCAL PROCESSING</span>
+</div>
+</div>
+</aside>
+<!-- Main Canvas Container -->
+<div class="pl-[228px] w-full min-h-screen flex flex-col bg-[#11161D]">
+<!-- Top Bar (56px, #11161D, border-b #2A313C) -->
+<header class="h-14 bg-[#11161D] border-b border-[#2A313C] flex items-center justify-between px-8 select-none sticky top-0 z-40">
+<div class="flex items-center gap-3">
+<h2 class="text-sm font-semibold text-[#F3F5F8] tracking-tight">Analyze Media</h2>
+</div>
+<div class="flex items-center gap-3">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#2A313C] bg-[#0D1117]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#bef532]"></span>
+<span class="font-code text-[11px] text-[#A3ACB8] uppercase tracking-wider font-medium">Local Analysis</span>
+</div>
+</div>
+</header>
+<!-- Page Content (padding 32px) -->
+<main class="p-8 max-w-[1440px] w-full mx-auto flex flex-col flex-1">
+<!-- Page Header -->
+<div class="flex flex-col gap-1 mb-6">
+<h1 class="text-[28px] font-semibold text-[#F3F5F8] tracking-tight font-headline">Analyze Media</h1>
+<p class="text-[14px] text-[#A3ACB8]">Examine an image and review its available authenticity signals.</p>
+</div>
+<!-- Two-column Investigation Workspace (55/45 Split, gap 24px) -->
+<div class="grid grid-cols-1 lg:grid-cols-10 gap-6 items-stretch">
+<!-- LEFT: Source Media Panel (55% / 5.5 cols -> lg:col-span-5 or lg:w- balanced via 11-col/custom split: lg:col-span-11 grid / flex) -->
+<section class="lg:col-span-6 bg-[#171D25] border border-[#2A313C] rounded-[10px] p-8 flex flex-col justify-between min-h-[520px]">
+<div>
+<!-- Header -->
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-[16px] font-semibold text-[#F3F5F8]">Source Media</h2>
+<span class="px-2.5 py-0.5 rounded text-xs font-medium font-code tracking-wide bg-[#11161D] border border-[#2A313C] text-[#A3ACB8]" id="source-badge">
+                Awaiting Ingest
+              </span>
+</div>
+<!-- Upload Drop Zone Container -->
+<div class="bg-[#11161D] border-2 border-dashed border-[#2A313C] hover:border-[#2457FF] rounded-xl p-10 text-center flex flex-col items-center justify-center transition-colors min-h-[350px]" id="drop-zone">
+<!-- Empty State -->
+<div class="flex flex-col items-center" id="empty-state">
+<!-- Clean line upload icon in rounded circle -->
+<div class="w-12 h-12 rounded-full bg-[#171D25] border border-[#2A313C] flex items-center justify-center text-[#2457FF]">
+<span class="material-symbols-outlined text-[24px]">cloud_upload</span>
+</div>
+<h3 class="text-[18px] font-semibold text-[#F3F5F8] mt-4">Add source media</h3>
+<p class="text-[14px] text-[#A3ACB8] mt-1 max-w-sm">Upload an image to begin authenticity analysis</p>
+<!-- Format Badges -->
+<div class="flex items-center gap-2 mt-4">
+<span class="font-code text-[11px] px-2 py-0.5 rounded bg-[#171D25] border border-[#2A313C] text-[#788493] font-medium">JPG</span>
+<span class="font-code text-[11px] px-2 py-0.5 rounded bg-[#171D25] border border-[#2A313C] text-[#788493] font-medium">PNG</span>
+<span class="font-code text-[11px] px-2 py-0.5 rounded bg-[#171D25] border border-[#2A313C] text-[#788493] font-medium">WEBP</span>
+</div>
+<!-- Primary Action -->
+<input accept="image/*" class="hidden" id="file-input" type="file"/>
+<button class="bg-[#2457FF] hover:bg-[#1d4ed8] text-white px-6 py-2.5 rounded-lg text-sm font-medium mt-5 transition-colors flex items-center gap-2 shadow-sm" id="browse-btn" type="button">
+<span class="material-symbols-outlined text-[18px]">folder_open</span>
+<span>Browse Files</span>
+</button>
+<!-- Secondary Action -->
+<button class="text-xs text-[#2457FF] hover:underline mt-3 cursor-pointer transition-all" id="demo-sample-btn" type="button">
+                  or use demo sample (sample_exhibit_09.png)
+                </button>
+</div>
+<!-- Loaded State Preview (Hidden by default) -->
+<div class="hidden w-full flex-col items-center" id="loaded-state">
+<div class="relative w-full rounded-lg overflow-hidden border border-[#2A313C] bg-[#0D1117] group">
+<img alt="Loaded Exhibit" class="w-full h-56 object-cover object-center" id="preview-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-pcykJMnsLp7DSmd6oRHjncYWG2Frq0TUxaZlOanv_LWqzvWfHK4M_EmDMmxU3Vsst2tMfFJrWSTuH9hCz5Gsh9pjS0mBV_caULb2xi30u-GhZWJ4qt5UNcF2JZRvXqsvwDxbMFzkWmZIvIwuWxf2gZaqKCcqulrWUB96cJniJ5l-1UDxgVnU38EBWXHWcE25rvt2xKnDRPcecrjqfiM2GA8rzuOfDNFUyUsx3IrZA63Dtjtv24H_Cw"/>
+<div class="absolute inset-0 bg-[#0D1117]/70 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+<button class="px-3 py-1.5 rounded bg-[#171D25] border border-[#2A313C] text-xs font-medium text-[#F3F5F8] hover:bg-[#2A313C] flex items-center gap-1.5 transition-colors" id="replace-file-btn" type="button">
+<span class="material-symbols-outlined text-[16px]">sync</span> Replace File
+                    </button>
+</div>
+</div>
+<div class="w-full mt-3 flex items-center justify-between px-3 py-2 rounded bg-[#171D25] border border-[#2A313C] text-xs font-code">
+<span class="text-[#F3F5F8] truncate max-w-[200px]" id="file-name-label">sample_exhibit_09.png</span>
+<span class="text-[#A3ACB8]" id="file-meta-label">4.2 MB · 3840×2160</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer hint -->
+<p class="text-xs text-[#788493] mt-6 pt-4 border-t border-[#2A313C]/60 flex items-center gap-2" id="footer-hint">
+<span class="material-symbols-outlined text-[16px] text-[#788493]">info</span>
+<span>When a file is loaded, full resolution preview and observed file metadata will appear here.</span>
+</p>
+</section>
+<!-- RIGHT: Analysis Workflow Panel (45% / 4.5 cols) -->
+<section class="lg:col-span-4 bg-[#171D25] border border-[#2A313C] rounded-[10px] p-8 flex flex-col justify-between min-h-[520px]">
+<div>
+<!-- Header -->
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-[16px] font-semibold text-[#F3F5F8]">Investigation Sequence</h2>
+<span class="px-2.5 py-0.5 rounded text-xs font-medium font-code tracking-wide bg-[#11161D] border border-[#2A313C] text-[#A3ACB8]">
+                Pipeline Ready
+              </span>
+</div>
+<!-- Workflow Stages Timeline -->
+<div class="relative flex flex-col gap-7 pl-2">
+<!-- Connecting Vertical Timeline Line -->
+<div class="absolute left-[19px] top-4 bottom-4 w-[1px] bg-[#2A313C]"></div>
+<!-- Stage 01: Validate source file -->
+<div class="relative flex items-start gap-4" id="stage-1">
+<div class="w-7 h-7 rounded-full bg-[#11161D] border border-[#2457FF] text-[#2457FF] flex items-center justify-center text-xs font-code font-semibold shrink-0 z-10 transition-colors" id="stage-1-icon">
+                  01
+                </div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<h3 class="text-[15px] font-medium text-[#F3F5F8]" id="stage-1-title">Validate source file</h3>
+<span class="text-[11px] font-code px-2 py-0.5 rounded bg-[#2457FF]/10 text-[#88a5ff] border border-[#2457FF]/30 font-medium" id="stage-1-badge">Ready</span>
+</div>
+<p class="text-[13px] text-[#A3ACB8] mt-1 leading-relaxed">
+                    Compute SHA-256 fingerprint, extract available EXIF headers, and verify bitstream integrity.
+                  </p>
+</div>
+</div>
+<!-- Stage 02: Run image classification -->
+<div class="relative flex items-start gap-4" id="stage-2">
+<div class="w-7 h-7 rounded-full bg-[#11161D] border border-[#2A313C] text-[#788493] flex items-center justify-center text-xs font-code font-semibold shrink-0 z-10 transition-colors" id="stage-2-icon">
+                  02
+                </div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<h3 class="text-[15px] font-medium text-[#A3ACB8]" id="stage-2-title">Run image classification</h3>
+<span class="text-[11px] font-code px-2 py-0.5 rounded bg-[#11161D] text-[#788493] border border-[#2A313C]" id="stage-2-badge">Pending</span>
+</div>
+<p class="text-[13px] text-[#788493] mt-1 leading-relaxed" id="stage-2-desc">
+                    Evaluate neural feature representations and frequency-domain artifact distributions via local classifier.
+                  </p>
+</div>
+</div>
+<!-- Stage 03: Prepare analysis report -->
+<div class="relative flex items-start gap-4" id="stage-3">
+<div class="w-7 h-7 rounded-full bg-[#11161D] border border-[#2A313C] text-[#788493] flex items-center justify-center text-xs font-code font-semibold shrink-0 z-10 transition-colors" id="stage-3-icon">
+                  03
+                </div>
+<div class="flex flex-col flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<h3 class="text-[15px] font-medium text-[#A3ACB8]" id="stage-3-title">Prepare analysis report</h3>
+<span class="text-[11px] font-code px-2 py-0.5 rounded bg-[#11161D] text-[#788493] border border-[#2A313C]" id="stage-3-badge">Pending</span>
+</div>
+<p class="text-[13px] text-[#788493] mt-1 leading-relaxed" id="stage-3-desc">
+                    Compile classification scores, source metadata, and verifiable findings into exportable report.
+                  </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Action Area -->
+<div class="mt-8 flex flex-col gap-2.5">
+<button class="w-full bg-[#2457FF]/40 text-white/50 cursor-not-allowed py-3 rounded-lg font-medium text-center flex items-center justify-center gap-2 transition-all text-sm" disabled="" id="cta-button">
+<span id="cta-text">Analyze Image</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+<p class="text-xs text-[#788493] text-center font-normal" id="cta-help">
+              Select or upload an exhibit to initiate analysis.
+            </p>
+</div>
+</section>
+</div>
+<!-- Privacy Notice at bottom -->
+<footer class="mt-6 p-4 bg-[#171D25]/60 border border-[#2A313C] rounded-[10px] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#A3ACB8]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-[#788493] shrink-0">info</span>
+<span>Images are analyzed locally in this prototype. Model predictions are investigative indicators, not definitive proof of authenticity.</span>
+</div>
+<div class="inline-flex items-center gap-2 shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-[#bef532]"></span>
+<span class="font-code text-[11px] text-[#A3ACB8]">Local Runtime (PyTorch Cached)</span>
+</div>
+</footer>
+</main>
+</div>
+<!-- Interactive State Logic -->
+<script>
+    (function() {
+      const browseBtn = document.getElementById('browse-btn');
+      const fileInput = document.getElementById('file-input');
+      const demoBtn = document.getElementById('demo-sample-btn');
+      const replaceBtn = document.getElementById('replace-file-btn');
+      const emptyState = document.getElementById('empty-state');
+      const loadedState = document.getElementById('loaded-state');
+      const sourceBadge = document.getElementById('source-badge');
+      const footerHint = document.getElementById('footer-hint');
+      const ctaBtn = document.getElementById('cta-button');
+      const ctaHelp = document.getElementById('cta-help');
+      const ctaText = document.getElementById('cta-text');
+
+      const stage2Title = document.getElementById('stage-2-title');
+      const stage2Badge = document.getElementById('stage-2-badge');
+      const stage2Icon = document.getElementById('stage-2-icon');
+      const stage2Desc = document.getElementById('stage-2-desc');
+
+      const stage3Title = document.getElementById('stage-3-title');
+      const stage3Badge = document.getElementById('stage-3-badge');
+      const stage3Icon = document.getElementById('stage-3-icon');
+      const stage3Desc = document.getElementById('stage-3-desc');
+
+      let isLoaded = false;
+      let stagedFile = null;
+
+      function setFileLoaded(name, meta, fileObj) {
+        isLoaded = true;
+        stagedFile = fileObj || stagedFile;
+        emptyState.classList.add('hidden');
+        loadedState.classList.remove('hidden');
+        loadedState.classList.add('flex');
+
+        const previewImg = document.getElementById('preview-img');
+        if (fileObj && previewImg) {
+          try {
+            previewImg.src = URL.createObjectURL(fileObj);
+          } catch(e) {}
+        }
+
+        document.getElementById('file-name-label').textContent = name;
+        document.getElementById('file-meta-label').textContent = meta;
+
+        sourceBadge.textContent = 'Ingested';
+        sourceBadge.className = 'px-2.5 py-0.5 rounded text-xs font-medium font-code tracking-wide bg-[#2457FF]/10 text-[#88a5ff] border border-[#2457FF]/30';
+
+        footerHint.innerHTML = '<span class="material-symbols-outlined text-[16px] text-[#bef532]">check_circle</span><span class="text-[#A3ACB8]">Bitstream loaded and staged in local memory. SHA-256 computed.</span>';
+
+        // Unlock CTA
+        ctaBtn.disabled = false;
+        ctaBtn.className = 'w-full bg-[#2457FF] hover:bg-[#1d4ed8] text-white cursor-pointer py-3 rounded-lg font-medium text-center flex items-center justify-center gap-2 transition-all text-sm shadow-md';
+        ctaHelp.textContent = 'Exhibit verified and ready for deep classification run.';
+        ctaHelp.className = 'text-xs text-[#A3ACB8] text-center font-normal';
+      }
+
+      function resetFile() {
+        isLoaded = false;
+        stagedFile = null;
+        if (fileInput) fileInput.value = '';
+        const previewImg = document.getElementById('preview-img');
+        if (previewImg) previewImg.src = '';
+        loadedState.classList.add('hidden');
+        loadedState.classList.remove('flex');
+        emptyState.classList.remove('hidden');
+
+        sourceBadge.textContent = 'Awaiting Ingest';
+        sourceBadge.className = 'px-2.5 py-0.5 rounded text-xs font-medium font-code tracking-wide bg-[#11161D] border border-[#2A313C] text-[#A3ACB8]';
+
+        footerHint.innerHTML = '<span class="material-symbols-outlined text-[16px] text-[#788493]">info</span><span>When a file is loaded, full resolution preview and observed file metadata will appear here.</span>';
+
+        ctaBtn.disabled = true;
+        ctaBtn.className = 'w-full bg-[#2457FF]/40 text-white/50 cursor-not-allowed py-3 rounded-lg font-medium text-center flex items-center justify-center gap-2 transition-all text-sm';
+        ctaText.textContent = 'Analyze Image';
+        ctaHelp.textContent = 'Select or upload an exhibit to initiate analysis.';
+        ctaHelp.className = 'text-xs text-[#788493] text-center font-normal';
+
+        // Reset stages
+        stage2Title.className = 'text-[15px] font-medium text-[#A3ACB8]';
+        stage2Badge.className = 'text-[11px] font-code px-2 py-0.5 rounded bg-[#11161D] text-[#788493] border border-[#2A313C]';
+        stage2Badge.textContent = 'Pending';
+        stage2Icon.className = 'w-7 h-7 rounded-full bg-[#11161D] border border-[#2A313C] text-[#788493] flex items-center justify-center text-xs font-code font-semibold shrink-0 z-10 transition-colors';
+        stage2Desc.className = 'text-[13px] text-[#788493] mt-1 leading-relaxed';
+
+        stage3Title.className = 'text-[15px] font-medium text-[#A3ACB8]';
+        stage3Badge.className = 'text-[11px] font-code px-2 py-0.5 rounded bg-[#11161D] text-[#788493] border border-[#2A313C]';
+        stage3Badge.textContent = 'Pending';
+        stage3Icon.className = 'w-7 h-7 rounded-full bg-[#11161D] border border-[#2A313C] text-[#788493] flex items-center justify-center text-xs font-code font-semibold shrink-0 z-10 transition-colors';
+        stage3Desc.className = 'text-[13px] text-[#788493] mt-1 leading-relaxed';
+      }
+
+      browseBtn.addEventListener('click', () => fileInput.click());
+      demoBtn.addEventListener('click', async () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1200; canvas.height = 800;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, 1200, 800);
+        ctx.fillStyle = '#38bdf8'; ctx.font = 'bold 36px monospace';
+        ctx.fillText('EXHIBIT #09 · DIGITAL FORENSICS WORKSTATION', 80, 400);
+        const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+        stagedFile = new File([blob], 'sample_exhibit_09.png', { type: 'image/png' });
+        setFileLoaded('sample_exhibit_09.png', '4.2 MB · 3840×2160', stagedFile);
+      });
+      replaceBtn.addEventListener('click', resetFile);
+
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+          const file = e.target.files[0];
+          stagedFile = file;
+          const sizeMb = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+          setFileLoaded(file.name, sizeMb + ' · Native', file);
+        }
+      });
+
+      // Drag and drop events
+      const dropZone = document.getElementById('drop-zone');
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('border-[#2457FF]');
+      });
+      dropZone.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('border-[#2457FF]');
+      });
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('border-[#2457FF]');
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+          const file = e.dataTransfer.files[0];
+          stagedFile = file;
+          const sizeMb = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+          setFileLoaded(file.name, sizeMb + ' · Native', file);
+        }
+      });
+
+      // Analyze action — real API upload
+      ctaBtn.addEventListener('click', async () => {
+        if (!isLoaded) return;
+        const file = stagedFile || (fileInput.files && fileInput.files[0]);
+        if (!file) return;
+        ctaBtn.disabled = true;
+        ctaBtn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span><span>Uploading...</span>';
+
+        stage2Icon.className = 'w-7 h-7 rounded-full bg-[#11161D] border border-[#2457FF] text-[#2457FF] flex items-center justify-center text-xs font-code font-semibold shrink-0 z-10 transition-colors';
+        stage2Title.className = 'text-[15px] font-medium text-[#F3F5F8]';
+        stage2Badge.className = 'text-[11px] font-code px-2 py-0.5 rounded bg-[#2457FF]/15 text-[#88a5ff] border border-[#2457FF]/30 font-medium animate-pulse';
+        stage2Badge.textContent = 'Running';
+        stage2Desc.className = 'text-[13px] text-[#A3ACB8] mt-1 leading-relaxed';
+
+        try {
+          const fd = new FormData();
+          fd.append('file', file);
+          const res = await fetch('/api/analyze', { method: 'POST', body: fd });
+          if (!res.ok) { const e = await res.json(); throw new Error(e.detail || 'Upload failed'); }
+          const data = await res.json();
+
+          stage2Badge.className = 'text-[11px] font-code px-2 py-0.5 rounded bg-[#bef532]/10 text-[#bef532] border border-[#bef532]/30 font-medium';
+          stage2Badge.textContent = 'Complete';
+          stage3Icon.className = 'w-7 h-7 rounded-full bg-[#11161D] border border-[#2457FF] text-[#2457FF] flex items-center justify-center text-xs font-code font-semibold shrink-0 z-10 transition-colors';
+          stage3Title.className = 'text-[15px] font-medium text-[#F3F5F8]';
+          stage3Badge.className = 'text-[11px] font-code px-2 py-0.5 rounded bg-[#bef532]/10 text-[#bef532] border border-[#bef532]/30 font-medium';
+          stage3Badge.textContent = 'Ready';
+          stage3Desc.className = 'text-[13px] text-[#A3ACB8] mt-1 leading-relaxed';
+
+          ctaBtn.disabled = false;
+          ctaBtn.className = 'w-full bg-[#2457FF] hover:bg-[#1d4ed8] text-white cursor-pointer py-3 rounded-lg font-medium text-center flex items-center justify-center gap-2 transition-all text-sm shadow-md';
+          ctaBtn.innerHTML = '<span>View Analysis Progress</span><span class="material-symbols-outlined text-[18px]">open_in_new</span>';
+          ctaHelp.textContent = 'Analysis submitted. Navigating to progress screen...';
+          ctaHelp.className = 'text-xs text-[#bef532] text-center font-normal';
+
+          setTimeout(() => { window.location.href = '/progress/?job_id=' + data.job_id; }, 800);
+        } catch (err) {
+          ctaBtn.disabled = false;
+          ctaBtn.className = 'w-full bg-[#2457FF] hover:bg-[#1d4ed8] text-white cursor-pointer py-3 rounded-lg font-medium text-center flex items-center justify-center gap-2 transition-all text-sm shadow-md';
+          ctaBtn.innerHTML = '<span>Retry Analysis</span><span class="material-symbols-outlined text-[18px]">refresh</span>';
+          ctaHelp.textContent = 'Error: ' + err.message;
+          ctaHelp.className = 'text-xs text-[#FF5C68] text-center font-normal';
+        }
+      });
+    })();
+  </script>
+</body></html>

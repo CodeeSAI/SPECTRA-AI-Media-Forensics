@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_dashboard" name="shell-type"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-bg": "#11161D",
+            "sidebar-bg": "#0D1117",
+            "card-bg": "#171D25",
+            "border-subtle": "#2A313C",
+            "cobalt": "#2457FF",
+            "cobalt-hover": "#1d4ed8",
+            "amber-status": "#E8AD4D",
+            "lime-accent": "#C8FF3D",
+            "text-main": "#F3F5F8",
+            "text-muted": "#A3ACB8",
+            "text-dim": "#6E7787"
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            heading: ["Manrope", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface-bg font-sans text-text-main antialiased selection:bg-cobalt selection:text-white min-h-screen">
+<!-- Sidebar (228px, #0D1117, border-r border-[#2A313C]) -->
+<aside class="fixed left-0 top-0 h-full w-[228px] bg-sidebar-bg border-r border-border-subtle z-50 flex flex-col justify-between select-none">
+<div class="flex flex-col">
+<!-- Minimal SPECTRA Logo Header -->
+<div class="h-14 px-4 flex items-center gap-3 border-b border-border-subtle">
+<svg class="h-7 w-7 shrink-0" fill="none" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+<!-- Incoming ray -->
+<line stroke="#FFFFFF" stroke-linecap="round" stroke-width="1.75" x1="2" x2="13" y1="16" y2="16"></line>
+<!-- Prism triangle -->
+<polygon fill="none" points="17,6 27,24 7,24" stroke="#8D90A2" stroke-width="1.5"></polygon>
+<!-- Refracted rays -->
+<line stroke="#B8C3FF" stroke-linecap="round" stroke-width="1.5" x1="21" x2="30" y1="17" y2="13"></line>
+<line stroke="#E8AD4D" stroke-linecap="round" stroke-width="1.5" x1="22" x2="30" y1="18.5" y2="18.5"></line>
+<line stroke="#C8FF3D" stroke-linecap="round" stroke-width="1.5" x1="22" x2="30" y1="20" y2="23.5"></line>
+</svg>
+<div class="flex flex-col min-w-0">
+<span class="font-heading text-sm font-bold tracking-wider text-text-main leading-none uppercase">SPECTRA</span>
+<span class="font-mono text-[9px] tracking-widest text-text-dim uppercase mt-1 leading-none">AI MEDIA FORENSICS</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col pt-3 px-2 gap-1">
+<!-- Overview (ACTIVE) -->
+<a aria-current="page" class="group flex items-center h-10 px-3 rounded text-sm font-medium bg-cobalt/15 text-cobalt border-l-[3px] border-cobalt transition-colors" href="/overview/">
+<span class="material-symbols-outlined text-[18px] mr-3 text-cobalt">dashboard</span>
+<span>Overview</span>
+</a>
+<!-- Analyze Media -->
+<a class="group flex items-center h-10 px-3 rounded text-sm text-text-muted hover:text-text-main hover:bg-[#171D25] transition-colors" href="/analyze/">
+<span class="material-symbols-outlined text-[18px] mr-3 text-text-dim group-hover:text-text-main transition-colors">image_search</span>
+<span>Analyze Media</span>
+</a>
+<!-- Investigation Reports -->
+<a class="group flex items-center h-10 px-3 rounded text-sm text-text-muted hover:text-text-main hover:bg-[#171D25] transition-colors" href="/reports/">
+<span class="material-symbols-outlined text-[18px] mr-3 text-text-dim group-hover:text-text-main transition-colors">description</span>
+<span>Investigation Reports</span>
+</a>
+</nav>
+</div>
+<!-- Bottom pinned: Settings & discreet status -->
+<div class="flex flex-col px-2 pb-4 gap-3 border-t border-border-subtle pt-3">
+<a class="group flex items-center h-10 px-3 rounded text-sm text-text-muted hover:text-text-main hover:bg-[#171D25] transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px] mr-3 text-text-dim group-hover:text-text-main transition-colors">settings</span>
+<span>Settings</span>
+</a>
+<div class="flex items-center px-3 py-1 gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-lime-accent shrink-0"></span>
+<span class="font-mono text-[10px] tracking-wider text-text-dim uppercase">LOCAL PROCESSING</span>
+</div>
+</div>
+</aside>
+<!-- Main View Container (pl-[228px]) -->
+<div class="pl-[228px] min-h-screen bg-surface-bg flex flex-col">
+<!-- Top Bar (56px, #11161D, border-b border-[#2A313C]) -->
+<header class="fixed top-0 left-[228px] right-0 h-14 bg-surface-bg border-b border-border-subtle z-40 flex items-center justify-between px-8 select-none">
+<div class="flex items-center">
+<span class="text-sm font-medium text-text-main">Investigation Overview</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-border-subtle bg-transparent">
+<span class="w-1.5 h-1.5 rounded-full bg-lime-accent shrink-0"></span>
+<span class="font-mono text-[11px] text-text-muted uppercase tracking-wider">Local Analysis</span>
+</div>
+<button aria-label="Settings" class="w-8 h-8 rounded flex items-center justify-center text-text-muted hover:text-text-main hover:bg-[#171D25] transition-colors" title="Settings" type="button">
+<span class="material-symbols-outlined text-[19px]">settings</span>
+</button>
+</div>
+</header>
+<!-- Workspace Main Content -->
+<main class="relative pt-14 w-full bg-surface-bg min-h-screen p-8 max-w-[1440px] mx-auto">
+<div class="flex flex-col w-full space-y-6">
+<!-- Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+<div class="flex flex-col space-y-1">
+<h1 class="font-heading text-[28px] leading-tight font-semibold text-text-main">
+              Investigation Overview
+            </h1>
+<p class="text-sm text-text-muted">
+              Review media analyses, examine classification results, and manage investigation reports.
+            </p>
+</div>
+<div class="flex items-center shrink-0">
+<a class="inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg bg-cobalt hover:bg-cobalt-hover text-white text-sm font-medium shadow-sm transition-all" href="/analyze/">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>+ New Investigation</span>
+</a>
+</div>
+</div>
+<!-- Metric Cards (Row of 4 equal-width cards, #171D25, border #2A313C, rounded-[10px], p-5) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+<!-- Metric 1: Total Analyses -->
+<div class="bg-card-bg border border-border-subtle rounded-[10px] p-5 flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between">
+<span class="text-xs uppercase tracking-wider text-text-muted font-medium">Total Analyses</span>
+<span class="material-symbols-outlined text-text-dim text-[18px]">description</span>
+</div>
+<div class="mt-4 flex items-baseline justify-between">
+<span class="font-heading text-[32px] leading-none font-semibold text-text-main" id="stat-total">—</span>
+<span class="text-xs text-text-muted">Completed cases</span>
+</div>
+</div>
+<!-- Metric 2: Likely AI-Generated -->
+<div class="bg-card-bg border border-border-subtle rounded-[10px] p-5 flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between">
+<span class="text-xs uppercase tracking-wider text-text-muted font-medium">Likely AI-Generated</span>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-amber-status"></span>
+<span class="material-symbols-outlined text-amber-status text-[18px]">warning</span>
+</div>
+</div>
+<div class="mt-4 flex items-baseline justify-between">
+<span class="font-heading text-[32px] leading-none font-semibold text-text-main" id="stat-ai">—</span>
+<span class="text-xs text-amber-status font-medium">Synthetic patterns</span>
+</div>
+</div>
+<!-- Metric 3: Likely Human-Created -->
+<div class="bg-card-bg border border-border-subtle rounded-[10px] p-5 flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between">
+<span class="text-xs uppercase tracking-wider text-text-muted font-medium">Likely Human-Created</span>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-text-muted"></span>
+<span class="material-symbols-outlined text-text-dim text-[18px]">photo_camera</span>
+</div>
+</div>
+<div class="mt-4 flex items-baseline justify-between">
+<span class="font-heading text-[32px] leading-none font-semibold text-text-main" id="stat-human">—</span>
+<span class="text-xs text-text-muted font-medium">Natural sensor noise</span>
+</div>
+</div>
+<!-- Metric 4: Inconclusive -->
+<div class="bg-card-bg border border-border-subtle rounded-[10px] p-5 flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between">
+<span class="text-xs uppercase tracking-wider text-text-muted font-medium">Inconclusive</span>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-text-dim"></span>
+<span class="material-symbols-outlined text-text-dim text-[18px]">help_outline</span>
+</div>
+</div>
+<div class="mt-4 flex items-baseline justify-between">
+<span class="font-heading text-[32px] leading-none font-semibold text-text-main" id="stat-inconclusive">—</span>
+<span class="text-xs text-text-dim font-medium">Low signal resolution</span>
+</div>
+</div>
+</div>
+<!-- Main Grid (Balanced 60/40 Split, gap 24px) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- LEFT 60% — RECENT INVESTIGATIONS -->
+<div class="lg:col-span-7 bg-card-bg border border-border-subtle rounded-[10px] p-6 shadow-sm flex flex-col space-y-4">
+<!-- Section Header -->
+<div class="flex items-center justify-between pb-1">
+<div class="flex items-center gap-2.5">
+<h2 class="font-heading text-base font-semibold text-text-main">Recent Investigations</h2>
+<span class="text-xs text-text-dim font-mono" id="recent-count"></span>
+</div>
+</div>
+<!-- Table -->
+<div class="w-full overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead id="investigations-thead">
+<tr class="text-text-muted text-xs uppercase tracking-wider border-b border-border-subtle">
+<th class="pb-3 px-3 font-medium" scope="col">Source File</th>
+<th class="pb-3 px-3 font-medium" scope="col">Date Analyzed</th>
+<th class="pb-3 px-3 font-medium" scope="col">Classification</th>
+<th class="pb-3 px-3 text-right font-medium" scope="col">Report</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-subtle text-sm text-text-main" id="investigations-tbody">
+<!-- Row 1 -->
+<tr class="hover:bg-[#1C232D] transition-colors h-12">
+<td class="py-2.5 px-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-[#11161D] border border-border-subtle flex items-center justify-center shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Satellite survey preview" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYuVMcZHjMciysPhUlQ4QIMjBaVE6nSErBbD_8SsPs8IYp9zIzcB3vsMd_0tmaBVCgv9oZSHDyizCCvC8sK0C9ApE-voNjR-n7F2WkQ4eWyuKztEOnOvpH4zRrU6KqKLikYD7WMd7-WvuoQADD7GuatoC69IECbiBdSL84mBmWK0ofhbtZ3cqeZmNxjr0A5BiRYQo452xj8zUI9z-IQzFbXeQ5n1sey4AnHhW1xLm0DSQ-yj1lqsuOTg"/>
+</div>
+<span class="text-sm font-medium text-text-main truncate max-w-[170px]">aerial_survey.png</span>
+</div>
+</td>
+<td class="py-2.5 px-3 text-text-muted whitespace-nowrap text-sm">
+                      May 18, 2026
+                    </td>
+<td class="py-2.5 px-3 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-amber-status shrink-0"></span>
+<span class="text-text-main text-sm">Likely AI-Generated</span>
+</div>
+</td>
+<td class="py-2.5 px-3 text-right whitespace-nowrap">
+<a class="inline-flex items-center gap-1 text-cobalt hover:text-cobalt-hover text-sm font-medium transition-colors" href="#">
+<span>View Report</span>
+<span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+</a>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-[#1C232D] transition-colors h-12">
+<td class="py-2.5 px-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-[#11161D] border border-border-subtle flex items-center justify-center shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Press conference capture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDumKHYThZ-8bcQBU3pRUmS8kwWp34SxXWlHu3iebRVny_-6roOoCjniAx0jP432fFe544loZPQJLjLzHRR1v6bMn7lRewor5ROsJpmzsfss9oLy3OL1v2PYRIg1QgrznBhUN28HxsUm7yOPAYcwO6D4AVMDpPcjKKM2RUML5F4JyFz3J2EtYLEAWAY0mviNkvUoRG-HGhHvCYyHMygyLXvgUeqpDDgYmiPEa_OnWYmsvd4p8gIkxOt2Q"/>
+</div>
+<span class="text-sm font-medium text-text-main truncate max-w-[170px]">press_conference_still.jpg</span>
+</div>
+</td>
+<td class="py-2.5 px-3 text-text-muted whitespace-nowrap text-sm">
+                      May 17, 2026
+                    </td>
+<td class="py-2.5 px-3 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-text-muted shrink-0"></span>
+<span class="text-text-main text-sm">Likely Human-Created</span>
+</div>
+</td>
+<td class="py-2.5 px-3 text-right whitespace-nowrap">
+<a class="inline-flex items-center gap-1 text-cobalt hover:text-cobalt-hover text-sm font-medium transition-colors" href="#">
+<span>View Report</span>
+<span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+</a>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-[#1C232D] transition-colors h-12">
+<td class="py-2.5 px-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-[#11161D] border border-border-subtle flex items-center justify-center shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Field specimen preview" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiwkJpSaNRQS5oqVM5iDNY3wOFYdHoBWLm9p2t9MS5kM_Pmmn-SoqcLGTLXB3xZXcyJzZdQP8kWXUEL8CpdPFSFuf1pB9wAdziiLlDKctyoczndpmxI-rFYAfFmiRe5Tmvklk-PYfQNSrFsZtgvfiQWws7kh7fy9hn21HOXBq6ydsw-djdwvIpu-4Qog9Z1nVyCPm1ykErRUscbjpRHuWw9DWGbLTLSmQ8aWVXA0PW5u1yOUFmPtXWwQ"/>
+</div>
+<span class="text-sm font-medium text-text-main truncate max-w-[170px]">field_specimen_raw.webp</span>
+</div>
+</td>
+<td class="py-2.5 px-3 text-text-muted whitespace-nowrap text-sm">
+                      May 17, 2026
+                    </td>
+<td class="py-2.5 px-3 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-text-muted shrink-0"></span>
+<span class="text-text-main text-sm">Likely Human-Created</span>
+</div>
+</td>
+<td class="py-2.5 px-3 text-right whitespace-nowrap">
+<a class="inline-flex items-center gap-1 text-cobalt hover:text-cobalt-hover text-sm font-medium transition-colors" href="#">
+<span>View Report</span>
+<span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+</a>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-[#1C232D] transition-colors h-12">
+<td class="py-2.5 px-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-[#11161D] border border-border-subtle flex items-center justify-center shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Urban transit camera still" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC93bcGgplZuB0ao8g7pffdA4Y3LRwVQbHawK_B830M8ImJFRpSrboFJqAfej2JWuwDoX_fIDqNvN7WsJC-WaYQWFYO09t48WJs2EPLG3OwIF87A0qctzHJAYlvQ_2acXoPVCZ12zqx78oyLZFs68KS8zqpJ2-hmJ7vB1W0MyGnEimb-E6VqxyPoC0A4esXxWnmnrYcmo9utNzFcdUwWqckMgROMA2jci4dwY6CbrGSYp3qu_J722b8Sw"/>
+</div>
+<span class="text-sm font-medium text-text-main truncate max-w-[170px]">urban_transit_cam04.png</span>
+</div>
+</td>
+<td class="py-2.5 px-3 text-text-muted whitespace-nowrap text-sm">
+                      May 16, 2026
+                    </td>
+<td class="py-2.5 px-3 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-amber-status shrink-0"></span>
+<span class="text-text-main text-sm">Likely AI-Generated</span>
+</div>
+</td>
+<td class="py-2.5 px-3 text-right whitespace-nowrap">
+<a class="inline-flex items-center gap-1 text-cobalt hover:text-cobalt-hover text-sm font-medium transition-colors" href="#">
+<span>View Report</span>
+<span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+</a>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-[#1C232D] transition-colors h-12">
+<td class="py-2.5 px-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-[#11161D] border border-border-subtle flex items-center justify-center shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Archival document scan" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMchQ5vBRgYUL-T4YcNheh54qjCmzPgAW4NUCzGz8_OEKSS3LOpmPgtM3PUWa9saD3qcGg3RKgoYWpIcUgeuxMvU7tToz8tASM_kJD65MCPana3-zZisnHsiiaCvAGm1gP-qzphXZr7KTAoPt1SYDR8lXb2CeXDVARKCPxfPvzPNBE0438pxpa54hR4duRAsWJBAVjAJfkgk4Tl6F6uNYPN8rFHiO5ojV-Y6gCrFc9znASLknUaQKH3Q"/>
+</div>
+<span class="text-sm font-medium text-text-main truncate max-w-[170px]">archive_document_scan.tiff</span>
+</div>
+</td>
+<td class="py-2.5 px-3 text-text-muted whitespace-nowrap text-sm">
+                      May 15, 2026
+                    </td>
+<td class="py-2.5 px-3 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-text-dim shrink-0"></span>
+<span class="text-text-main text-sm">Inconclusive</span>
+</div>
+</td>
+<td class="py-2.5 px-3 text-right whitespace-nowrap">
+<a class="inline-flex items-center gap-1 text-cobalt hover:text-cobalt-hover text-sm font-medium transition-colors" href="#">
+<span>View Report</span>
+<span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- RIGHT 40% — QUICK ANALYSIS -->
+<div class="lg:col-span-5 bg-card-bg border border-border-subtle rounded-[10px] p-6 shadow-sm flex flex-col justify-between">
+<div class="flex flex-col space-y-4">
+<!-- Header -->
+<div class="flex flex-col space-y-1">
+<h2 class="font-heading text-base font-semibold text-text-main">Start an investigation</h2>
+<p class="text-sm text-text-muted leading-relaxed">
+                  Upload an image to inspect authenticity signals and detect generative patterns.
+                </p>
+</div>
+<!-- Clean dashed drop zone -->
+<div class="relative w-full rounded-lg bg-[#11161D] border-2 border-dashed border-border-subtle hover:border-cobalt p-8 flex flex-col items-center justify-center text-center transition-colors cursor-pointer group" id="dropzone">
+<input accept=".jpg,.jpeg,.png,.webp,.tiff" class="sr-only" id="media-upload-input" type="file"/>
+<span class="material-symbols-outlined text-[36px] text-text-muted mb-3 group-hover:text-cobalt transition-colors">cloud_upload</span>
+<span class="text-sm font-medium text-text-main mb-1">
+                  Drag and drop source image here
+                </span>
+<span class="text-xs text-text-muted">
+                  or select an asset from your workstation
+                </span>
+<button class="border border-border-subtle text-sm text-[#F3F5F8] px-4 py-2 rounded-lg mt-3 hover:bg-[#171D25] hover:border-text-muted transition-colors" onclick="document.getElementById('media-upload-input').click();" type="button">
+                  Browse Files
+                </button>
+<span class="text-[11px] text-text-dim mt-4">
+                  Supported formats: JPG, PNG, WEBP (Max 50MB)
+                </span>
+<div class="hidden mt-3 text-xs text-cobalt px-3 py-1 bg-[#171D25] border border-border-subtle rounded flex items-center gap-2" id="file-name-display">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span class="truncate max-w-[200px]" id="file-name-text"></span>
+</div>
+</div>
+</div>
+<!-- Full-width cobalt button -->
+<div class="mt-4">
+<button class="w-full py-2.5 rounded-lg bg-cobalt hover:bg-cobalt-hover text-white text-sm font-medium flex items-center justify-center gap-2 transition-all shadow-sm" id="btn-analyze" type="button">
+<span>Analyze Image</span>
+<span class="material-symbols-outlined text-[17px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Supporting Section (Full-width, #171D25, border #2A313C, rounded-[10px], p-6, mt-6) -->
+<div class="w-full bg-card-bg border border-border-subtle rounded-[10px] p-6 shadow-sm flex flex-col space-y-5">
+<div class="flex items-center justify-between">
+<div class="flex flex-col space-y-0.5">
+<div class="flex items-center gap-2.5">
+<h2 class="font-heading text-base font-semibold text-text-main">Media Classification Distribution</h2>
+<span class="px-2 py-0.5 rounded text-[10px] font-mono tracking-wider uppercase bg-[#11161D] text-text-dim border border-border-subtle">
+                  DEMO DATA
+                </span>
+</div>
+<p class="text-xs text-text-muted">Aggregate breakdown across 12 completed analyses.</p>
+</div>
+</div>
+<!-- Single elegant stacked horizontal bar chart -->
+<div class="flex flex-col space-y-3 pt-1">
+<div class="w-full h-3 rounded-full bg-[#11161D] overflow-hidden flex border border-border-subtle">
+<!-- 50.0% Likely Human-Created (Cobalt #2457FF) -->
+<div class="h-full bg-cobalt transition-all duration-500" style="width: 50.0%;" title="50.0% Likely Human-Created"></div>
+<!-- 41.6% Likely AI-Generated (Amber #E8AD4D) -->
+<div class="h-full bg-amber-status transition-all duration-500" style="width: 41.6%;" title="41.6% Likely AI-Generated"></div>
+<!-- 8.4% Inconclusive (Neutral Slate #475569) -->
+<div class="h-full bg-[#475569] transition-all duration-500" style="width: 8.4%;" title="8.4% Inconclusive"></div>
+</div>
+<!-- Statistical Legend Breakdown -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
+<!-- Legend Item 1 -->
+<div class="flex items-center justify-between p-3 rounded-lg bg-[#11161D] border border-border-subtle">
+<div class="flex items-center gap-2.5">
+<span class="w-2.5 h-2.5 rounded-full bg-cobalt shrink-0"></span>
+<span class="text-sm text-text-main font-medium">Likely Human-Created</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-sm font-semibold text-text-main">6 cases</span>
+<span class="text-xs text-text-muted">50.0%</span>
+</div>
+</div>
+<!-- Legend Item 2 -->
+<div class="flex items-center justify-between p-3 rounded-lg bg-[#11161D] border border-border-subtle">
+<div class="flex items-center gap-2.5">
+<span class="w-2.5 h-2.5 rounded-full bg-amber-status shrink-0"></span>
+<span class="text-sm text-text-main font-medium">Likely AI-Generated</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-sm font-semibold text-text-main">5 cases</span>
+<span class="text-xs text-text-muted">41.6%</span>
+</div>
+</div>
+<!-- Legend Item 3 -->
+<div class="flex items-center justify-between p-3 rounded-lg bg-[#11161D] border border-border-subtle">
+<div class="flex items-center gap-2.5">
+<span class="w-2.5 h-2.5 rounded-full bg-[#475569] shrink-0"></span>
+<span class="text-sm text-text-main font-medium">Inconclusive</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-sm font-semibold text-text-main">1 case</span>
+<span class="text-xs text-text-muted">8.4%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script>
+(function () {
+  const fileInput = document.getElementById('media-upload-input');
+  const fileNameDisplay = document.getElementById('file-name-display');
+  const fileNameText = document.getElementById('file-name-text');
+  const dropzone = document.getElementById('dropzone');
+  const analyzeBtn = document.getElementById('btn-analyze');
+
+  let selectedFile = null;
+
+  function setFile(file) {
+    selectedFile = file;
+    fileNameText.textContent = file.name;
+    fileNameDisplay.classList.remove('hidden');
+  }
+
+  if (fileInput) {
+    fileInput.addEventListener('change', function (e) {
+      if (e.target.files && e.target.files[0]) setFile(e.target.files[0]);
+    });
+  }
+
+  if (dropzone) {
+    ['dragenter', 'dragover'].forEach(ev => {
+      dropzone.addEventListener(ev, e => { e.preventDefault(); dropzone.classList.add('border-cobalt'); }, false);
+    });
+    ['dragleave', 'drop'].forEach(ev => {
+      dropzone.addEventListener(ev, e => { e.preventDefault(); dropzone.classList.remove('border-cobalt'); }, false);
+    });
+    dropzone.addEventListener('drop', e => {
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) setFile(e.dataTransfer.files[0]);
+    });
+    dropzone.addEventListener('click', () => fileInput && fileInput.click());
+  }
+
+  if (analyzeBtn) {
+    analyzeBtn.addEventListener('click', async function () {
+      if (!selectedFile) {
+        analyzeBtn.classList.add('opacity-60');
+        setTimeout(() => analyzeBtn.classList.remove('opacity-60'), 600);
+        return;
+      }
+      analyzeBtn.disabled = true;
+      analyzeBtn.innerHTML = '<span class="material-symbols-outlined text-[17px] animate-spin">refresh</span><span>Uploading...</span>';
+      try {
+        const fd = new FormData();
+        fd.append('file', selectedFile);
+        const res = await fetch('/api/analyze', { method: 'POST', body: fd });
+        if (!res.ok) { const e = await res.json(); throw new Error(e.detail || 'Upload failed'); }
+        const data = await res.json();
+        window.location.href = '/progress/?job_id=' + data.job_id;
+      } catch (err) {
+        analyzeBtn.disabled = false;
+        analyzeBtn.innerHTML = '<span>Analyze Image</span><span class="material-symbols-outlined text-[17px]">arrow_forward</span>';
+        alert('Error: ' + err.message);
+      }
+    });
+  }
+
+  // Load real history
+  async function loadHistory() {
+    try {
+      const res = await fetch('/api/history');
+      const data = await res.json();
+      const stats = data.stats || {};
+      const jobs = data.jobs || [];
+
+      document.getElementById('stat-total').textContent = stats.total ?? 0;
+      document.getElementById('stat-ai').textContent = stats.ai_generated ?? 0;
+      document.getElementById('stat-human').textContent = stats.human_created ?? 0;
+      document.getElementById('stat-inconclusive').textContent = (stats.inconclusive ?? 0) + (stats.errors ?? 0);
+
+      const tbody = document.getElementById('investigations-tbody');
+      const countEl = document.getElementById('recent-count');
+      if (!tbody) return;
+
+      if (jobs.length === 0) {
+        countEl.textContent = 'No analyses yet';
+        tbody.innerHTML = '<tr><td colspan="4" class="py-10 text-center text-text-muted text-sm"><span class="material-symbols-outlined text-[32px] block mb-2 text-text-dim">inbox</span>No investigations completed yet. Upload an image to begin.</td></tr>';
+        return;
+      }
+
+      countEl.textContent = Math.min(jobs.length, 5) + ' of ' + jobs.length;
+      const rows = jobs.slice(0, 5).map(j => {
+        const res = j.result || {};
+        const verdict = res.verdict || (j.status === 'error' ? 'Error' : '—');
+        const conf = res.ai_score != null ? Math.max(res.ai_score, res.human_score) + '%' : '';
+        const dot = verdict === 'AI-Generated' ? 'bg-amber-status' : verdict === 'Human-Created' ? 'bg-cobalt' : 'bg-text-dim';
+        const ts = j.completed_at ? new Date(j.completed_at).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) : '—';
+        return `<tr class="hover:bg-[#1C232D] transition-colors h-12">
+          <td class="py-2.5 px-3"><div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded bg-[#11161D] border border-border-subtle flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-text-dim text-[20px]">image</span></div>
+            <span class="text-sm font-medium text-text-main truncate max-w-[170px]">${j.filename}</span>
+          </div></td>
+          <td class="py-2.5 px-3 text-text-muted whitespace-nowrap text-sm">${ts}</td>
+          <td class="py-2.5 px-3 whitespace-nowrap"><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full ${dot} shrink-0"></span><span class="text-text-main text-sm">${verdict}${conf ? ' · ' + conf : ''}</span></div></td>
+          <td class="py-2.5 px-3 text-right whitespace-nowrap"><a class="inline-flex items-center gap-1 text-cobalt hover:text-cobalt-hover text-sm font-medium transition-colors" href="/results/?job_id=${j.job_id}">View Results<span class="material-symbols-outlined text-[15px]">arrow_forward</span></a></td>
+        </tr>`;
+      }).join('');
+      tbody.innerHTML = rows;
+
+      // Update distribution bar
+      if (stats.total > 0) {
+        const t = stats.total;
+        const hPct = ((stats.human_created/t)*100).toFixed(1);
+        const aPct = ((stats.ai_generated/t)*100).toFixed(1);
+        const iPct = (100 - parseFloat(hPct) - parseFloat(aPct)).toFixed(1);
+        const barH = document.querySelector('[title^="50.0% Likely Human-Created"]');
+        const barA = document.querySelector('[title^="41.6% Likely AI-Generated"]');
+        const barI = document.querySelector('[title^="8.4% Inconclusive"]');
+        const statH = document.querySelector('[title^="50.0% Likely Human-Created"] ~ * .text-sm.font-semibold');
+        if (barH) { barH.style.width = hPct + '%'; barH.title = hPct + '% Likely Human-Created'; }
+        if (barA) { barA.style.width = aPct + '%'; barA.title = aPct + '% Likely AI-Generated'; }
+        if (barI) { barI.style.width = iPct + '%'; barI.title = iPct + '% Inconclusive'; }
+      }
+    } catch (e) { console.warn('Could not load history:', e); }
+  }
+
+  loadHistory();
+})();
+</script>
+</body></html>

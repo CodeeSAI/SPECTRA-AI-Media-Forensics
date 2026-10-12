@@ -1,0 +1,665 @@
+<!DOCTYPE html><html class="dark" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Manrope:wght@500;600;700&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#b8c3ff",
+        "primary-container": "#2457ff",
+        "on-primary": "#002487",
+        "secondary": "#c8ff3d",
+        "secondary-container": "#a3d700",
+        "surface": "#0f141c",
+        "surface-container": "#171D25",
+        "surface-container-low": "#131820",
+        "surface-container-high": "#1E2530",
+        "surface-container-highest": "#283140",
+        "surface-container-lowest": "#0b0f15",
+        "on-surface": "#F3F5F8",
+        "on-surface-variant": "#A3ACB8",
+        "outline": "#6B7685",
+        "outline-variant": "#2A313C",
+        "error": "#E76670",
+        "error-container": "#93000a"
+      },
+      fontFamily: {
+        "headline-lg": ["Manrope", "sans-serif"],
+        "headline-md": ["Manrope", "sans-serif"],
+        "headline-sm": ["Manrope", "sans-serif"],
+        "body-lg": ["Inter", "sans-serif"],
+        "body-md": ["Inter", "sans-serif"],
+        "body-sm": ["Inter", "sans-serif"],
+        "label-md": ["Inter", "sans-serif"],
+        "label-sm": ["Inter", "sans-serif"],
+        "code-hash": ["JetBrains Mono", "monospace"]
+      }
+    }
+  }
+};</script></head><body class="bg-[#0b0e12] font-body-md text-[#F3F5F8] antialiased selection:bg-primary-container selection:text-white min-h-screen">
+<!-- Persistent Sidebar (228px, #0D1117) -->
+<aside class="fixed left-0 top-0 h-full w-[228px] bg-[#0D1117] border-r border-[#2A313C] z-50 flex flex-col justify-between select-none">
+<div class="flex flex-col">
+<div class="h-14 px-4 flex items-center gap-3 border-b border-[#2A313C]">
+<img alt="SPECTRA Logo" class="h-6 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XvrSfEm4eUtpOr_7XYW4JLhd4vd2Q8U9uUZDyhpjOmrng5nPMuQRW3Sy1Tt-lRfnLuCL6Cc_aZMo6f9IiRSlCOgJn6EtwjfXiB0Fp9e3A2GHCFGhQ65NkqF-0EeQxGEOGi6_a2TZ39Yx6BW0ciUUXYs-r7ukpVRe3IpslGamu3CAleEPc6abUxjPC68Xv0TvmYypt5JyJOpVTJuZRt6YUiE3C1p1B6iPqPvkWxVTwf0VXTvZG_oXfimYMQ">
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-[13px] font-semibold tracking-wider text-[#F3F5F8] uppercase leading-tight">SPECTRA</span>
+<span class="font-code-hash text-[9px] tracking-widest text-[#6B7685] uppercase leading-none mt-0.5">AI MEDIA FORENSICS</span>
+</div>
+</div>
+<nav class="flex flex-col pt-3 px-2 gap-1">
+<a class="group flex items-center h-10 px-3 rounded text-[#A3ACB8] hover:text-[#F3F5F8] hover:bg-[#171D25] transition-all text-sm font-medium" href="/overview/">
+<span class="material-symbols-outlined text-[18px] mr-3 text-[#6B7685] group-hover:text-[#F3F5F8] transition-colors">dashboard</span>
+<span>Overview</span>
+</a>
+<a aria-current="page" class="group flex items-center h-10 px-3 rounded transition-all bg-[#2457FF]/15 text-[#b8c3ff] border-l-[3px] border-[#2457FF] font-medium text-sm" href="/analyze/">
+<span class="material-symbols-outlined text-[18px] mr-3 text-[#2457FF]">center_focus_strong</span>
+<span>Analyze Media</span>
+</a>
+<a class="group flex items-center h-10 px-3 rounded text-[#A3ACB8] hover:text-[#F3F5F8] hover:bg-[#171D25] transition-all text-sm font-medium" href="/reports/">
+<span class="material-symbols-outlined text-[18px] mr-3 text-[#6B7685] group-hover:text-[#F3F5F8] transition-colors">policy</span>
+<span>Investigation Reports</span>
+</a>
+</nav>
+</div>
+<div class="flex flex-col px-2 pb-4 gap-3 border-t border-[#2A313C] pt-3">
+<a class="group flex items-center h-10 px-3 rounded text-[#A3ACB8] hover:text-[#F3F5F8] hover:bg-[#171D25] transition-all text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[18px] mr-3 text-[#6B7685] group-hover:text-[#F3F5F8] transition-colors">settings</span>
+<span>Settings</span>
+</a>
+<div class="flex items-center px-3 py-1 gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-[#c8ff3d] shrink-0"></span>
+<span class="font-code-hash text-[11px] tracking-wider text-[#6B7685] uppercase">LOCAL PROCESSING</span>
+</div>
+</div>
+</aside>
+<!-- Main Wrapper -->
+<div class="pl-[228px] min-h-screen bg-[#0b0e12]">
+<!-- Top bar (56px, #0D1117) -->
+<header class="fixed top-0 left-[228px] right-0 h-14 bg-[#0D1117]/90 backdrop-blur-md border-b border-[#2A313C] z-40 flex items-center justify-between px-6 select-none">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-[#2457FF]">verified_user</span>
+<span class="text-sm font-medium text-[#F3F5F8]">Analysis in Progress</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#0b0e12] border border-[#2A313C]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#c8ff3d] shrink-0"></span>
+<span class="font-code-hash text-[11px] text-[#A3ACB8] uppercase tracking-wider">Local Analysis</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-[#2457FF]/20 border border-[#2457FF]/40 flex items-center justify-center text-[#b8c3ff]">
+<span class="material-symbols-outlined text-[18px]">person</span>
+</div>
+</div>
+</header>
+<main class="relative pt-14 w-full min-h-screen p-8 max-w-[1440px] mx-auto">
+<!-- Header Section -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6">
+<div class="flex flex-col min-w-0">
+<h1 class="text-[28px] font-semibold text-[#F3F5F8] leading-tight font-headline-lg tracking-tight">Analysis in Progress</h1>
+<p class="text-[14px] text-[#A3ACB8] mt-1.5 font-body-md">
+          Evaluating source media through local neural classification and integrity verification.
+        </p>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#2457FF]/15 border border-[#2457FF]/30 shadow-sm backdrop-blur-sm">
+<span class="w-2 h-2 rounded-full bg-[#c8ff3d] animate-pulse shrink-0"></span>
+<span class="font-code-hash text-[11px] font-semibold text-[#b8c3ff] tracking-wider uppercase">
+            PIPELINE ACTIVE · STAGE 02 OF 03
+          </span>
+</div>
+</div>
+</section>
+<!-- Two-Column Layout (mt-6, gap 24px) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+<!-- LEFT COLUMN: Source Preview (Solid Charcoal bg-[#0f141c]) -->
+<div class="lg:col-span-5 bg-[#0f141c] border border-[#2A313C] rounded-[12px] p-6 flex flex-col justify-between shadow-xl relative overflow-hidden">
+<div class="relative z-10 flex flex-col">
+<!-- Header -->
+<div class="flex items-center justify-between pb-4 border-b border-[#2A313C]/70">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-[#b8c3ff]">photo</span>
+<h2 class="text-base font-semibold text-[#F3F5F8] font-headline-sm">Source Preview</h2>
+</div>
+<span id="preview-badge" class="px-2 py-0.5 rounded font-code-hash text-[11px] uppercase tracking-wider bg-[#1E2530] text-[#A3ACB8] font-medium border border-[#2A313C]" style="display:none">
+              EVIDENCE EXHIBIT
+            </span>
+</div>
+<!-- Bounded Clean Photo Preview -->
+<div class="relative w-full aspect-[16/10] rounded-lg overflow-hidden bg-[#0b0f15] border border-[#2A313C]/90 mt-5 group shadow-inner">
+<img id="preview-img" alt="Uploaded Exhibit" class="w-full h-full object-cover" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 400 250'%3E%3Crect width='400' height='250' fill='%230b0f15'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%236B7685' font-family='sans-serif' font-size='13'%3EIngesting Bitstream...%3C/text%3E%3C/svg%3E">
+<!-- Dimensions badge -->
+<div class="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded bg-[#0b0f15]/85 backdrop-blur-sm border border-[#2A313C]/80">
+<span id="preview-dim" class="font-code-hash text-[11px] text-[#F3F5F8] font-medium tracking-tight">Detecting...</span>
+</div>
+</div>
+<!-- Genuine File Metadata -->
+<div class="flex flex-col gap-2.5 mt-5">
+<div class="flex items-center justify-between py-2.5 px-3 rounded-md bg-[#131820] border border-[#2A313C]/60 text-xs">
+<span class="text-[#6B7685] font-medium uppercase tracking-wider font-code-hash text-[11px]">Filename</span>
+<span id="preview-filename" class="font-code-hash text-[#F3F5F8] font-medium text-xs">Reading...</span>
+</div>
+<div class="flex items-center justify-between py-2.5 px-3 rounded-md bg-[#131820] border border-[#2A313C]/60 text-xs">
+<span class="text-[#6B7685] font-medium uppercase tracking-wider font-code-hash text-[11px]">Format &amp; Size</span>
+<span id="preview-format" class="text-[#A3ACB8] font-medium font-code-hash text-xs">Calculating...</span>
+</div>
+<!-- SHA-256 Checksum -->
+<div class="flex flex-col gap-1.5 p-3 rounded-md bg-[#131820] border border-[#2A313C]/70">
+<div class="flex items-center justify-between">
+<span class="font-code-hash text-[11px] text-[#6B7685] uppercase tracking-wider">SHA-256 Checksum</span>
+</div>
+<div class="flex items-center justify-between gap-2 mt-0.5">
+<code id="progress-sha256" class="font-code-hash text-[12px] text-[#A3ACB8] truncate select-all">
+                  Computing hash...
+                </code>
+<button aria-label="Copy hash string" class="shrink-0 p-1 rounded hover:bg-[#1E2530] text-[#6B7685] hover:text-[#F3F5F8] transition-colors" id="copyHashBtn" title="Copy full hash" type="button">
+<span class="material-symbols-outlined text-[15px]">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: Investigation Panel (Solid Charcoal bg-[#0f141c]) -->
+<div class="lg:col-span-7 bg-[#0f141c] border border-[#2A313C] rounded-[12px] p-6 sm:p-7 flex flex-col justify-between shadow-xl relative overflow-hidden">
+<div class="relative z-10 flex flex-col">
+<!-- Frosted-glass Container around 3D Globe with Refined Styling -->
+<div class="relative bg-[#131922]/75 backdrop-blur-md border border-[#232c3a] rounded-xl p-6 shadow-inner flex flex-col items-center text-center overflow-hidden">
+<!-- Clean Status Header -->
+<h2 class="text-[20px] font-semibold text-[#F3F5F8] font-headline-md tracking-tight leading-snug">
+            Investigating image...
+          </h2>
+<!-- Clean Subtitle -->
+<p class="text-[14px] text-[#A3ACB8] font-body-md mt-1 max-w-[480px]">
+            Evaluating image patterns using the local classification model.
+          </p>
+<!-- 3D Glass Globe Visualization Container with ample breathing room -->
+<div class="relative w-full max-w-[520px] h-[380px] my-3 flex items-center justify-center rounded-lg overflow-hidden">
+<!-- STITCH_THREEJS_START:ANIMATION_71 class="w-full h-full bg-transparent" -->
+<div class="w-full h-full bg-transparent" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_71" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_71');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  (function() {
+  const container = document.getElementById('threejs-container-SPECTRA_GLOBE_ULTRA_GLASS') || document.querySelector('[id^="threejs-container-"]');
+  if (!container) return;
+
+  const containerEl = container;
+  const getWidth = () => containerEl.clientWidth || containerEl.offsetWidth || 520;
+  const getHeight = () => containerEl.clientHeight || containerEl.offsetHeight || 380;
+
+  let width = getWidth();
+  let height = getHeight();
+
+  // Scene & Camera
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(38, width / height, 1, 1000);
+  camera.position.set(0, 0, 195);
+
+  // WebGL Renderer
+  const renderer = new THREE.WebGLRenderer({
+    alpha: true,
+    antialias: true,
+    powerPreference: 'high-performance'
+  });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setClearColor(0x000000, 0); // Transparent background
+
+  while (containerEl.firstChild) {
+    containerEl.removeChild(containerEl.firstChild);
+  }
+  containerEl.appendChild(renderer.domElement);
+
+  renderer.domElement.style.width = '100%';
+  renderer.domElement.style.height = '100%';
+  renderer.domElement.style.display = 'block';
+
+  // Master group with slight aerospace axial tilt
+  const rootGroup = new THREE.Group();
+  rootGroup.rotation.x = 0.22;
+  rootGroup.rotation.z = -0.06;
+  scene.add(rootGroup);
+
+  const GLOBE_RADIUS = 54;
+
+  // 1. Subtle Atmospheric Backdrop Halo (Restrained radial blue glow behind globe)
+  const glowCanvas = document.createElement('canvas');
+  glowCanvas.width = 128;
+  glowCanvas.height = 128;
+  const gCtx = glowCanvas.getContext('2d');
+  const gradient = gCtx.createRadialGradient(64, 64, 14, 64, 64, 62);
+  gradient.addColorStop(0, 'rgba(24, 60, 175, 0.28)');
+  gradient.addColorStop(0.35, 'rgba(18, 45, 130, 0.12)');
+  gradient.addColorStop(0.7, 'rgba(11, 25, 75, 0.03)');
+  gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  gCtx.fillStyle = gradient;
+  gCtx.fillRect(0, 0, 128, 128);
+
+  const glowTexture = new THREE.CanvasTexture(glowCanvas);
+  const glowSpriteMat = new THREE.SpriteMaterial({
+    map: glowTexture,
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+  });
+  const glowSprite = new THREE.Sprite(glowSpriteMat);
+  glowSprite.scale.set(GLOBE_RADIUS * 2.8, GLOBE_RADIUS * 2.8, 1);
+  scene.add(glowSprite);
+
+  // 2. Sophisticated Glass-like Multi-layer Construction
+  // Core Inner Body: Deep translucent graphite-indigo nucleus providing substance and light transmission backing
+  const innerGeo = new THREE.SphereGeometry(GLOBE_RADIUS * 0.97, 64, 64);
+  const innerMat = new THREE.MeshPhongMaterial({
+    color: 0x070e1a,
+    emissive: 0x050c18,
+    emissiveIntensity: 0.5,
+    shininess: 25,
+    transparent: true,
+    opacity: 0.95
+  });
+  const innerMesh = new THREE.Mesh(innerGeo, innerMat);
+  rootGroup.add(innerMesh);
+
+  // Outer Translucent Glass Shell: Deep cobalt-blue, subtle light transmission, realistic soft rim reflections
+  // Replaced multiple harsh white specular hotspots with a single subdued cobalt specular response
+  const outerGeo = new THREE.SphereGeometry(GLOBE_RADIUS, 80, 80);
+  const outerMat = new THREE.MeshPhongMaterial({
+    color: 0x0c2152,
+    emissive: 0x08173c,
+    emissiveIntensity: 0.4,
+    specular: 0x2e5ee8,
+    shininess: 45,
+    transparent: true,
+    opacity: 0.65,
+    depthWrite: false,
+    side: THREE.DoubleSide
+  });
+  const outerMesh = new THREE.Mesh(outerGeo, outerMat);
+  rootGroup.add(outerMesh);
+
+  // 3. Delicate Latitude and Longitude Curves (Fine, Low-Contrast, No triangular mesh)
+  const linesGroup = new THREE.Group();
+  const lineMat = new THREE.LineBasicMaterial({
+    color: 0x2457ff,
+    transparent: true,
+    opacity: 0.24
+  });
+  const equatorMat = new THREE.LineBasicMaterial({
+    color: 0x3d6eff,
+    transparent: true,
+    opacity: 0.38
+  });
+
+  // Latitudes
+  const latSteps = [-54, -36, -18, 0, 18, 36, 54];
+  latSteps.forEach(deg => {
+    const phi = (deg * Math.PI) / 180;
+    const r = (GLOBE_RADIUS + 0.22) * Math.cos(phi);
+    const y = (GLOBE_RADIUS + 0.22) * Math.sin(phi);
+    const circleCurve = new THREE.EllipseCurve(0, 0, r, r, 0, 2 * Math.PI, false, 0);
+    const pts = circleCurve.getPoints(80);
+    const geo = new THREE.BufferGeometry().setFromPoints(
+      pts.map(p => new THREE.Vector3(p.x, y, p.y))
+    );
+    const line = new THREE.Line(geo, deg === 0 ? equatorMat : lineMat);
+    linesGroup.add(line);
+  });
+
+  // Longitudes (Meridians)
+  const meridianCount = 8;
+  for (let m = 0; m < meridianCount; m++) {
+    const angle = (m * Math.PI) / meridianCount;
+    const curve = new THREE.EllipseCurve(0, 0, GLOBE_RADIUS + 0.22, GLOBE_RADIUS + 0.22, 0, 2 * Math.PI, false, 0);
+    const pts = curve.getPoints(80);
+    const geo = new THREE.BufferGeometry().setFromPoints(
+      pts.map(p => new THREE.Vector3(p.x, p.y, 0))
+    );
+    const line = new THREE.Line(geo, lineMat);
+    line.rotation.y = angle;
+    linesGroup.add(line);
+  }
+  rootGroup.add(linesGroup);
+
+  // 4. Maximum Two Fine Orbital Rings: One Cobalt Blue & One Muted Lime Green
+  // Orbit 1: Muted cobalt blue fine orbit
+  const orbit1Radius = GLOBE_RADIUS * 1.34;
+  const orbit1Geo = new THREE.TorusGeometry(orbit1Radius, 0.28, 8, 96);
+  const orbit1Mat = new THREE.MeshBasicMaterial({
+    color: 0x2457ff,
+    transparent: true,
+    opacity: 0.35
+  });
+  const orbitRing1 = new THREE.Mesh(orbit1Geo, orbit1Mat);
+  orbitRing1.rotation.x = Math.PI / 2.35;
+  orbitRing1.rotation.y = 0.20;
+  rootGroup.add(orbitRing1);
+
+  // Orbit 2: Muted lime-green fine inclined orbit
+  const orbit2Radius = GLOBE_RADIUS * 1.46;
+  const orbit2Geo = new THREE.TorusGeometry(orbit2Radius, 0.22, 8, 96);
+  const orbit2Mat = new THREE.MeshBasicMaterial({
+    color: 0xc8ff3d,
+    transparent: true,
+    opacity: 0.28
+  });
+  const orbitRing2 = new THREE.Mesh(orbit2Geo, orbit2Mat);
+  orbitRing2.rotation.x = -Math.PI / 3.2;
+  orbitRing2.rotation.y = -0.28;
+  rootGroup.add(orbitRing2);
+
+  // 5. One Small, Controlled Lime Scanning Point along Orbit 2
+  const scanPointGeo = new THREE.SphereGeometry(1.1, 16, 16);
+  const scanPointMat = new THREE.MeshBasicMaterial({ color: 0xc8ff3d });
+  const scanPoint = new THREE.Mesh(scanPointGeo, scanPointMat);
+  orbitRing2.add(scanPoint);
+
+  // Small, restrained soft glow sprite for scanning marker
+  const pCanvas = document.createElement('canvas');
+  pCanvas.width = 48;
+  pCanvas.height = 48;
+  const pCtx = pCanvas.getContext('2d');
+  const pGrad = pCtx.createRadialGradient(24, 24, 1, 24, 24, 22);
+  pGrad.addColorStop(0, 'rgba(200, 255, 61, 0.75)');
+  pGrad.addColorStop(0.35, 'rgba(200, 255, 61, 0.22)');
+  pGrad.addColorStop(1, 'rgba(200, 255, 61, 0)');
+  pCtx.fillStyle = pGrad;
+  pCtx.fillRect(0, 0, 48, 48);
+
+  const pointTex = new THREE.CanvasTexture(pCanvas);
+  const pointSpriteMat = new THREE.SpriteMaterial({
+    map: pointTex,
+    transparent: true,
+    blending: THREE.AdditiveBlending
+  });
+  const pointSprite = new THREE.Sprite(pointSpriteMat);
+  pointSprite.scale.set(6.5, 6.5, 1);
+  scanPoint.add(pointSprite);
+
+  // 6. Restrained Single Diffused Light Source (Replacing multiple harsh white hotspots)
+  // Ambient lighting for deep corporate cyber-clarity
+  const ambientLight = new THREE.AmbientLight(0x0a1530, 1.8);
+  scene.add(ambientLight);
+
+  // Single diffused cobalt key light with natural soft falloff
+  const diffusedKeyLight = new THREE.PointLight(0x285bee, 2.2, 340);
+  diffusedKeyLight.position.set(70, 65, 85);
+  scene.add(diffusedKeyLight);
+
+  // Refined blue rim light for realistic edge definition without harsh white blow-out
+  const rimLight = new THREE.PointLight(0x2457ff, 1.6, 260);
+  rimLight.position.set(-80, -55, -70);
+  scene.add(rimLight);
+
+  // Immediate render
+  renderer.render(scene, camera);
+
+  // Resize handler
+  function handleResize() {
+    const w = getWidth();
+    const h = getHeight();
+    if (w > 0 && h > 0) {
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+  }
+  window.addEventListener('resize', handleResize);
+  setTimeout(handleResize, 100);
+
+  // Sophisticated, slow, smooth animation loop
+  let elapsed = 0;
+  function renderLoop() {
+    requestAnimationFrame(renderLoop);
+    elapsed += 0.008; // Deliberate, calm enterprise tempo
+
+    // Smooth, slow planetary rotation
+    rootGroup.rotation.y += 0.0018;
+    linesGroup.rotation.y += 0.0009;
+
+    // Subtle orbital ring rotation
+    orbitRing1.rotation.z += 0.0024;
+    orbitRing2.rotation.z -= 0.0020;
+
+    // Small lime marker travelling along orbit 2
+    const ptAngle = elapsed * 0.95;
+    scanPoint.position.set(
+      Math.cos(ptAngle) * orbit2Radius,
+      Math.sin(ptAngle) * orbit2Radius,
+      0
+    );
+
+    // Very gentle subtle breathing pulse during active neural evaluation
+    const pulse = Math.sin(elapsed * 1.5) * 0.05 + 0.95;
+    diffusedKeyLight.intensity = 2.2 * pulse;
+    outerMat.emissiveIntensity = 0.4 * pulse;
+
+    renderer.render(scene, camera);
+  }
+  renderLoop();
+
+  window.setGlobeState = function(state) {
+    if (state === 'complete') {
+      outerMat.color.setHex(0x1a452a);
+      outerMat.emissive.setHex(0x2d8a4e);
+      diffusedKeyLight.color.setHex(0xc8ff3d);
+    } else if (state === 'error') {
+      outerMat.color.setHex(0x451a1a);
+      outerMat.emissive.setHex(0x8a2d2d);
+      diffusedKeyLight.color.setHex(0xe76670);
+    }
+  };
+})();
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_71 -->
+</div>
+</div>
+<!-- Three Clear Processing Stages -->
+<div class="mt-5 flex flex-col gap-2.5">
+<!-- Stage 01: Validate source file -->
+<div id="stage-1" class="flex items-center justify-between p-3.5 rounded-lg bg-[#131820] border border-[#2A313C] transition-colors">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-6 h-6 rounded-md bg-[#2457FF]/20 border border-[#2457FF]/40 flex items-center justify-center shrink-0 text-[#2457FF]">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="text-xs sm:text-[13px] font-semibold text-[#F3F5F8] truncate">01 — Validate source file</span>
+<span class="text-[11px] text-[#6B7685] font-code-hash truncate">SHA-256 checksum verified &amp; format sanitized</span>
+</div>
+</div>
+<span class="stage-badge px-2 py-0.5 rounded font-code-hash text-[10px] font-semibold bg-[#2457FF]/15 text-[#b8c3ff] tracking-wider uppercase shrink-0 border border-[#2457FF]/20">
+              Validating
+            </span>
+</div>
+<!-- Stage 02: Run image classification -->
+<div id="stage-2" class="flex items-center justify-between p-3.5 rounded-lg bg-[#1E2530] border border-[#2457FF]/50 relative shadow-sm">
+<div class="flex items-center gap-3 min-w-0">
+<div class="relative w-6 h-6 rounded-md bg-[#2457FF] flex items-center justify-center shrink-0 text-white shadow">
+<span class="material-symbols-outlined text-[15px] animate-spin" style="animation-duration: 2.2s;">sync</span>
+<span class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#c8ff3d]"></span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="text-xs sm:text-[13px] font-semibold text-white flex items-center gap-2 truncate">
+                02 — Run image classification
+              </span>
+<span class="text-[11px] text-[#c8ff3d] font-code-hash flex items-center gap-1.5 truncate">
+<span class="w-1.5 h-1.5 rounded-full bg-[#c8ff3d] animate-pulse"></span>
+                Executing neural pattern pass...
+              </span>
+</div>
+</div>
+<span class="stage-badge px-2.5 py-0.5 rounded font-code-hash text-[10px] font-semibold bg-[#2457FF]/25 text-[#b8c3ff] tracking-wider uppercase shrink-0 border border-[#2457FF]/40">
+              Active Investigation
+            </span>
+</div>
+<!-- Stage 03: Prepare investigation report -->
+<div id="stage-3" class="flex items-center justify-between p-3.5 rounded-lg bg-[#131820]/50 border border-[#2A313C]/40 opacity-70">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-6 h-6 rounded-md bg-[#1E2530] flex items-center justify-center shrink-0 text-[#6B7685]">
+<span class="material-symbols-outlined text-[15px]">pending</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="text-xs sm:text-[13px] font-semibold text-[#6B7685] truncate">03 — Prepare investigation report</span>
+<span class="text-[11px] text-[#6B7685]/80 font-code-hash truncate">Cryptographic findings manifest</span>
+</div>
+</div>
+<span class="stage-badge px-2 py-0.5 rounded font-code-hash text-[10px] font-medium bg-[#1E2530] text-[#6B7685] tracking-wider uppercase shrink-0 border border-[#2A313C]/40">
+              Queued
+            </span>
+</div>
+</div>
+</div>
+<!-- Clean Professional Footer with Abort Button -->
+<div class="mt-6 pt-4 border-t border-[#2A313C]/70 flex items-center justify-end relative z-10">
+<button class="h-8 px-4 rounded-lg font-medium text-xs text-[#E76670] border border-[#E76670]/30 hover:bg-[#E76670]/10 transition-all flex items-center gap-1.5 shrink-0" id="abortBtn" type="button">
+<span class="material-symbols-outlined text-[15px]">cancel</span>
+<span>Abort Analysis</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script>
+  // Simple Script for Copy & Abort Actions
+  (function() {
+    const copyBtn = document.getElementById('copyHashBtn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function() {
+        const hashEl = document.getElementById('progress-sha256');
+        const hash = hashEl ? hashEl.textContent.trim() : '';
+        if (!hash || hash.includes('Computing')) return;
+        navigator.clipboard.writeText(hash).then(() => {
+          const icon = copyBtn.querySelector('.material-symbols-outlined');
+          if (icon) {
+            icon.textContent = 'check';
+            icon.classList.add('text-[#c8ff3d]');
+            setTimeout(() => { icon.textContent = 'content_copy'; icon.classList.remove('text-[#c8ff3d]'); }, 1800);
+          }
+        }).catch(() => {});
+      });
+    }
+
+    const abortBtn = document.getElementById('abortBtn');
+    if (abortBtn) {
+      abortBtn.addEventListener('click', function() {
+        if (confirm('Are you sure you want to abort? You will be returned to the upload screen.')) {
+          window.location.href = '/analyze/';
+        }
+      });
+    }
+  })();
+</script>
+
+<!-- Real job polling -->
+<script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const jobId = params.get('job_id');
+  if (!jobId) return;
+
+  const statusHeading = document.querySelector('h2.text-\\[20px\\]');
+  const statusSubtitle = document.querySelector('p.text-\\[14px\\].text-\\[\\#A3ACB8\\].font-body-md');
+  const previewImg = document.getElementById('preview-img');
+  const filenameEl = document.getElementById('preview-filename');
+  const dimEl = document.getElementById('preview-dim');
+  const formatEl = document.getElementById('preview-format');
+  const sha256El = document.getElementById('progress-sha256');
+  const pipelineBadge = document.querySelector('.inline-flex.items-center.gap-2.px-3\\.5');
+
+  const stage1 = document.getElementById('stage-1');
+  const stage2 = document.getElementById('stage-2');
+  const stage3 = document.getElementById('stage-3');
+
+  if (previewImg) {
+    previewImg.src = '/api/jobs/' + jobId + '/image';
+  }
+
+  function setStageBadge(stageEl, statusText, statusType) {
+    if (!stageEl) return;
+    const badge = stageEl.querySelector('.stage-badge');
+    if (!badge) return;
+    badge.textContent = statusText;
+    if (statusType === 'complete') {
+      badge.className = 'stage-badge px-2 py-0.5 rounded font-code-hash text-[10px] font-semibold bg-[#2457FF]/15 text-[#b8c3ff] tracking-wider uppercase shrink-0 border border-[#2457FF]/20';
+    } else if (statusType === 'active') {
+      badge.className = 'stage-badge px-2.5 py-0.5 rounded font-code-hash text-[10px] font-semibold bg-[#2457FF]/25 text-[#b8c3ff] tracking-wider uppercase shrink-0 border border-[#2457FF]/40 animate-pulse';
+    } else {
+      badge.className = 'stage-badge px-2 py-0.5 rounded font-code-hash text-[10px] font-medium bg-[#1E2530] text-[#6B7685] tracking-wider uppercase shrink-0 border border-[#2A313C]/40';
+    }
+  }
+
+  function updateUI(job) {
+    const status = job.status;
+    const previewBadge = document.getElementById('preview-badge');
+    if (previewBadge) {
+      previewBadge.style.display = 'inline-block';
+      previewBadge.textContent = 'EVIDENCE EXHIBIT';
+    }
+    if (filenameEl && job.filename) filenameEl.textContent = job.filename;
+    if (dimEl && job.width && job.height) dimEl.textContent = job.width + ' \u00d7 ' + job.height + ' px';
+    if (formatEl && job.format) formatEl.textContent = job.format + ' \u00b7 ' + (job.filesize_display || '');
+    if (sha256El && job.sha256) sha256El.textContent = job.sha256;
+
+    if (status === 'queued') {
+      if (statusHeading) statusHeading.textContent = 'Queued for analysis...';
+      if (statusSubtitle) statusSubtitle.textContent = 'Waiting in local workstation queue.';
+      if (pipelineBadge) pipelineBadge.querySelector('span.font-code-hash').textContent = 'PIPELINE QUEUED \u00b7 STAGE 01 OF 03';
+      setStageBadge(stage1, 'Queued', 'queued');
+      setStageBadge(stage2, 'Queued', 'queued');
+      setStageBadge(stage3, 'Queued', 'queued');
+    } else if (status === 'validating') {
+      if (statusHeading) statusHeading.textContent = 'Validating file integrity...';
+      if (statusSubtitle) statusSubtitle.textContent = 'Computing SHA-256 fingerprint and parsing image metadata.';
+      if (pipelineBadge) pipelineBadge.querySelector('span.font-code-hash').textContent = 'PIPELINE ACTIVE \u00b7 STAGE 01 OF 03';
+      setStageBadge(stage1, 'Validating', 'active');
+      setStageBadge(stage2, 'Queued', 'queued');
+      setStageBadge(stage3, 'Queued', 'queued');
+    } else if (status === 'classifying') {
+      if (statusHeading) statusHeading.textContent = 'Running neural pattern classifier...';
+      if (statusSubtitle) statusSubtitle.textContent = 'Local CPU inference via Ateeqq/ai-vs-human-image-detector.';
+      if (pipelineBadge) pipelineBadge.querySelector('span.font-code-hash').textContent = 'PIPELINE ACTIVE \u00b7 STAGE 02 OF 03';
+      setStageBadge(stage1, 'Completed', 'complete');
+      setStageBadge(stage2, 'Classifying', 'active');
+      setStageBadge(stage3, 'Queued', 'queued');
+    } else if (status === 'complete') {
+      if (statusHeading) statusHeading.textContent = 'Analysis complete!';
+      if (statusSubtitle) statusSubtitle.textContent = 'Findings verified. Redirecting to forensic report...';
+      if (pipelineBadge) pipelineBadge.querySelector('span.font-code-hash').textContent = 'PIPELINE COMPLETE \u00b7 ALL STAGES DONE';
+      setStageBadge(stage1, 'Completed', 'complete');
+      setStageBadge(stage2, 'Completed', 'complete');
+      setStageBadge(stage3, 'Ready', 'complete');
+      if (window.setGlobeState) window.setGlobeState('complete');
+      setTimeout(() => { window.location.href = '/results/?job_id=' + jobId; }, 1200);
+      return true;
+    } else if (status === 'error') {
+      if (statusHeading) statusHeading.textContent = 'Analysis Failed';
+      if (statusSubtitle) statusSubtitle.textContent = job.error || 'An error occurred during image processing.';
+      if (pipelineBadge) pipelineBadge.querySelector('span.font-code-hash').textContent = 'PIPELINE ERROR';
+      setStageBadge(stage1, 'Error', 'queued');
+      setStageBadge(stage2, 'Error', 'queued');
+      setStageBadge(stage3, 'Error', 'queued');
+      if (window.setGlobeState) window.setGlobeState('error');
+      return true;
+    }
+    return false;
+  }
+
+  let pollInterval;
+  async function poll() {
+    try {
+      const res = await fetch('/api/jobs/' + jobId);
+      if (!res.ok) { clearInterval(pollInterval); return; }
+      const job = await res.json();
+      const done = updateUI(job);
+      if (done) clearInterval(pollInterval);
+    } catch (e) { console.error('Poll error:', e); }
+  }
+
+  poll();
+  pollInterval = setInterval(poll, 1000);
+})();
+</script>
+</body></html>

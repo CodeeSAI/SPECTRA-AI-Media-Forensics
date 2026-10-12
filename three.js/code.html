@@ -1,0 +1,288 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width,initial-scale=1.0" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+  </style>
+</head>
+<body>
+<!-- STITCH_THREEJS_START:ANIMATION_71 class="fixed inset-0 w-full h-full bg-transparent" -->
+<div class="fixed inset-0 w-full h-full bg-transparent" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_71" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_71');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  (function() {
+  const container = document.getElementById('threejs-container-SPECTRA_GLOBE_ULTRA_GLASS') || document.querySelector('[id^="threejs-container-"]');
+  if (!container) return;
+
+  const containerEl = container;
+  const getWidth = () => containerEl.clientWidth || containerEl.offsetWidth || 520;
+  const getHeight = () => containerEl.clientHeight || containerEl.offsetHeight || 380;
+
+  let width = getWidth();
+  let height = getHeight();
+
+  // Scene & Camera
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(38, width / height, 1, 1000);
+  camera.position.set(0, 0, 195);
+
+  // WebGL Renderer
+  const renderer = new THREE.WebGLRenderer({
+    alpha: true,
+    antialias: true,
+    powerPreference: 'high-performance'
+  });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setClearColor(0x000000, 0); // Transparent background
+
+  while (containerEl.firstChild) {
+    containerEl.removeChild(containerEl.firstChild);
+  }
+  containerEl.appendChild(renderer.domElement);
+
+  renderer.domElement.style.width = '100%';
+  renderer.domElement.style.height = '100%';
+  renderer.domElement.style.display = 'block';
+
+  // Master group with slight aerospace axial tilt
+  const rootGroup = new THREE.Group();
+  rootGroup.rotation.x = 0.22;
+  rootGroup.rotation.z = -0.06;
+  scene.add(rootGroup);
+
+  const GLOBE_RADIUS = 54;
+
+  // 1. Subtle Atmospheric Backdrop Halo (Restrained radial blue glow behind globe)
+  const glowCanvas = document.createElement('canvas');
+  glowCanvas.width = 128;
+  glowCanvas.height = 128;
+  const gCtx = glowCanvas.getContext('2d');
+  const gradient = gCtx.createRadialGradient(64, 64, 14, 64, 64, 62);
+  gradient.addColorStop(0, 'rgba(24, 60, 175, 0.28)');
+  gradient.addColorStop(0.35, 'rgba(18, 45, 130, 0.12)');
+  gradient.addColorStop(0.7, 'rgba(11, 25, 75, 0.03)');
+  gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  gCtx.fillStyle = gradient;
+  gCtx.fillRect(0, 0, 128, 128);
+
+  const glowTexture = new THREE.CanvasTexture(glowCanvas);
+  const glowSpriteMat = new THREE.SpriteMaterial({
+    map: glowTexture,
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+  });
+  const glowSprite = new THREE.Sprite(glowSpriteMat);
+  glowSprite.scale.set(GLOBE_RADIUS * 2.8, GLOBE_RADIUS * 2.8, 1);
+  scene.add(glowSprite);
+
+  // 2. Sophisticated Glass-like Multi-layer Construction
+  // Core Inner Body: Deep translucent graphite-indigo nucleus providing substance and light transmission backing
+  const innerGeo = new THREE.SphereGeometry(GLOBE_RADIUS * 0.97, 64, 64);
+  const innerMat = new THREE.MeshPhongMaterial({
+    color: 0x070e1a,
+    emissive: 0x050c18,
+    emissiveIntensity: 0.5,
+    shininess: 25,
+    transparent: true,
+    opacity: 0.95
+  });
+  const innerMesh = new THREE.Mesh(innerGeo, innerMat);
+  rootGroup.add(innerMesh);
+
+  // Outer Translucent Glass Shell: Deep cobalt-blue, subtle light transmission, realistic soft rim reflections
+  // Replaced multiple harsh white specular hotspots with a single subdued cobalt specular response
+  const outerGeo = new THREE.SphereGeometry(GLOBE_RADIUS, 80, 80);
+  const outerMat = new THREE.MeshPhongMaterial({
+    color: 0x0c2152,
+    emissive: 0x08173c,
+    emissiveIntensity: 0.4,
+    specular: 0x2e5ee8,
+    shininess: 45,
+    transparent: true,
+    opacity: 0.65,
+    depthWrite: false,
+    side: THREE.DoubleSide
+  });
+  const outerMesh = new THREE.Mesh(outerGeo, outerMat);
+  rootGroup.add(outerMesh);
+
+  // 3. Delicate Latitude and Longitude Curves (Fine, Low-Contrast, No triangular mesh)
+  const linesGroup = new THREE.Group();
+  const lineMat = new THREE.LineBasicMaterial({
+    color: 0x2457ff,
+    transparent: true,
+    opacity: 0.24
+  });
+  const equatorMat = new THREE.LineBasicMaterial({
+    color: 0x3d6eff,
+    transparent: true,
+    opacity: 0.38
+  });
+
+  // Latitudes
+  const latSteps = [-54, -36, -18, 0, 18, 36, 54];
+  latSteps.forEach(deg => {
+    const phi = (deg * Math.PI) / 180;
+    const r = (GLOBE_RADIUS + 0.22) * Math.cos(phi);
+    const y = (GLOBE_RADIUS + 0.22) * Math.sin(phi);
+    const circleCurve = new THREE.EllipseCurve(0, 0, r, r, 0, 2 * Math.PI, false, 0);
+    const pts = circleCurve.getPoints(80);
+    const geo = new THREE.BufferGeometry().setFromPoints(
+      pts.map(p => new THREE.Vector3(p.x, y, p.y))
+    );
+    const line = new THREE.Line(geo, deg === 0 ? equatorMat : lineMat);
+    linesGroup.add(line);
+  });
+
+  // Longitudes (Meridians)
+  const meridianCount = 8;
+  for (let m = 0; m < meridianCount; m++) {
+    const angle = (m * Math.PI) / meridianCount;
+    const curve = new THREE.EllipseCurve(0, 0, GLOBE_RADIUS + 0.22, GLOBE_RADIUS + 0.22, 0, 2 * Math.PI, false, 0);
+    const pts = curve.getPoints(80);
+    const geo = new THREE.BufferGeometry().setFromPoints(
+      pts.map(p => new THREE.Vector3(p.x, p.y, 0))
+    );
+    const line = new THREE.Line(geo, lineMat);
+    line.rotation.y = angle;
+    linesGroup.add(line);
+  }
+  rootGroup.add(linesGroup);
+
+  // 4. Maximum Two Fine Orbital Rings: One Cobalt Blue & One Muted Lime Green
+  // Orbit 1: Muted cobalt blue fine orbit
+  const orbit1Radius = GLOBE_RADIUS * 1.34;
+  const orbit1Geo = new THREE.TorusGeometry(orbit1Radius, 0.28, 8, 96);
+  const orbit1Mat = new THREE.MeshBasicMaterial({
+    color: 0x2457ff,
+    transparent: true,
+    opacity: 0.35
+  });
+  const orbitRing1 = new THREE.Mesh(orbit1Geo, orbit1Mat);
+  orbitRing1.rotation.x = Math.PI / 2.35;
+  orbitRing1.rotation.y = 0.20;
+  rootGroup.add(orbitRing1);
+
+  // Orbit 2: Muted lime-green fine inclined orbit
+  const orbit2Radius = GLOBE_RADIUS * 1.46;
+  const orbit2Geo = new THREE.TorusGeometry(orbit2Radius, 0.22, 8, 96);
+  const orbit2Mat = new THREE.MeshBasicMaterial({
+    color: 0xc8ff3d,
+    transparent: true,
+    opacity: 0.28
+  });
+  const orbitRing2 = new THREE.Mesh(orbit2Geo, orbit2Mat);
+  orbitRing2.rotation.x = -Math.PI / 3.2;
+  orbitRing2.rotation.y = -0.28;
+  rootGroup.add(orbitRing2);
+
+  // 5. One Small, Controlled Lime Scanning Point along Orbit 2
+  const scanPointGeo = new THREE.SphereGeometry(1.1, 16, 16);
+  const scanPointMat = new THREE.MeshBasicMaterial({ color: 0xc8ff3d });
+  const scanPoint = new THREE.Mesh(scanPointGeo, scanPointMat);
+  orbitRing2.add(scanPoint);
+
+  // Small, restrained soft glow sprite for scanning marker
+  const pCanvas = document.createElement('canvas');
+  pCanvas.width = 48;
+  pCanvas.height = 48;
+  const pCtx = pCanvas.getContext('2d');
+  const pGrad = pCtx.createRadialGradient(24, 24, 1, 24, 24, 22);
+  pGrad.addColorStop(0, 'rgba(200, 255, 61, 0.75)');
+  pGrad.addColorStop(0.35, 'rgba(200, 255, 61, 0.22)');
+  pGrad.addColorStop(1, 'rgba(200, 255, 61, 0)');
+  pCtx.fillStyle = pGrad;
+  pCtx.fillRect(0, 0, 48, 48);
+
+  const pointTex = new THREE.CanvasTexture(pCanvas);
+  const pointSpriteMat = new THREE.SpriteMaterial({
+    map: pointTex,
+    transparent: true,
+    blending: THREE.AdditiveBlending
+  });
+  const pointSprite = new THREE.Sprite(pointSpriteMat);
+  pointSprite.scale.set(6.5, 6.5, 1);
+  scanPoint.add(pointSprite);
+
+  // 6. Restrained Single Diffused Light Source (Replacing multiple harsh white hotspots)
+  // Ambient lighting for deep corporate cyber-clarity
+  const ambientLight = new THREE.AmbientLight(0x0a1530, 1.8);
+  scene.add(ambientLight);
+
+  // Single diffused cobalt key light with natural soft falloff
+  const diffusedKeyLight = new THREE.PointLight(0x285bee, 2.2, 340);
+  diffusedKeyLight.position.set(70, 65, 85);
+  scene.add(diffusedKeyLight);
+
+  // Refined blue rim light for realistic edge definition without harsh white blow-out
+  const rimLight = new THREE.PointLight(0x2457ff, 1.6, 260);
+  rimLight.position.set(-80, -55, -70);
+  scene.add(rimLight);
+
+  // Immediate render
+  renderer.render(scene, camera);
+
+  // Resize handler
+  function handleResize() {
+    const w = getWidth();
+    const h = getHeight();
+    if (w > 0 && h > 0) {
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+  }
+  window.addEventListener('resize', handleResize);
+  setTimeout(handleResize, 100);
+
+  // Sophisticated, slow, smooth animation loop
+  let elapsed = 0;
+  function renderLoop() {
+    requestAnimationFrame(renderLoop);
+    elapsed += 0.008; // Deliberate, calm enterprise tempo
+
+    // Smooth, slow planetary rotation
+    rootGroup.rotation.y += 0.0018;
+    linesGroup.rotation.y += 0.0009;
+
+    // Subtle orbital ring rotation
+    orbitRing1.rotation.z += 0.0024;
+    orbitRing2.rotation.z -= 0.0020;
+
+    // Small lime marker travelling along orbit 2
+    const ptAngle = elapsed * 0.95;
+    scanPoint.position.set(
+      Math.cos(ptAngle) * orbit2Radius,
+      Math.sin(ptAngle) * orbit2Radius,
+      0
+    );
+
+    // Very gentle subtle breathing pulse during active neural evaluation
+    const pulse = Math.sin(elapsed * 1.5) * 0.05 + 0.95;
+    diffusedKeyLight.intensity = 2.2 * pulse;
+    outerMat.emissiveIntensity = 0.4 * pulse;
+
+    renderer.render(scene, camera);
+  }
+  renderLoop();
+})();
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_71 -->
+
+
+</body></html>
