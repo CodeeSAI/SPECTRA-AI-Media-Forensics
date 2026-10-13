@@ -22,7 +22,7 @@ from fastapi.responses import JSONResponse
 
 # Image handling
 try:
-    from PIL import Image, UnidentifiedImageError
+    from PIL import Image, ImageOps, UnidentifiedImageError
 except ImportError:
     print("ERROR: Pillow is not installed. Run: pip install pillow", file=sys.stderr)
     sys.exit(1)
@@ -108,16 +108,9 @@ def _classify(image: Image.Image) -> Dict[str, Any]:
     ai_pct = ai_score_raw * 100.0
     human_pct = human_score_raw * 100.0
 
-    # Avoid deceptive 100.0% / 0.0% collapse
-    if 0.0 < ai_pct < 0.05:
-        ai_score = 0.01
-        human_score = 99.99
-    elif 0.0 < human_pct < 0.05:
-        human_score = 0.01
-        ai_score = 99.99
-    else:
-        ai_score = round(ai_pct, 1)
-        human_score = round(100.0 - ai_score, 1)
+    # Derive percentages rounded to 1 decimal place, ensuring they sum to 100.0%
+    ai_score = round(ai_pct, 1)
+    human_score = round(100.0 - ai_score, 1)
 
     return {
         "verdict": verdict,
@@ -129,6 +122,12 @@ def _classify(image: Image.Image) -> Dict[str, Any]:
         },
         "raw_labels": raw,
         "threshold_used": CONFIDENCE_THRESHOLD,
+        "model_id": MODEL_ID,
+        "disclaimer": (
+            f"Model scores represent statistical classifier outputs from {MODEL_ID}, "
+            "not definitive proof of authentic origin. A directional verdict requires "
+            f"exceeding the {CONFIDENCE_THRESHOLD * 100:.0f}% confidence threshold."
+        ),
     }
 
 
@@ -174,8 +173,11 @@ async def classify_media(file: UploadFile = File(...)):
 
     try:
         raw_image = Image.open(io.BytesIO(image_bytes))
-        raw_image.verify()
-        raw_image = Image.open(io.BytesIO(image_bytes))
+        # Correct physical orientation using EXIF before feeding into the vision model
+        try:
+            raw_image = ImageOps.exif_transpose(raw_image)
+        except Exception:
+            pass
         image = raw_image.convert("RGB")
     except (UnidentifiedImageError, Exception) as exc:
         raise HTTPException(422, f"Cannot decode image: {exc}")

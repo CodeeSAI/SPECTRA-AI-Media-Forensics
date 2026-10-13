@@ -1,4 +1,4 @@
-﻿# Python virtual environments
+# Python virtual environments
 .venv/
 venv/
 env/
@@ -22,3 +22,6 @@ Thumbs.db
 # Backups and temporary files
 _backups/
 *.log
+
+# Node.js dependencies
+node_modules/

@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="/vendor/ledger.js"></script>
   <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
@@ -101,6 +102,10 @@
 
       <!-- Navigation — Primary Destinations -->
       <nav class="flex flex-col pt-4 px-3 gap-1.5">
+        <a class="group flex items-center h-10 px-3.5 rounded-lg text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface-2 border-l-[3px] border-transparent transition-all" href="/">
+          <span class="material-symbols-outlined text-[19px] mr-3 text-text-tertiary group-hover:text-cyan-glow transition-colors">home</span>
+          <span class="tracking-wide">Home</span>
+        </a>
         <a class="group flex items-center h-10 px-3.5 rounded-lg text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface-2 border-l-[3px] border-transparent transition-all" href="/analyze/">
           <span class="material-symbols-outlined text-[19px] mr-3 text-text-tertiary group-hover:text-cyan-glow transition-colors">fingerprint</span>
           <span class="tracking-wide">Analyze</span>
@@ -138,7 +143,7 @@
 
   <!-- Main View Container -->
   <div class="pl-0 lg:pl-[232px] min-h-screen bg-obsidian flex flex-col flex-1 w-full min-w-0">
-    
+
     <!-- Top System Bar -->
     <header class="fixed top-0 left-0 lg:left-[232px] right-0 h-14 sm:h-16 bg-surface-1/80 backdrop-blur-md border-b border-border-line z-40 flex items-center justify-between px-4 sm:px-6 lg:px-8 select-none">
       <div class="flex items-center gap-3 font-mono text-xs text-text-secondary min-w-0">
@@ -149,10 +154,10 @@
         <span class="font-semibold text-white tracking-wide truncate">EVIDENCE LEDGER &amp; INVESTIGATION RECORDS</span>
       </div>
       <div class="flex items-center gap-3 sm:gap-4 shrink-0">
-        <!-- Live System Clock -->
+        <!-- Live System Clock (IST Asia/Kolkata) -->
         <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-2 border border-border-line font-mono text-[11px] text-text-secondary">
           <span class="material-symbols-outlined text-[14px] text-electric-violet">schedule</span>
-          <span id="utc-clock">UTC 00:00:00</span>
+          <span id="ist-clock">--:--:-- IST</span>
         </div>
         <!-- Gateway Badge -->
         <div class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-border-glow bg-surface-2/60 text-xs font-mono">
@@ -169,7 +174,7 @@
 
     <!-- Content Workspace -->
     <main class="relative pt-20 w-full min-h-screen p-4 sm:p-6 lg:p-8 space-y-7 min-w-0">
-      
+
       <!-- Page Header Area -->
       <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div class="flex flex-col space-y-1.5">
@@ -184,7 +189,7 @@
             Authoritative session ledger of assessed media exhibits, SHA-256 integrity digests, and classifier predictions.
           </p>
         </div>
-        
+
         <div class="flex items-center gap-3 self-start sm:self-end">
           <div class="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-surface-2 border border-border-line text-xs font-mono">
             <span class="w-2 h-2 rounded-full bg-emerald-status"></span>
@@ -197,7 +202,7 @@
 
       <!-- ANALYTICS CARDS (Fortexa-Inspired Metrics) -->
       <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        
+
         <!-- Total Reports Card -->
         <div class="p-5 rounded-xl glass-panel glass-card-glow relative overflow-hidden transition-all group">
           <div class="flex items-center justify-between text-text-secondary">
@@ -276,7 +281,7 @@
 
       <!-- FILTER & ACTIONS TOOLBAR -->
       <div class="p-4 rounded-xl glass-panel border border-border-line flex flex-wrap items-center justify-between gap-4">
-        
+
         <!-- Search Input -->
         <div class="relative w-full sm:w-96">
           <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-text-tertiary pointer-events-none">search</span>
@@ -285,7 +290,7 @@
 
         <!-- Verdict Filter & Action Controls -->
         <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
-          
+
           <div class="relative">
             <select class="appearance-none bg-surface-1 border border-border-line text-xs font-mono text-text-primary px-3.5 py-2.5 pr-9 rounded-lg focus:outline-none focus:border-electric-violet cursor-pointer transition-colors" id="verdict-filter-select">
               <option value="all">All Forensic Verdicts</option>
@@ -310,13 +315,13 @@
 
       <!-- REPORTS LEDGER TABLE -->
       <section class="glass-panel rounded-2xl border border-border-line overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
-        
+
         <div class="overflow-x-auto w-full">
           <table class="w-full text-left text-xs">
             <thead>
               <tr class="bg-surface-1 border-b border-border-line text-text-tertiary font-mono uppercase text-[10px] tracking-wider h-11">
                 <th class="py-3 px-5 font-semibold">Evidence Exhibit &amp; SHA-256 Hash</th>
-                <th class="py-3 px-5 font-semibold">Date Analyzed (UTC)</th>
+                <th class="py-3 px-5 font-semibold">Date Analyzed (IST)</th>
                 <th class="py-3 px-5 font-semibold">Forensic Classification</th>
                 <th class="py-3 px-5 font-semibold">Inference Model</th>
                 <th class="py-3 px-5 text-right font-semibold">Report Actions</th>
@@ -343,7 +348,7 @@
             </span>
           </div>
           <div class="text-[11px] text-text-tertiary">
-            EVIDENCE RETENTION: ACTIVE WORKSTATION SESSION
+            EVIDENCE RETENTION: 24-HOUR AUTOMATIC PURGE PROTOCOL
           </div>
         </div>
 
@@ -351,7 +356,7 @@
 
       <!-- THREE ARCHITECTURAL STANDARDS CARDS -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
+
         <!-- Card 1: C2PA -->
         <div class="p-6 rounded-xl glass-panel border border-border-line flex flex-col justify-between hover:border-electric-violet/40 transition-colors">
           <div class="space-y-2.5">
@@ -411,15 +416,25 @@
   <!-- Interactive Ledger Client Script -->
   <script>
   (function () {
-    // UTC Live Clock
-    function updateClock() {
-      const now = new Date();
-      const str = 'UTC ' + now.toUTCString().slice(17, 25);
-      const el = document.getElementById('utc-clock');
-      if (el) el.textContent = str;
+    // Live Indian Standard Time (IST Asia/Kolkata) Clock
+    if (window.SpectraLedger && window.SpectraLedger.initLiveClock) {
+      window.SpectraLedger.initLiveClock('ist-clock');
+    } else {
+      function updateClock() {
+        const now = new Date();
+        const str = now.toLocaleTimeString('en-GB', {
+          timeZone: 'Asia/Kolkata',
+          hour12: false,
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        }) + ' IST';
+        const el = document.getElementById('ist-clock');
+        if (el) el.textContent = str;
+      }
+      setInterval(updateClock, 1000);
+      updateClock();
     }
-    setInterval(updateClock, 1000);
-    updateClock();
 
     const searchInput = document.getElementById('report-search-input');
     const verdictFilter = document.getElementById('verdict-filter-select');
@@ -489,14 +504,17 @@
           alert('No ledger records available to export.');
           return;
         }
-        const headers = ["Job ID", "Filename", "Date UTC", "Verdict", "AI Score %", "Human Score %", "SHA-256", "Dimensions", "Format", "File Size"];
+        const headers = ["Job ID", "Filename", "Date (IST)", "Verdict", "AI Score %", "Human Score %", "SHA-256", "Dimensions", "Format", "File Size"];
         const csvRows = [headers.join(",")];
         loadedJobs.forEach(j => {
           const r = j.result || {};
+          const istTimestamp = window.SpectraLedger
+            ? window.SpectraLedger.formatIST(j.completed_at || j.created_at)
+            : (j.completed_at || j.created_at || '');
           const row = [
             `"${j.job_id || ''}"`,
             `"${(j.filename || '').replace(/"/g, '""')}"`,
-            `"${j.completed_at || j.created_at || ''}"`,
+            `"${istTimestamp}"`,
             `"${r.verdict || j.status || ''}"`,
             `"${r.ai_score != null ? r.ai_score : ''}"`,
             `"${r.human_score != null ? r.human_score : ''}"`,
@@ -519,144 +537,206 @@
       });
     }
 
-    // Load Live Records
+    // Download report helper with honest unavailable handling
+    window.downloadReport = async function (jobId, filename) {
+      if (!jobId) return;
+      try {
+        const res = await fetch('/api/reports/' + jobId);
+        if (res.ok) {
+          const blob = await res.blob();
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          const safeName = (filename || 'EXHIBIT').replace(/[^a-zA-Z0-9_-]/g, '_');
+          a.download = `SPECTRA_${safeName}_${jobId.slice(0, 8)}.txt`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        } else {
+          alert('Official investigation report is unavailable: Session report buffer has been recycled in accordance with local-session privacy policies.');
+        }
+      } catch (err) {
+        alert('Report download unavailable: ' + err.message);
+      }
+    };
+
+    // Render Ledger UI from record list
+    function renderLedger(jobs) {
+      const records = Array.isArray(jobs) ? jobs : (window.SpectraLedger ? window.SpectraLedger.getRecords() : []);
+      loadedJobs = records;
+
+      if (records.length === 0) {
+        document.getElementById('stat-total-reports').textContent = '0';
+        document.getElementById('stat-ai-reports').textContent = '0';
+        document.getElementById('stat-human-reports').textContent = '0';
+        document.getElementById('stat-inconclusive-reports').textContent = '0';
+        if (countLabel) countLabel.textContent = '0 Records';
+        if (showingCount) showingCount.textContent = 'Showing 0 of 0 records';
+        tableBody.innerHTML = `<tr>
+          <td colspan="5" class="py-16 text-center text-text-tertiary font-mono text-xs">
+            <div class="flex flex-col items-center justify-center space-y-2">
+              <span class="material-symbols-outlined text-3xl text-text-tertiary">history_toggle_off</span>
+              <span class="text-white font-semibold">No active investigation records in forensic ledger</span>
+              <span class="text-text-secondary text-[11px] max-w-md">Investigation records are preserved in local storage and automatically expire after 24 hours per evidentiary retention protocol.</span>
+              <a href="/analyze/" class="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-electric-violet/20 hover:bg-electric-violet/30 border border-electric-violet/40 text-electric-violet hover:text-white transition-all text-xs">
+                <span class="material-symbols-outlined text-[15px]">add_photo_alternate</span>
+                <span>Ingest Exhibit to Begin Investigation</span>
+              </a>
+            </div>
+          </td>
+        </tr>`;
+        return;
+      }
+
+      // Compute stats
+      const stats = window.SpectraLedger ? window.SpectraLedger.getStats(records) : {
+        total: records.length,
+        ai_generated: records.filter(j => j.result && j.result.verdict === 'AI-Generated').length,
+        human_created: records.filter(j => j.result && j.result.verdict === 'Human-Created').length,
+        inconclusive: records.filter(j => !j.result || (j.result.verdict !== 'AI-Generated' && j.result.verdict !== 'Human-Created')).length
+      };
+
+      document.getElementById('stat-total-reports').textContent = stats.total;
+      document.getElementById('stat-ai-reports').textContent = stats.ai_generated;
+      document.getElementById('stat-human-reports').textContent = stats.human_created;
+      document.getElementById('stat-inconclusive-reports').textContent = stats.inconclusive;
+
+      if (countLabel) {
+        countLabel.textContent = stats.total + (stats.total === 1 ? ' Record' : ' Records');
+      }
+
+      // Render Table Rows
+      const rowsHtml = records.map(j => {
+        const r = j.result || {};
+        const isError = j.status === 'error';
+        const isPending = j.status === 'queued' || j.status === 'validating' || j.status === 'classifying';
+        const verdict = isError
+          ? 'Analysis Failed'
+          : isPending
+          ? 'Processing...'
+          : (r.verdict || 'Inconclusive');
+
+        const ts = window.SpectraLedger
+          ? window.SpectraLedger.formatIST(j.completed_at || j.created_at)
+          : (j.completed_at || j.created_at ? new Date(j.completed_at || j.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) + ' IST' : '—');
+
+        const fullSha = j.sha256 || '—';
+        const shortSha = j.sha256 ? j.sha256.slice(0, 14) + '...' : (isError ? 'Error' : 'Computing');
+
+        let dotClass = 'bg-text-tertiary';
+        let badgeClass = 'bg-surface-3 text-text-tertiary border-border-line';
+        let conf = '';
+
+        if (isError) {
+          dotClass = 'bg-rose-status shadow-[0_0_8px_rgba(244,63,94,0.5)]';
+          badgeClass = 'bg-rose-status/15 text-rose-status border-rose-status/30';
+        } else if (isPending) {
+          dotClass = 'bg-cyan-glow animate-pulse';
+          badgeClass = 'bg-cyan-glow/15 text-cyan-glow border-cyan-glow/30';
+        } else if (verdict === 'AI-Generated') {
+          dotClass = 'bg-molten-amber shadow-[0_0_8px_rgba(245,163,59,0.6)]';
+          badgeClass = 'bg-gradient-to-r from-molten-amber/15 to-signal-red/15 text-molten-amber border-molten-amber/35 font-semibold';
+          conf = r.ai_score != null ? ' · ' + Number(r.ai_score).toFixed(1) + '%' : '';
+        } else if (verdict === 'Human-Created') {
+          dotClass = 'bg-emerald-status shadow-[0_0_8px_rgba(16,185,129,0.5)]';
+          badgeClass = 'bg-emerald-status/10 text-emerald-status border-emerald-status/30';
+          conf = r.human_score != null ? ' · ' + Number(r.human_score).toFixed(1) + '%' : '';
+        } else if (verdict === 'Inconclusive') {
+          dotClass = 'bg-cyan-glow shadow-[0_0_8px_rgba(56,189,248,0.5)]';
+          badgeClass = 'bg-cyan-glow/10 text-cyan-glow border-cyan-glow/30';
+        }
+
+        const inspectUrl = isPending ? `/progress/?job_id=${j.job_id}` : `/results/?job_id=${j.job_id}`;
+        const escapedName = (j.filename || '').replace(/'/g, "\\'");
+
+        return `<tr class="hover:bg-surface-2/60 transition-colors h-16 group" data-record="true" data-verdict="${verdict}">
+          <td class="py-3 px-5">
+            <div class="flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded-lg bg-surface-2 border border-border-line flex items-center justify-center shrink-0 group-hover:border-electric-violet/40 transition-colors">
+                <span class="material-symbols-outlined text-cyan-glow text-[20px]">image</span>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <span class="text-xs font-semibold text-text-primary truncate max-w-[220px] sm:max-w-xs">${j.filename}</span>
+                <div class="flex items-center gap-1.5 mt-0.5">
+                  <span class="font-mono text-[10px] text-text-tertiary">SHA-256:</span>
+                  <span class="font-mono text-[10px] text-text-secondary truncate max-w-[140px] sm:max-w-[190px]">${shortSha}</span>
+                  <button class="text-text-tertiary hover:text-cyan-glow transition-colors ml-1" onclick="copyDigest(this, '${fullSha}')" title="Copy full SHA-256">
+                    <span class="material-symbols-outlined text-[13px]">content_copy</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-5 text-text-secondary font-mono text-[11px] whitespace-nowrap">
+            ${ts}
+          </td>
+          <td class="py-3 px-5 whitespace-nowrap">
+            <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full border text-[11px] font-mono ${badgeClass}">
+              <span class="w-1.5 h-1.5 rounded-full ${dotClass} shrink-0"></span>
+              <span>${verdict}${conf}</span>
+            </div>
+          </td>
+          <td class="py-3 px-5 whitespace-nowrap">
+            <span class="font-mono text-[11px] text-text-tertiary bg-surface-2 px-2.5 py-1 rounded border border-border-line">
+              ${j.model_id ? (j.model_id.includes('ai-vs-human') ? 'ViT-B16 (Ateeqq)' : j.model_id) : 'ViT-B16 (Ateeqq)'}
+            </span>
+          </td>
+          <td class="py-3 px-5 text-right whitespace-nowrap font-mono">
+            <div class="flex items-center justify-end gap-3">
+              <a class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-2 hover:bg-surface-3 border border-border-line text-electric-violet hover:text-white text-xs font-medium transition-all" href="${inspectUrl}">
+                <span>Inspect</span>
+                <span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+              </a>
+              ${j.status === 'complete' ? `
+              <button type="button" class="p-1.5 rounded-lg hover:bg-surface-3 text-text-tertiary hover:text-cyan-glow transition-colors cursor-pointer" onclick="downloadReport('${j.job_id}', '${escapedName}')" title="Download TXT Certificate">
+                <span class="material-symbols-outlined text-[17px]">download</span>
+              </button>` : ''}
+            </div>
+          </td>
+        </tr>`;
+      }).join('');
+
+      tableBody.innerHTML = rowsHtml;
+      filterRows();
+    }
+
+    // Load Live Records: Reads persistent local ledger immediately, then syncs with backend
     async function loadReports() {
+      // Step 1: Render immediately from persistent local ledger (survives refreshes & server restarts)
+      if (window.SpectraLedger) {
+        const localRecords = window.SpectraLedger.getRecords();
+        renderLedger(localRecords);
+      }
+
+      // Step 2: Fetch backend history and sync
       try {
         const res = await fetch('/api/history');
-        if (!res.ok) throw new Error('API history unreachable');
-        const data = await res.json();
-        const stats = data.stats || {};
-        const jobs = data.jobs || [];
-
-        if (jobs.length === 0) {
-          loadedJobs = [];
-          document.getElementById('stat-total-reports').textContent = '0';
-          document.getElementById('stat-ai-reports').textContent = '0';
-          document.getElementById('stat-human-reports').textContent = '0';
-          document.getElementById('stat-inconclusive-reports').textContent = '0';
-          if (countLabel) countLabel.textContent = '0 Records';
-          tableBody.innerHTML = `<tr><td colspan="5" class="py-16 text-center text-text-tertiary font-mono text-xs">No media exhibits analyzed in active session ledger. <a href="/analyze/" class="text-electric-violet underline ml-1">Ingest media exhibit</a> to begin recorded investigations.</td></tr>`;
-          return;
-        }
-
-        loadedJobs = jobs;
-
-        // Update Stat Cards strictly from actual session records
-        const totalCount = stats.total ?? jobs.length;
-        const aiCount = stats.ai_generated ?? 0;
-        const humanCount = stats.human_created ?? 0;
-        const incCount = (stats.inconclusive ?? 0) + (stats.failed ?? 0);
-
-        document.getElementById('stat-total-reports').textContent = totalCount;
-        document.getElementById('stat-ai-reports').textContent = aiCount;
-        document.getElementById('stat-human-reports').textContent = humanCount;
-        document.getElementById('stat-inconclusive-reports').textContent = incCount;
-
-        if (countLabel) {
-          countLabel.textContent = totalCount + (totalCount === 1 ? ' Record' : ' Records');
-        }
-
-        // Render Table Rows
-        const rowsHtml = jobs.map(j => {
-          const r = j.result || {};
-          const isError = j.status === 'error';
-          const isPending = j.status === 'queued' || j.status === 'validating' || j.status === 'classifying';
-          const verdict = isError
-            ? 'Analysis Failed'
-            : isPending
-            ? 'Processing...'
-            : (r.verdict || 'Inconclusive');
-
-          const ts = j.completed_at
-            ? new Date(j.completed_at).toISOString().replace('T', ' ').slice(0, 19) + ' UTC'
-            : (j.created_at ? new Date(j.created_at).toISOString().replace('T', ' ').slice(0, 19) + ' UTC' : '—');
-          
-          const fullSha = j.sha256 || '—';
-          const shortSha = j.sha256 ? j.sha256.slice(0, 14) + '...' : (isError ? 'Error' : 'Computing');
-
-          let dotClass = 'bg-text-tertiary';
-          let badgeClass = 'bg-surface-3 text-text-tertiary border-border-line';
-          let conf = '';
-
-          if (isError) {
-            dotClass = 'bg-rose-status shadow-[0_0_8px_rgba(244,63,94,0.5)]';
-            badgeClass = 'bg-rose-status/15 text-rose-status border-rose-status/30';
-          } else if (isPending) {
-            dotClass = 'bg-cyan-glow animate-pulse';
-            badgeClass = 'bg-cyan-glow/15 text-cyan-glow border-cyan-glow/30';
-          } else if (verdict === 'AI-Generated') {
-            dotClass = 'bg-molten-amber shadow-[0_0_8px_rgba(245,163,59,0.6)]';
-            badgeClass = 'bg-gradient-to-r from-molten-amber/15 to-signal-red/15 text-molten-amber border-molten-amber/35 font-semibold';
-            conf = r.ai_score != null ? ' · ' + r.ai_score + '%' : '';
-          } else if (verdict === 'Human-Created') {
-            dotClass = 'bg-emerald-status shadow-[0_0_8px_rgba(16,185,129,0.5)]';
-            badgeClass = 'bg-emerald-status/10 text-emerald-status border-emerald-status/30';
-            conf = r.human_score != null ? ' · ' + r.human_score + '%' : '';
-          } else if (verdict === 'Inconclusive') {
-            dotClass = 'bg-cyan-glow shadow-[0_0_8px_rgba(56,189,248,0.5)]';
-            badgeClass = 'bg-cyan-glow/10 text-cyan-glow border-cyan-glow/30';
+        if (res.ok) {
+          const data = await res.json();
+          const backendJobs = data.jobs || [];
+          if (window.SpectraLedger) {
+            const synced = window.SpectraLedger.syncWithBackend(backendJobs);
+            renderLedger(synced);
+          } else {
+            renderLedger(backendJobs);
           }
-
-          const inspectUrl = isPending ? `/progress/?job_id=${j.job_id}` : `/results/?job_id=${j.job_id}`;
-          const downloadUrl = `/api/reports/${j.job_id}`;
-
-          return `<tr class="hover:bg-surface-2/60 transition-colors h-16 group" data-record="true" data-verdict="${verdict}">
-            <td class="py-3 px-5">
-              <div class="flex items-center gap-3.5">
-                <div class="w-10 h-10 rounded-lg bg-surface-2 border border-border-line flex items-center justify-center shrink-0 group-hover:border-electric-violet/40 transition-colors">
-                  <span class="material-symbols-outlined text-cyan-glow text-[20px]">image</span>
-                </div>
-                <div class="flex flex-col min-w-0">
-                  <span class="text-xs font-semibold text-text-primary truncate max-w-[220px] sm:max-w-xs">${j.filename}</span>
-                  <div class="flex items-center gap-1.5 mt-0.5">
-                    <span class="font-mono text-[10px] text-text-tertiary">SHA-256:</span>
-                    <span class="font-mono text-[10px] text-text-secondary truncate max-w-[140px] sm:max-w-[190px]">${shortSha}</span>
-                    <button class="text-text-tertiary hover:text-cyan-glow transition-colors ml-1" onclick="copyDigest(this, '${fullSha}')" title="Copy full SHA-256">
-                      <span class="material-symbols-outlined text-[13px]">content_copy</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td class="py-3 px-5 text-text-secondary font-mono text-[11px] whitespace-nowrap">
-              ${ts}
-            </td>
-            <td class="py-3 px-5 whitespace-nowrap">
-              <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full border text-[11px] font-mono ${badgeClass}">
-                <span class="w-1.5 h-1.5 rounded-full ${dotClass} shrink-0"></span>
-                <span>${verdict}${conf}</span>
-              </div>
-            </td>
-            <td class="py-3 px-5 whitespace-nowrap">
-              <span class="font-mono text-[11px] text-text-tertiary bg-surface-2 px-2.5 py-1 rounded border border-border-line">
-                ViT-B16 (Ateeqq)
-              </span>
-            </td>
-            <td class="py-3 px-5 text-right whitespace-nowrap font-mono">
-              <div class="flex items-center justify-end gap-3">
-                <a class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-2 hover:bg-surface-3 border border-border-line text-electric-violet hover:text-white text-xs font-medium transition-all" href="${inspectUrl}">
-                  <span>Inspect</span>
-                  <span class="material-symbols-outlined text-[15px]">arrow_forward</span>
-                </a>
-                ${j.status === 'complete' ? `
-                <a class="p-1.5 rounded-lg hover:bg-surface-3 text-text-tertiary hover:text-cyan-glow transition-colors" href="${downloadUrl}" download title="Download TXT Certificate">
-                  <span class="material-symbols-outlined text-[17px]">download</span>
-                </a>` : ''}
-              </div>
-            </td>
-          </tr>`;
-        }).join('');
-
-        tableBody.innerHTML = rowsHtml;
-        filterRows();
-
+        }
       } catch (err) {
-        console.warn('Could not load reports history:', err);
-        tableBody.innerHTML = `<tr><td colspan="5" class="py-12 text-center text-rose-status text-xs font-mono"><span class="material-symbols-outlined text-2xl block mb-2">error</span>Error querying ledger: ${err.message}</td></tr>`;
+        console.warn('Backend history sync notice:', err.message);
+        // If backend is unreachable or offline, local persistent ledger is already displayed!
       }
     }
 
+    // Initial load
     loadReports();
+
+    // Start auto-cleanup for 24-hour expiry while application remains open
+    if (window.SpectraLedger) {
+      window.SpectraLedger.startAutoCleanup(function (records) {
+        renderLedger(records);
+      }, 30000);
+    }
 
     // Mobile Sidebar Drawer Toggle
     const mobileToggle = document.getElementById('mobile-sidebar-toggle');

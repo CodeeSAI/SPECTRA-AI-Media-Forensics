@@ -202,6 +202,30 @@ async function processJob(jobId: string, buffer: Buffer, filename: string, mimeT
   }
 }
 
+function formatISTDate(isoString: string | null | undefined): string {
+  if (!isoString) return 'N/A';
+  try {
+    const d = new Date(isoString);
+    if (isNaN(d.getTime())) return isoString;
+    const datePart = d.toLocaleDateString('en-GB', {
+      timeZone: 'Asia/Kolkata',
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
+    const timePart = d.toLocaleTimeString('en-GB', {
+      timeZone: 'Asia/Kolkata',
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
+    return `${datePart}, ${timePart} IST`;
+  } catch {
+    return isoString;
+  }
+}
+
 // Helper: Build Investigation Report
 function makeReport(job: ForensicJob): string {
   const res = job.result || ({} as any);
@@ -228,8 +252,8 @@ function makeReport(job: ForensicJob): string {
 ${'='.repeat(72)}
 
   Job ID          : ${job.job_id || 'N/A'}
-  Timestamp       : ${job.created_at || 'N/A'}
-  Completed At    : ${job.completed_at || 'N/A'}
+  Timestamp (IST) : ${formatISTDate(job.created_at)}
+  Completed (IST) : ${formatISTDate(job.completed_at)}
   Filename        : ${job.filename || 'N/A'}
   Dimensions      : ${job.width || '?'} x ${job.height || '?'} px
   Format          : ${job.format || 'N/A'}
@@ -400,6 +424,11 @@ app.get('/api/jobs/:id', (req: Request, res: Response) => {
   if (!job) {
     return res.status(404).json({ detail: `Job '${req.params.id}' not found.` });
   }
+  const t = new Date(job.completed_at || job.created_at).getTime();
+  if (!isNaN(t) && Date.now() - t > 24 * 60 * 60 * 1000) {
+    JOBS.delete(req.params.id);
+    return res.status(404).json({ detail: `Job '${req.params.id}' expired after 24 hours.` });
+  }
   res.json(cleanJob(job));
 });
 
@@ -407,6 +436,11 @@ app.get('/api/jobs/:id/image', (req: Request, res: Response) => {
   const job = JOBS.get(req.params.id);
   if (!job || !job._image_bytes) {
     return res.status(404).json({ detail: 'Image not found.' });
+  }
+  const t = new Date(job.completed_at || job.created_at).getTime();
+  if (!isNaN(t) && Date.now() - t > 24 * 60 * 60 * 1000) {
+    JOBS.delete(req.params.id);
+    return res.status(404).json({ detail: 'Image expired after 24 hours.' });
   }
   const ext = path.extname(job.filename).toLowerCase();
   const mediaType =
@@ -416,6 +450,16 @@ app.get('/api/jobs/:id/image', (req: Request, res: Response) => {
 });
 
 app.get('/api/history', (req: Request, res: Response) => {
+  // Prune any in-memory jobs older than 24 hours
+  const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
+  const now = Date.now();
+  for (const [id, job] of JOBS.entries()) {
+    const t = new Date(job.completed_at || job.created_at).getTime();
+    if (!isNaN(t) && now - t > TWENTY_FOUR_HOURS_MS) {
+      JOBS.delete(id);
+    }
+  }
+
   const allJobs = Array.from(JOBS.values());
   const completed = allJobs.filter((j) => j.status === 'complete');
   const failed = allJobs.filter((j) => j.status === 'error');
@@ -443,6 +487,11 @@ app.get('/api/reports/:id', (req: Request, res: Response) => {
   if (!job) {
     return res.status(404).json({ detail: 'Job not found.' });
   }
+  const t = new Date(job.completed_at || job.created_at).getTime();
+  if (!isNaN(t) && Date.now() - t > 24 * 60 * 60 * 1000) {
+    JOBS.delete(req.params.id);
+    return res.status(404).json({ detail: 'Job expired after 24 hours.' });
+  }
   if (job.status !== 'complete') {
     return res.status(409).json({ detail: `Job status is '${job.status}', not complete.` });
   }
@@ -463,6 +512,7 @@ app.get('/api/reports/:id', (req: Request, res: Response) => {
 app.use('/vendor', express.static(path.join(__dirname, 'public/vendor')));
 
 const SCREEN_DIRS: Record<string, string> = {
+  '/home': path.join(__dirname, 'home'),
   '/overview': path.join(__dirname, 'investigation_overview'),
   '/analyze': path.join(__dirname, 'analyze_media'),
   '/progress': path.join(__dirname, 'analysis_in_progress_scientific_forensics_globe'),
@@ -492,11 +542,11 @@ for (const [routePath, dirPath] of Object.entries(SCREEN_DIRS)) {
   }
 }
 
-// Root route — Cinematic Landing Page
+// Root route — Home Page
 app.get('/', (req: Request, res: Response) => {
-  const overviewHtml = path.join(__dirname, 'investigation_overview', 'code.html');
-  if (fs.existsSync(overviewHtml)) {
-    return res.sendFile(overviewHtml);
+  const homeHtml = path.join(__dirname, 'home', 'code.html');
+  if (fs.existsSync(homeHtml)) {
+    return res.sendFile(homeHtml);
   }
   res.redirect('/analyze/');
 });

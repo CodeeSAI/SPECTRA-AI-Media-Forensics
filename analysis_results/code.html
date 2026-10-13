@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="/vendor/ledger.js"></script>
   <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
@@ -96,6 +97,10 @@
 
       <!-- Navigation — Primary Destinations -->
       <nav class="flex flex-col pt-4 px-3 gap-1.5">
+        <a class="group flex items-center h-10 px-3.5 rounded-lg text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface-2 border-l-[3px] border-transparent transition-all" href="/">
+          <span class="material-symbols-outlined text-[19px] mr-3 text-text-tertiary group-hover:text-cyan-glow transition-colors">home</span>
+          <span class="tracking-wide">Home</span>
+        </a>
         <a aria-current="page" class="group flex items-center h-10 px-3.5 rounded-lg text-sm font-semibold bg-gradient-to-r from-cobalt/20 via-electric-violet/20 to-transparent text-white border-l-[3px] border-electric-violet shadow-[0_0_14px_rgba(139,92,246,0.25)] transition-all" href="/analyze/">
           <span class="material-symbols-outlined text-[19px] mr-3 text-cyan-glow">fingerprint</span>
           <span class="tracking-wide">Analyze</span>
@@ -144,6 +149,11 @@
         <span class="font-semibold text-white tracking-wide truncate">FORENSIC FINDINGS &amp; DOSSIER</span>
       </div>
       <div class="flex items-center gap-3 sm:gap-4 shrink-0">
+        <!-- Live System Clock (IST Asia/Kolkata) -->
+        <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-md bg-surface-2 border border-border-line font-mono text-[11px] text-text-secondary">
+          <span class="material-symbols-outlined text-[14px] text-electric-violet">schedule</span>
+          <span id="ist-clock">--:--:-- IST</span>
+        </div>
         <a class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border-line text-xs font-mono text-text-secondary hover:text-white hover:bg-surface-2 transition-all" href="/analyze/">
           <span class="material-symbols-outlined text-[16px]">add</span>
           <span class="hidden sm:inline">New Investigation</span>
@@ -359,6 +369,10 @@
                 <span class="text-text-tertiary">File Payload Size</span>
                 <span id="meta-filesize" class="text-white font-medium">—</span>
               </div>
+              <div class="flex items-baseline justify-between py-1.5 border-b border-border-line/40">
+                <span class="text-text-tertiary">Analyzed Timestamp</span>
+                <span id="meta-timestamp" class="text-cyan-glow font-medium">—</span>
+              </div>
             </div>
 
             <!-- SHA-256 Checksum Container -->
@@ -406,9 +420,26 @@
 
       const exportBtn = document.getElementById('exportBtn');
       if (exportBtn) {
-        exportBtn.addEventListener('click', () => {
+        exportBtn.addEventListener('click', async () => {
           if (jobId) {
-            window.location.href = '/api/reports/' + jobId;
+            try {
+              const rRes = await fetch('/api/reports/' + jobId);
+              if (rRes.ok) {
+                const blob = await rRes.blob();
+                const u = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = u;
+                a.download = `SPECTRA_DOSSIER_${jobId.slice(0, 8)}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(u);
+              } else {
+                alert('Official report file is unavailable: Temporary report buffer has been recycled in accordance with local-session privacy policies.');
+              }
+            } catch (err) {
+              alert('Official report file is unavailable: ' + err.message);
+            }
           } else {
             alert('No active investigation selected to export.');
           }
@@ -420,17 +451,25 @@
       }
 
       try {
-        // If no jobId specified in URL, check session history for the latest investigation
+        // If no jobId specified in URL, check persistent ledger then session history
         if (!jobId) {
-          try {
-            const hRes = await fetch('/api/history');
-            if (hRes.ok) {
-              const hData = await hRes.json();
-              if (hData.jobs && hData.jobs.length > 0) {
-                jobId = hData.jobs[0].job_id;
-              }
+          if (window.SpectraLedger) {
+            const records = window.SpectraLedger.getRecords();
+            if (records.length > 0) {
+              jobId = records[0].job_id;
             }
-          } catch {}
+          }
+          if (!jobId) {
+            try {
+              const hRes = await fetch('/api/history');
+              if (hRes.ok) {
+                const hData = await hRes.json();
+                if (hData.jobs && hData.jobs.length > 0) {
+                  jobId = hData.jobs[0].job_id;
+                }
+              }
+            } catch {}
+          }
         }
 
         const verdictHeadline = document.getElementById('verdict-headline');
@@ -446,14 +485,30 @@
           return;
         }
 
-        const res = await fetch('/api/jobs/' + jobId);
-        if (!res.ok) {
+        let job = null;
+        try {
+          const res = await fetch('/api/jobs/' + jobId);
+          if (res.ok) {
+            job = await res.json();
+            if (window.SpectraLedger) {
+              window.SpectraLedger.saveRecord(job);
+            }
+          }
+        } catch (e) {
+          console.warn('Backend fetch failed, checking local ledger:', e);
+        }
+
+        // If backend does not have the job (e.g. server restarted or memory recycled), check SpectraLedger
+        if (!job && window.SpectraLedger) {
+          job = window.SpectraLedger.getRecordById(jobId);
+        }
+
+        if (!job) {
           if (verdictHeadline) verdictHeadline.textContent = 'INVESTIGATION NOT FOUND';
-          if (verdictNarrative) verdictNarrative.textContent = `Investigation with ID "${jobId}" was not found in the current workstation session.`;
+          if (verdictNarrative) verdictNarrative.textContent = `Investigation with ID "${jobId}" was not found or has expired after 24 hours.`;
           return;
         }
 
-        const job = await res.json();
         const r = job.result || {};
         const isError = job.status === 'error';
 
@@ -461,6 +516,10 @@
         const resultImg = document.getElementById('result-img');
         if (resultImg) {
           resultImg.src = '/api/jobs/' + jobId + '/image';
+          resultImg.onerror = function() {
+            resultImg.onerror = null;
+            resultImg.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 400 225'%3E%3Crect width='400' height='225' fill='%230b0f15'/%3E%3Ctext x='50%25' y='46%25' dominant-baseline='middle' text-anchor='middle' fill='%2364748B' font-family='monospace' font-size='12'%3ESESSION BUFFER RECYCLED%3C/text%3E%3Ctext x='50%25' y='60%25' dominant-baseline='middle' text-anchor='middle' fill='%23475569' font-family='sans-serif' font-size='10'%3ESource image discarded per local privacy policy%3C/text%3E%3C/svg%3E";
+          };
         }
 
         const exhibitName = document.getElementById('exhibit-name');
@@ -544,6 +603,13 @@
           metaFs.textContent = job.filesize_display + (job.filesize ? ' (' + job.filesize.toLocaleString() + ' bytes)' : '');
         }
 
+        const metaTs = document.getElementById('meta-timestamp');
+        if (metaTs) {
+          metaTs.textContent = window.SpectraLedger
+            ? window.SpectraLedger.formatIST(job.completed_at || job.created_at)
+            : (job.completed_at || job.created_at ? new Date(job.completed_at || job.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) + ' IST' : '—');
+        }
+
         // SHA-256
         const hashEl = document.getElementById('hashString');
         if (hashEl && job.sha256) hashEl.textContent = job.sha256;
@@ -568,6 +634,11 @@
 
       } catch (e) {
         console.warn('Could not load job findings:', e);
+      }
+
+      // Initialize live IST clock
+      if (window.SpectraLedger && window.SpectraLedger.initLiveClock) {
+        window.SpectraLedger.initLiveClock('ist-clock');
       }
 
       // Mobile Sidebar Drawer Toggle
