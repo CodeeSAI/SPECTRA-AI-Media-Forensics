@@ -124,9 +124,12 @@ def _classify(image: Image.Image) -> Dict[str, Any]:
         "threshold_used": CONFIDENCE_THRESHOLD,
         "model_id": MODEL_ID,
         "disclaimer": (
-            f"Model scores represent statistical classifier outputs from {MODEL_ID}, "
-            "not definitive proof of authentic origin. A directional verdict requires "
-            f"exceeding the {CONFIDENCE_THRESHOLD * 100:.0f}% confidence threshold."
+            f"Classifier scores represent statistical model estimates from {MODEL_ID}, "
+            "not conclusive forensic proof of authentic origin or manipulation. "
+            "Single-model vision classifiers have documented domain-shift limitations and can produce "
+            "false positives on authentic photographs (particularly high-resolution studio portraits) "
+            "or false negatives on novel generative models. A directional classification requires "
+            f"exceeding the {CONFIDENCE_THRESHOLD * 100:.0f}% confidence threshold and corroborating metadata review."
         ),
     }
 

@@ -9,6 +9,29 @@ import { imageSize } from 'image-size';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Auto-load .env if present (zero external dependencies)
+const envFile = path.join(__dirname, '.env');
+if (fs.existsSync(envFile)) {
+  try {
+    const lines = fs.readFileSync(envFile, 'utf8').split('\n');
+    for (const rawLine of lines) {
+      const line = rawLine.trim();
+      if (line && !line.startsWith('#')) {
+        const eqIdx = line.indexOf('=');
+        if (eqIdx > 0) {
+          const key = line.slice(0, eqIdx).trim();
+          const val = line.slice(eqIdx + 1).trim();
+          if (!process.env[key]) {
+            process.env[key] = val;
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('[SPECTRA] Notice: Could not read .env file:', err);
+  }
+}
+
 const app = express();
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const HOST = '0.0.0.0';
@@ -115,7 +138,7 @@ function extractBasicExif(buffer: Buffer): Record<string, string> {
 
 // Helper: Process forensic classification via primary PyTorch classifier
 async function classifyImage(buffer: Buffer, filename: string, mimeType: string): Promise<JobResult> {
-  const pythonBackendUrl = process.env.PYTHON_BACKEND_URL;
+  const pythonBackendUrl = process.env.PYTHON_BACKEND_URL || (process.env.NODE_ENV !== 'production' ? 'http://127.0.0.1:8000' : undefined);
 
   // If the Python inference backend is not configured, report a truthful degraded/unavailable state
   if (!pythonBackendUrl) {
@@ -240,12 +263,14 @@ function makeReport(job: ForensicJob): string {
   }
 
   const defaultDisclaimer =
-    'Model scores are raw classifier outputs from Ateeqq/ai-vs-human-image-detector, ' +
-    'not calibrated probabilities of authenticity. Machine learning predictions can produce false ' +
-    'positives or false negatives, and do not constitute independent legal proof of media manipulation. ' +
-    'A confidence threshold of 70% is required for a directional verdict; scores between 30% and 70% ' +
+    'Model scores are statistical classifier estimates from ' + MODEL_ID + ', ' +
+    'not calibrated probabilities or conclusive forensic proof of authentic origin. ' +
+    'Machine learning vision classifiers have documented domain-shift limitations and can produce ' +
+    'false positives (e.g. classifying authentic human studio portraits as synthetic) or false negatives. ' +
+    'A confidence threshold of 70% indicates a directional statistical hypothesis only; scores between 30% and 70% ' +
     'are deemed Inconclusive. The SHA-256 digest validates file bitstream integrity against modification ' +
-    'post-upload, but does not certify image origin or author identity.';
+    'post-upload, but does not certify image origin or author identity. Conclusive forensic determination requires ' +
+    'sensor noise analysis (PRNU) and cryptographic provenance verification.';
 
   return `${'='.repeat(72)}
   SPECTRA — AI MEDIA FORENSICS  |  INVESTIGATION REPORT
@@ -261,14 +286,14 @@ ${'='.repeat(72)}
   SHA-256         : ${job.sha256 || 'N/A'}
 
 ${'─'.repeat(72)}
-  CLASSIFICATION RESULT
+  STATISTICAL CLASSIFIER ESTIMATION (MODEL OUTPUT)
 ${'─'.repeat(72)}
 
-  Verdict         : ${res.verdict || 'N/A'}
-  AI Score        : ${res.ai_score ?? 'N/A'} %
-  Human Score     : ${res.human_score ?? 'N/A'} %
-  Threshold Used  : ${((res.threshold_used || CONFIDENCE_THRESHOLD) * 100).toFixed(0)} %
-  Model           : ${MODEL_ID}
+  Verdict Estimate: ${res.verdict || 'N/A'} (Statistical Model Estimate)
+  AI Score Est.   : ${res.ai_score ?? 'N/A'} %
+  Human Score Est.: ${res.human_score ?? 'N/A'} %
+  Decision Bound  : ${((res.threshold_used || CONFIDENCE_THRESHOLD) * 100).toFixed(0)} %
+  Inference Model : ${MODEL_ID}
 
 ${'─'.repeat(72)}
   AVAILABLE EXIF METADATA
@@ -277,12 +302,12 @@ ${'─'.repeat(72)}
 ${exifBlock}
 
 ${'─'.repeat(72)}
-  RAW MODEL OUTPUT
+  RAW MODEL TENSOR OUTPUT
 ${'─'.repeat(72)}
 ${rawBlock}
 
 ${'─'.repeat(72)}
-  DISCLAIMER
+  FORENSIC LIMITATION & ADVISORY
 ${'─'.repeat(72)}
 
   ${res.disclaimer || defaultDisclaimer}
@@ -303,7 +328,7 @@ function cleanJob(j: ForensicJob) {
 // ── API ROUTES ─────────────────────────────────────────────────────────────
 
 app.get('/api/health', async (req: Request, res: Response) => {
-  const pythonBackendUrl = process.env.PYTHON_BACKEND_URL;
+  const pythonBackendUrl = process.env.PYTHON_BACKEND_URL || (process.env.NODE_ENV !== 'production' ? 'http://127.0.0.1:8000' : undefined);
   let classifierStatus: 'ready' | 'loading' | 'unreachable' | 'unavailable' | 'not_configured' = 'not_configured';
   let classifierDetails: any = null;
 
